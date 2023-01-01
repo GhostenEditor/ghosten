@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "noUnusedLocals": true,
+    "types": ["node", "tslib"],
+    "paths": {
+      "@ghosten/*": ["projects/*/src/public_api.ts"]
+    }
+  },
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
+}

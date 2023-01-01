@@ -1,0 +1,17 @@
+{
+  "name": "@ghosten/editor",
+  "version": "0.1.0-alpha.2",
+  "scripts": {
+    "build": "ng build editor",
+    "lint": "ng lint editor --fix"
+  },
+  "peerDependencies": {
+    "@angular/common": "^14.2.0",
+    "@angular/core": "^14.2.0",
+    "@ghosten/common": "^0.1.0",
+    "ngx-color": "^8.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.4.0"
+  }
+}

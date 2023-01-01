@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="zh">
+  <file id="ngi18n" original="ng.template">
+    <unit id="2714523871337169162">
+      <notes>
+        <note category="location">demo/app/app.component.ts:16</note>
+        <note category="description">Toast Type: Info</note>
+      </notes>
+      <segment>
+        <source>Info</source>
+      </segment>
+    </unit>
+    <unit id="8142830061914184375">
+      <notes>
+        <note category="location">demo/app/app.component.ts:17</note>
+        <note category="description">Toast Message: There is new edition, update now?</note>
+      </notes>
+      <segment>
+        <source>There is new edition, update now?</source>
+      </segment>
+    </unit>
+    <unit id="3739942229069208761">
+      <notes>
+        <note category="location">demo/app/app.component.ts:18</note>
+        <note category="location">demo/app/app.component.ts:20</note>
+        <note category="description">Button: Yes</note>
+      </notes>
+      <segment>
+        <source>Yes</source>
+      </segment>
+    </unit>
+    <unit id="6441654809894181260">
+      <notes>
+        <note category="location">demo/app/modules/main/navigation/navigation.component.ts:59,60</note>
+        <note category="description">Button: Modify</note>
+      </notes>
+      <segment>
+        <source>Modify</source>
+      </segment>
+    </unit>
+    <unit id="415845270675092715">
+      <notes>
+        <note category="location">demo/app/modules/main/navigation/navigation.component.ts:76,77</note>
+        <note category="description">Button: Import</note>
+      </notes>
+      <segment>
+        <source>Import</source>
+      </segment>
+    </unit>
+    <unit id="6516449160218279611">
+      <notes>
+        <note category="location">demo/app/modules/main/navigation/navigation.component.ts:86,87</note>
+        <note category="description">Button: Export</note>
+      </notes>
+      <segment>
+        <source> Export </source>
+      </segment>
+    </unit>
+    <unit id="1435015774282525197">
+      <notes>
+        <note category="location">demo/app/modules/main/navigation/navigation.component.ts:99,100</note>
+        <note category="description">Button: Reset</note>
+      </notes>
+      <segment>
+        <source> Reset </source>
+      </segment>
+    </unit>
+    <unit id="8486742015912599251">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/action.component.ts:62</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:77,78</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-directive.component.ts:114,115</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:61,62</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-validator.component.ts:65,66</note>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-page.component.ts:33,34</note>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Button: Add</note>
+      </notes>
+      <segment>
+        <source> Add </source>
+      </segment>
+    </unit>
+    <unit id="6951335150932985356">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:77,80</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:61,62</note>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Table Column Header: Operation</note>
+      </notes>
+      <segment>
+        <source> Operation </source>
+      </segment>
+    </unit>
+    <unit id="7333125950791091498">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:77,80</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:61,62</note>
+        <note category="description">Table Column Header: Index</note>
+      </notes>
+      <segment>
+        <source> Index </source>
+      </segment>
+    </unit>
+    <unit id="9162601036772446435">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:77,80</note>
+        <note category="description">Table Column Header: Category</note>
+      </notes>
+      <segment>
+        <source> Category </source>
+      </segment>
+    </unit>
+    <unit id="6083708073852289371">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:77,80</note>
+        <note category="description">Table Column Header: Description</note>
+      </notes>
+      <segment>
+        <source> Description </source>
+      </segment>
+    </unit>
+    <unit id="8756399724428598664">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,97</note>
+        <note category="description">Component Variable Name</note>
+      </notes>
+      <segment>
+        <source> Component Variable Name </source>
+      </segment>
+    </unit>
+    <unit id="3284290819167336287">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Button: Add</note>
+      </notes>
+      <segment>
+        <source>Add</source>
+      </segment>
+    </unit>
+    <unit id="8999975746137443706">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Variable Name</note>
+      </notes>
+      <segment>
+        <source>Variable Name</source>
+      </segment>
+    </unit>
+    <unit id="5684255883621313894">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Data Type</note>
+      </notes>
+      <segment>
+        <source>Data Type</source>
+      </segment>
+    </unit>
+    <unit id="1842093436924780636">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Value</note>
+      </notes>
+      <segment>
+        <source>Value</source>
+      </segment>
+    </unit>
+    <unit id="190727489799478359">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Button: Edit</note>
+      </notes>
+      <segment>
+        <source>Edit</source>
+      </segment>
+    </unit>
+    <unit id="3832184864547336645">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Button: Remove</note>
+      </notes>
+      <segment>
+        <source> Remove </source>
+      </segment>
+    </unit>
+    <unit id="6943330430757764282">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95,96</note>
+        <note category="description">Button: Finish</note>
+      </notes>
+      <segment>
+        <source> Finish </source>
+      </segment>
+    </unit>
+    <unit id="259856680821902866">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:160,161</note>
+        <note category="description">Description: Please Select a Component</note>
+      </notes>
+      <segment>
+        <source> Please Select a Component! </source>
+      </segment>
+    </unit>
+    <unit id="8199331063378187242">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:183</note>
+        <note category="description">Config Card Title: Variable</note>
+      </notes>
+      <segment>
+        <source>Variable</source>
+      </segment>
+    </unit>
+    <unit id="2074877920515585124">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Property</note>
+      </notes>
+      <segment>
+        <source>Property</source>
+      </segment>
+    </unit>
+    <unit id="4736251060236980775">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Style</note>
+      </notes>
+      <segment>
+        <source>Style</source>
+      </segment>
+    </unit>
+    <unit id="1691787311577295017">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Authorization</note>
+      </notes>
+      <segment>
+        <source>Authorization</source>
+      </segment>
+    </unit>
+    <unit id="1697111660738327685">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Directive</note>
+      </notes>
+      <segment>
+        <source>Directive</source>
+      </segment>
+    </unit>
+    <unit id="8838794703512788104">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Validator</note>
+      </notes>
+      <segment>
+        <source>Validator</source>
+      </segment>
+    </unit>
+    <unit id="1975761023797862756">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:186</note>
+        <note category="description">Config Card Title: Action</note>
+      </notes>
+      <segment>
+        <source>Action</source>
+      </segment>
+    </unit>
+    <unit id="4560025980108054070">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-element.component.ts:128,127</note>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-element.component.ts:132,131</note>
+        <note category="description">Element Group Title: Custom Component</note>
+      </notes>
+      <segment>
+        <source>Custom Component</source>
+      </segment>
+    </unit>
+    <unit id="4992428600018244870">
+      <notes>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-tree.component.ts:118,119</note>
+      </notes>
+      <segment>
+        <source> There are <ph id="0" equiv="INTERPOLATION" disp="lements OnInit,"/> nodes totally </source>
+      </segment>
+    </unit>
+    <unit id="9083230383277301486">
+      <notes>
+        <note category="location">projects/editor/src/lib/gt-edit.component.ts:135,136</note>
+        <note category="description">Button: Cursor</note>
+      </notes>
+      <segment>
+        <source>Cursor</source>
+      </segment>
+    </unit>
+    <unit id="3153817096949391581">
+      <notes>
+        <note category="location">projects/editor/src/lib/gt-edit.component.ts:151,152</note>
+        <note category="description">Button: Pan</note>
+      </notes>
+      <segment>
+        <source>Pan</source>
+      </segment>
+    </unit>
+    <unit id="8666329139889049125">
+      <notes>
+        <note category="location">projects/editor/src/lib/gt-edit.component.ts:166</note>
+        <note category="description">Button: Reset</note>
+      </notes>
+      <segment>
+        <source>Reset</source>
+      </segment>
+    </unit>
+    <unit id="1690517171544603364">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:14,13</note>
+        <note category="description">Context Menu: Move Left</note>
+      </notes>
+      <segment>
+        <source>Move Left</source>
+      </segment>
+    </unit>
+    <unit id="6038117856393207034">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:25,24</note>
+        <note category="description">Context Menu: Move Right</note>
+      </notes>
+      <segment>
+        <source>Move Right</source>
+      </segment>
+    </unit>
+    <unit id="3034285693555881942">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:40,39</note>
+        <note category="description">Context Menu: Move Up</note>
+      </notes>
+      <segment>
+        <source>Move Up</source>
+      </segment>
+    </unit>
+    <unit id="7733598902834788488">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:54,53</note>
+        <note category="description">Context Menu: Copy</note>
+      </notes>
+      <segment>
+        <source>Copy</source>
+      </segment>
+    </unit>
+    <unit id="6904877100483252184">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:59,58</note>
+        <note category="description">Context Menu: Paste</note>
+      </notes>
+      <segment>
+        <source>Paste</source>
+      </segment>
+    </unit>
+    <unit id="3516210952663120949">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:70,69</note>
+        <note category="description">Context Menu: Cut</note>
+      </notes>
+      <segment>
+        <source>Cut</source>
+      </segment>
+    </unit>
+    <unit id="1329392431125715413">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:74,73</note>
+        <note category="location">projects/plugins/src/lib/providers/contextmenu.ts:24,23</note>
+        <note category="description">Context Menu: Remove</note>
+      </notes>
+      <segment>
+        <source>Remove</source>
+      </segment>
+    </unit>
+    <unit id="6929425914170747653">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:81,80</note>
+        <note category="description">Context Menu: Copy Style</note>
+      </notes>
+      <segment>
+        <source>Copy Style</source>
+      </segment>
+    </unit>
+    <unit id="1062888989426930172">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:86,85</note>
+        <note category="description">Context Menu: Paste Style</note>
+      </notes>
+      <segment>
+        <source>Paste Style</source>
+      </segment>
+    </unit>
+    <unit id="2452968666520119162">
+      <notes>
+        <note category="location">projects/plugins/src/lib/getContextMenus.ts:95,94</note>
+        <note category="description">Context Menu: Generate Grid</note>
+      </notes>
+      <segment>
+        <source>Generate Grid</source>
+      </segment>
+    </unit>
+    <unit id="2851880479450023099">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modal-action/action-edit.component.ts:46</note>
+        <note category="description">Modal Title: Action Editor</note>
+      </notes>
+      <segment>
+        <source>Action Editor</source>
+      </segment>
+    </unit>
+    <unit id="3597932961286677186">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/accordion-items.component.ts:55,56</note>
+        <note category="description">Table Column Header: Param Name</note>
+      </notes>
+      <segment>
+        <source>Param Name</source>
+      </segment>
+    </unit>
+    <unit id="8040881171107393560">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/accordion-items.component.ts:55,56</note>
+        <note category="description">Table Column Header: Param Value</note>
+      </notes>
+      <segment>
+        <source>Param Value</source>
+      </segment>
+    </unit>
+    <unit id="8086306783316688731">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/data-binding-temporary.component.ts:15,17</note>
+        <note category="location">projects/plugins/src/lib/modals/dataBinding.component.ts:28,30</note>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Modal Title: Data Source Binding</note>
+      </notes>
+      <segment>
+        <source>Data Source Binding</source>
+      </segment>
+    </unit>
+    <unit id="8503537271966715252">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Form Label: Type</note>
+      </notes>
+      <segment>
+        <source>Type</source>
+      </segment>
+    </unit>
+    <unit id="4921208117075576641">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Form Label: Method</note>
+      </notes>
+      <segment>
+        <source>Method</source>
+      </segment>
+    </unit>
+    <unit id="961509352367480616">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Form Label: Url</note>
+      </notes>
+      <segment>
+        <source>Url</source>
+      </segment>
+    </unit>
+    <unit id="4695571024614529168">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Form Label: Params</note>
+      </notes>
+      <segment>
+        <source>Params</source>
+      </segment>
+    </unit>
+    <unit id="2312625263785858083">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Table Column Header: Param Name</note>
+      </notes>
+      <segment>
+        <source>Param Name</source>
+      </segment>
+    </unit>
+    <unit id="6599041067830208467">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/dataSource.component.ts:92,93</note>
+        <note category="description">Table Column Header: Param Value</note>
+      </notes>
+      <segment>
+        <source>Param Value</source>
+      </segment>
+    </unit>
+    <unit id="3116323487842020810">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:91,90</note>
+        <note category="description">Modal Title: Page List</note>
+      </notes>
+      <segment>
+        <source>Page List</source>
+      </segment>
+    </unit>
+    <unit id="5995597281398020903">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Table Column Header: Title</note>
+      </notes>
+      <segment>
+        <source>Title</source>
+      </segment>
+    </unit>
+    <unit id="4883685090861303329">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Table Column Header: Description</note>
+      </notes>
+      <segment>
+        <source>Description</source>
+      </segment>
+    </unit>
+    <unit id="3042228509492962642">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modals/pages.component.ts:204,205</note>
+        <note category="description">Table Column Header: Parent Menu</note>
+      </notes>
+      <segment>
+        <source> Parent Menu </source>
+      </segment>
+    </unit>
+    <unit id="4389256907277994035">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modules/modal/modal.component.ts:92</note>
+        <note category="description">Button: Confirm</note>
+      </notes>
+      <segment>
+        <source> Confirm </source>
+      </segment>
+    </unit>
+    <unit id="6407910451714184287">
+      <notes>
+        <note category="location">projects/plugins/src/lib/modules/modal/modal.component.ts:92</note>
+        <note category="description">Button: Cancel</note>
+      </notes>
+      <segment>
+        <source> Cancel </source>
+      </segment>
+    </unit>
+    <unit id="6715149511305058301">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/contextmenu.ts:21,23</note>
+        <note category="description">Context Menu: Modify</note>
+      </notes>
+      <segment>
+        <source>Modify</source>
+      </segment>
+    </unit>
+    <unit id="6809452922531803400">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:8,7</note>
+        <note category="description">Element Group Title: Layout</note>
+      </notes>
+      <segment>
+        <source>Layout</source>
+      </segment>
+    </unit>
+    <unit id="1921542873285633677">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:11,10</note>
+        <note category="description">Element Label: Row</note>
+      </notes>
+      <segment>
+        <source>Row</source>
+      </segment>
+    </unit>
+    <unit id="8386659140110136451">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:21,20</note>
+        <note category="description">Element Label: Column</note>
+      </notes>
+      <segment>
+        <source>Column</source>
+      </segment>
+    </unit>
+    <unit id="318397785898829003">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:26,25</note>
+        <note category="description">Element Label: Division</note>
+      </notes>
+      <segment>
+        <source>Division</source>
+      </segment>
+    </unit>
+    <unit id="8823688824623624889">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:31,30</note>
+        <note category="description">Element Label: Card</note>
+      </notes>
+      <segment>
+        <source>Card</source>
+      </segment>
+    </unit>
+    <unit id="4500547454295112911">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:36,35</note>
+        <note category="description">Element Label: Accordion</note>
+      </notes>
+      <segment>
+        <source>Accordion</source>
+      </segment>
+    </unit>
+    <unit id="276452183513091886">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:41,40</note>
+        <note category="description">Element Label: Alert</note>
+      </notes>
+      <segment>
+        <source>Alert</source>
+      </segment>
+    </unit>
+    <unit id="8759474191954015330">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:67,66</note>
+        <note category="description">Element Group Title: Normal</note>
+      </notes>
+      <segment>
+        <source>Normal</source>
+      </segment>
+    </unit>
+    <unit id="3965599626748719957">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:70,69</note>
+        <note category="description">Element Label: Text</note>
+      </notes>
+      <segment>
+        <source>Text</source>
+      </segment>
+    </unit>
+    <unit id="6713287036079310806">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:79,78</note>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:82,81</note>
+        <note category="description">Element Group Title: Form</note>
+      </notes>
+      <segment>
+        <source>Form</source>
+      </segment>
+    </unit>
+    <unit id="5915335312101083008">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:87,86</note>
+        <note category="description">Element Label: Button</note>
+      </notes>
+      <segment>
+        <source>Button</source>
+      </segment>
+    </unit>
+    <unit id="6867049578306341865">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:92,91</note>
+        <note category="description">Element Label: Input</note>
+      </notes>
+      <segment>
+        <source>Input</source>
+      </segment>
+    </unit>
+    <unit id="8546329179885864957">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:97,96</note>
+        <note category="description">Element Label: Radio</note>
+      </notes>
+      <segment>
+        <source>Radio</source>
+      </segment>
+    </unit>
+    <unit id="4990299313347491983">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:103,102</note>
+        <note category="description">Element Label: Checkbox</note>
+      </notes>
+      <segment>
+        <source>Checkbox</source>
+      </segment>
+    </unit>
+    <unit id="7955245272971388225">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:109,108</note>
+        <note category="description">Element Label: Select</note>
+      </notes>
+      <segment>
+        <source>Select</source>
+      </segment>
+    </unit>
+    <unit id="7599952252406331660">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:114,113</note>
+        <note category="description">Element Label: Textarea</note>
+      </notes>
+      <segment>
+        <source>Textarea</source>
+      </segment>
+    </unit>
+    <unit id="5953364453085684741">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:119,118</note>
+        <note category="description">Element Label: Toggle</note>
+      </notes>
+      <segment>
+        <source>Toggle</source>
+      </segment>
+    </unit>
+    <unit id="3353987121576643334">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:127,126</note>
+        <note category="description">Element Group Title: Component</note>
+      </notes>
+      <segment>
+        <source>Component</source>
+      </segment>
+    </unit>
+    <unit id="8464474248160957541">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:130,129</note>
+        <note category="description">Element Label: Gauge</note>
+      </notes>
+      <segment>
+        <source>Gauge</source>
+      </segment>
+    </unit>
+    <unit id="5065535076070400899">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:135,134</note>
+        <note category="description">Element Label: Water</note>
+      </notes>
+      <segment>
+        <source>Water</source>
+      </segment>
+    </unit>
+    <unit id="1975384337319648190">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:140,139</note>
+        <note category="description">Element Label: Slot</note>
+      </notes>
+      <segment>
+        <source>Slot</source>
+      </segment>
+    </unit>
+    <unit id="2262094344082199174">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/gtElementsList.ts:145,144</note>
+        <note category="description">Element Label: Battery</note>
+      </notes>
+      <segment>
+        <source>Battery</source>
+      </segment>
+    </unit>
+    <unit id="6966007667454978228">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:22,21</note>
+        <note category="description">Top Bar Button: Undo</note>
+      </notes>
+      <segment>
+        <source>Undo</source>
+      </segment>
+    </unit>
+    <unit id="3408425619210899045">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:32,31</note>
+        <note category="description">Top Bar Button: Redo</note>
+      </notes>
+      <segment>
+        <source>Redo</source>
+      </segment>
+    </unit>
+    <unit id="3943075412296271978">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:42,41</note>
+        <note category="description">Top Bar Button: Reference Line</note>
+      </notes>
+      <segment>
+        <source>Reference Line</source>
+      </segment>
+    </unit>
+    <unit id="900799045106566434">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:52,51</note>
+        <note category="description">Top Bar Button: Add Data Source</note>
+      </notes>
+      <segment>
+        <source>Add Data Source</source>
+      </segment>
+    </unit>
+    <unit id="9082781386050595065">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:69,68</note>
+        <note category="description">Top Bar Button: Preview</note>
+      </notes>
+      <segment>
+        <source>Preview</source>
+      </segment>
+    </unit>
+    <unit id="1819481355019287016">
+      <notes>
+        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:80,79</note>
+        <note category="description">Top Bar Button: Save</note>
+      </notes>
+      <segment>
+        <source>Save</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

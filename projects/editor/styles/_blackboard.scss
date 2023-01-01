@@ -1,0 +1,34 @@
+.gt-page {
+  background-color: var(--bs-body-bg);
+  width: 50rem;
+  min-height: 60rem;
+  outline: 2rem solid var(--bs-body-bg);
+}
+
+.gt-node {
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.draggable-mirror {
+  position: fixed !important;
+  pointer-events: none;
+  z-index: 1100;
+  will-change: auto;
+  transition: none;
+  //border: 3px dashed var(--bs-border-color-translucent) !important;
+  //background: rgba(0, 0, 0, 0.3);
+}
+
+.draggable-placeholder {
+  position: fixed !important;
+  pointer-events: none;
+  will-change: auto;
+  opacity: 0.4;
+  left: 0;
+  top: 0;
+}
+
+.draggable-source {
+  opacity: 0;
+}

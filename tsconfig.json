@@ -1,0 +1,47 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "es2019",
+      "es2018",
+      "dom"
+    ],
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@ghosten/*": [
+        //        "dist/*"
+        "projects/*/src/public_api.ts"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "enableI18nLegacyMessageIdFormat": false,
+    "enableResourceInlining": true,
+    "fullTemplateTypeCheck": true,
+    "skipTemplateCodegen": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictMetadataEmit": true,
+    "strictTemplates": true,
+    "trace": true
+  }
+}
