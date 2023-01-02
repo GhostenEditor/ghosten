@@ -1,1 +1,1 @@
-# Components
+# @ghosten/components

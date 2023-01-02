@@ -1,1 +1,1 @@
-# Editor
+# @ghosten/editor

@@ -1,1 +1,1 @@
-# Database
+# @ghosten/database

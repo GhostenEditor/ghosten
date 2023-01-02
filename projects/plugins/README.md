@@ -1,1 +1,1 @@
-# Plugin
+# @ghosten/plugins
