@@ -19,8 +19,7 @@
     "stats": "ng build --statsJson=true && webpack-bundle-analyzer page/browser/zh/stats.json",
     "tauri": "tauri dev",
     "tauri:build": "tauri build",
-    "test": "ng test",
-    "version": "lerna version"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
