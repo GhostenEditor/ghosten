@@ -9,6 +9,7 @@
     "dev:ssr": "ng run demo:serve-ssr",
     "extract-i18n": "ng extract-i18n",
     "lint": "lerna run lint",
+    "prepublishOnly": "lerna run build",
     "prerender": "ng run demo:prerender",
     "prettier:demo": "npx prettier --write ./demo",
     "prettier:projects": "npx prettier --write ./projects",
