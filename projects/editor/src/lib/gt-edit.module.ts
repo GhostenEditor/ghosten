@@ -22,6 +22,7 @@ import {
   GT_AUTH_CONFIG,
   GT_DEFAULT_CONFIG,
   GT_EDIT_COMPONENT_MAP,
+  GT_EDITOR_BRAND,
   GT_ELEMENT_LISTS,
   GT_INTERNAL_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
@@ -73,9 +74,18 @@ import { authConfig } from './configs';
     EventsService,
     EditorSettingService,
     {
+      provide: GT_EDITOR_BRAND,
+      useValue: {
+        title: 'GHOSTEN',
+        href: '/',
+        src: 'assets/icons/icon.svg',
+        alt: 'Ghosten Logo',
+      },
+    },
+    {
       provide: GT_DEFAULT_CONFIG,
       useValue: {
-        exitUrl: '/test', // '/system/menu'
+        exitUrl: '/test',
       },
     },
     {

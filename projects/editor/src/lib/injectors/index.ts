@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
 import {
+  EditorBrand,
   ElementList,
   GtAuth,
   GtConfig,
@@ -37,3 +38,6 @@ export const GT_INTERNAL_ELEMENT_LISTS = new InjectionToken<ElementList[]>(
 export const GT_NODE_DEFAULT_CONFIG = new InjectionToken<
   Record<string, Map<string, any>>
 >('Gt Node Default Config');
+export const GT_EDITOR_BRAND = new InjectionToken<EditorBrand>(
+  'Ghosten Editor Brand',
+);

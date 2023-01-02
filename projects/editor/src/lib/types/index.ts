@@ -78,3 +78,10 @@ export interface PanelTableColumn {
   prop: string;
   width?: string | null;
 }
+
+export interface EditorBrand {
+  title: string;
+  href: string;
+  src: string;
+  alt: string;
+}

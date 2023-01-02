@@ -2,9 +2,9 @@ import { Component, Inject, Optional } from '@angular/core';
 
 import { Board } from '@ghosten/common';
 
+import { EditorBrand, TopBarButton } from '../../types';
+import { GT_EDITOR_BRAND, TOP_BAR_BUTTONS } from '../../injectors';
 import { GtEdit } from '../../classes';
-import { TOP_BAR_BUTTONS } from '../../injectors';
-import { TopBarButton } from '../../types';
 
 @Component({
   preserveWhitespaces: false,
@@ -13,14 +13,14 @@ import { TopBarButton } from '../../types';
     class: 'navbar border-bottom',
   },
   template: ` <div class="container-fluid">
-    <a href="/" class="navbar-brand me-0 d-flex">
+    <a [href]="editorBrand.href" class="navbar-brand me-0 d-flex">
       <img
-        src="assets/icons/128.png"
-        alt="Ghost Logo"
+        [src]="editorBrand.src"
+        [alt]="editorBrand.alt"
         class="rounded"
         style="width: 2rem;"
       />
-      <span class="fw-bold mx-3">GHOSTEN</span>
+      <span class="fw-bold mx-3">{{ editorBrand.title }}</span>
     </a>
     <span
       class="border-start border-secondary me-3"
@@ -50,7 +50,7 @@ import { TopBarButton } from '../../types';
     </nav>
     <div class="fw-bold fs-5 ms-auto me-auto">{{ gt.metadata.name }}</div>
     <div>
-      <ng-container *ngFor="let item of _topBarButtons">
+      <ng-container *ngFor="let item of topBarButtons">
         <button
           type="button"
           class="btn btn-light"
@@ -78,14 +78,11 @@ import { TopBarButton } from '../../types';
   </div>`,
 })
 export class NavbarComponent {
-  _topBarButtons: TopBarButton[];
-
   constructor(
     public gt: GtEdit,
-    @Optional() @Inject(TOP_BAR_BUTTONS) topBarButtons: TopBarButton[],
-  ) {
-    this._topBarButtons = topBarButtons;
-  }
+    @Optional() @Inject(GT_EDITOR_BRAND) public editorBrand: EditorBrand,
+    @Optional() @Inject(TOP_BAR_BUTTONS) public topBarButtons: TopBarButton[],
+  ) {}
 
   switchBoard(board: Board) {
     if (this.gt.currentBoard !== board) {
