@@ -12,7 +12,7 @@
     "prerender": "ng run demo:prerender",
     "prettier:demo": "npx prettier --write ./demo",
     "prettier:projects": "npx prettier --write ./projects",
-    "publish": "lerna publish --no-git-reset --no-private --contents dist",
+    "publish": "lerna publish --contents dist",
     "pwa": "http-server -p 8080 --gzip -o . -c31536000 page/browser",
     "serve:ssr": "node page/server/main.js",
     "start": "ng s",
@@ -20,7 +20,7 @@
     "tauri": "tauri dev",
     "tauri:build": "tauri build",
     "test": "ng test",
-    "version": "lerna version --no-private"
+    "version": "lerna version"
   },
   "private": true,
   "dependencies": {

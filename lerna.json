@@ -3,10 +3,15 @@
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "contents": true
+      "contents": true,
+      "yes": true,
+      "gitReset": false,
+      "private": false
     },
     "version": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "private": false,
+      "yes": true
     }
   },
   "version": "0.1.0-alpha.5"
