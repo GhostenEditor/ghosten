@@ -1,6 +1,6 @@
 {
   "name": "@ghosten/plugins",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.4",
   "scripts": {
     "build": "ng build plugins",
     "lint": "ng lint plugins --fix"

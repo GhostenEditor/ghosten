@@ -1,6 +1,6 @@
 {
   "name": "@ghosten/components",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.4",
   "scripts": {
     "build": "ng build components",
     "lint": "ng lint components --fix"
