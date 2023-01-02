@@ -6,7 +6,9 @@ import { editPage } from './editPage';
 import { exportDB } from './exportDB';
 import { getActivatedPageID } from './getActivatedPageID';
 import { getLatestConfigByID } from './getLatestConfigByID';
+import { getNavigations } from './getNavigations';
 import { getPageList } from './getPageList';
+import { getRoutes } from './getRoutes';
 import { importDB } from './importDB';
 import { save } from './save';
 
@@ -47,11 +49,6 @@ export function init() {
     );
   });
 
-  // fromEvent(dbRequest, 'success').pipe(
-  //   map(event => (event.target as any).result),
-  //   shareReplay(1),
-  // );
-  // db$.then();
   dbRequest.addEventListener('error', console.error);
   addEventListener(
     'message',
@@ -91,6 +88,12 @@ export function init() {
           case 'deleteDB':
             db.close();
             deleteDB(DBName);
+            break;
+          case 'getNavigations':
+            getNavigations(db);
+            break;
+          case 'getRoutes':
+            getRoutes(db);
             break;
         }
       });

@@ -1,1 +1,2 @@
-export * from './lib/app.worker';
+export * from './lib';
+export * from './lib/types';

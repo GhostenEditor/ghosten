@@ -11,14 +11,14 @@ export function resolveTransaction(
   );
 }
 
-export function resolveRequest(request: IDBRequest): Promise<Event> {
+export function resolveRequest<T>(request: IDBRequest): Promise<IDBRequest<T>> {
   request.addEventListener('error', () => {
     postMessage({
       type: 'error',
-      data: request.error,
+      data: request.error!.message,
     });
   });
   return new Promise(resolve =>
-    request.addEventListener('success', event => resolve(event)),
+    request.addEventListener('success', () => resolve(request)),
   );
 }
