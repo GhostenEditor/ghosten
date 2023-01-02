@@ -13,7 +13,7 @@
     "prerender": "ng run demo:prerender",
     "prettier:demo": "npx prettier --write ./demo",
     "prettier:projects": "npx prettier --write ./projects",
-    "publish": "lerna publish from-package --contents dist",
+    "publish": "lerna publish from-git --contents dist",
     "pwa": "http-server -p 8080 --gzip -o . -c31536000 page/browser",
     "serve:ssr": "node page/server/main.js",
     "start": "ng s",
