@@ -44,5 +44,5 @@ testem.log
 src-tauri/target
 src-tauri/Cargo.lock
 .angular
-page/server
+docs/server
 lerna-debug.log
