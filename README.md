@@ -1,5 +1,5 @@
 # Ghosten
 
-![未命名](https://user-images.githubusercontent.com/121630113/210216777-ebd19a49-c880-4d6f-b7b5-ede5971059c7.jpg)
+![](https://user-images.githubusercontent.com/121630113/210217065-c9d29044-2322-4605-915e-6c7dea42dbf6.jpg)
 
 A WebPage Editor
