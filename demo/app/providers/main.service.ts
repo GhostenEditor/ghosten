@@ -1,14 +1,9 @@
 import { Injectable, Type } from '@angular/core';
 import { ResolveData, Route } from '@angular/router';
 
-import { MenuItem } from '../modules/main/navigation/types';
-
 @Injectable({ providedIn: 'root' })
 export class MainService {
   rawMenus: any[] = [];
-  menus: MenuItem[];
-
-  constructor() {}
 
   generateRoutes(component: Type<any>, resolve: ResolveData): Route[] {
     const menuMap = new Map();

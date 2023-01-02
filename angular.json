@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -157,7 +157,7 @@
               "demo/manifest.webmanifest"
             ],
             "styles": [
-              "demo/app/styles/index.sass"
+              "demo/styles/index.sass"
             ],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json",

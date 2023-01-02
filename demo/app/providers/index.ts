@@ -2,7 +2,7 @@ import { APP_INITIALIZER, Provider } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpInterceptorAdapter } from './http-interceptor';
 import { MainService } from './main.service';
-import { getRouterAndMenu } from './getRouterAndMenu';
+import { appInitializer } from './app-initializer';
 
 export const providers: Provider[] = [
   {
@@ -13,7 +13,7 @@ export const providers: Provider[] = [
   MainService,
   {
     provide: APP_INITIALIZER,
-    useFactory: getRouterAndMenu,
+    useFactory: appInitializer,
     multi: true,
     deps: [HttpClient, MainService],
   },

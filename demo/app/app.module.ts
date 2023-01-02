@@ -1,4 +1,3 @@
-import { BidiModule } from '@angular/cdk/bidi';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,7 +15,6 @@ import { providers } from './providers';
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
-    BidiModule,
     HttpClientModule,
     ToastModule,
     RouterModule.forRoot([
@@ -38,7 +36,6 @@ import { providers } from './providers';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:3000',
     }),
-    RouterModule,
   ],
   providers,
   declarations: [AppComponent],

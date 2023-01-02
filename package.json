@@ -20,7 +20,7 @@
     "tauri": "tauri dev",
     "tauri:build": "tauri build",
     "test": "ng test",
-    "version": "lerna version --no-private --conventional-commits --no-push"
+    "version": "lerna version --no-private --conventional-commits"
   },
   "private": true,
   "dependencies": {

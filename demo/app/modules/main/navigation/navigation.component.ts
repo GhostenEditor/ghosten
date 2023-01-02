@@ -11,10 +11,12 @@ import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 
-import { MenuItem } from './types';
-import { ToastService } from '../../toast/toast.service';
+import { MenuItem } from '@ghosten/database';
+
 import { merge } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+import { ToastService } from '../../toast/toast.service';
 
 @Component({
   selector: 'app-navigation',
@@ -44,7 +46,7 @@ import { take } from 'rxjs/operators';
       </div>
       <hr />
       <app-navigation-item
-        [items]="items"
+        [items]="items | async"
         class="d-block flex-grow-1"
         style="overflow: auto!important;"
       ></app-navigation-item>
@@ -103,9 +105,9 @@ import { take } from 'rxjs/operators';
     </ng-template>`,
 })
 export class NavigationComponent {
-  @Input() items: MenuItem[];
   @Input() showSideMenu = false;
   @ViewChild('dropdownButton') dropdownButton: ElementRef;
+  items = this.http.get<MenuItem[]>('getNavigations');
   dropdownClick = new EventEmitter();
 
   constructor(

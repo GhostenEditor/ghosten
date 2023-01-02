@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, interval, take } from 'rxjs';
+import { EMPTY, Observable, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ToastService } from '../modules/toast/toast.service';
@@ -38,45 +38,20 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    // console.info('[HTTP REQUEST]:%O', req);
-    const workerRequest = this.resolveWorkerRequest(req);
-    if (workerRequest) {
-      return workerRequest.pipe(
-        // tap(data => console.info('[HTTP RESPONSE]:%O', data)),
-        map(body => new HttpResponse({ body })),
-        take(1),
-      );
-    }
-    return interval(1000).pipe(
-      map(
-        () =>
-          new HttpResponse({
-            body: +(Math.random() * 100).toFixed(0),
-          }),
-      ),
+    // console.info("[HTTP REQUEST]:%O", req);
+    return this.resolveWorkerRequest(req).pipe(
+      // tap(data => console.info('[HTTP RESPONSE]:%O', data)),
+      map(body => new HttpResponse({ body })),
+      take(1),
     );
   }
 
-  resolveWorkerRequest(req: HttpRequest<any>): Observable<any> | null {
+  resolveWorkerRequest(req: HttpRequest<any>): Observable<any> {
     switch (req.url) {
       case 'getLatestConfigByID':
-        return this.worker
-          .request(
-            req.url,
-            req.params.keys().reduce<Record<string, any>>((acc, cur) => {
-              acc[cur] = req.params.get(cur);
-              return acc;
-            }, {}),
-          )
-          .pipe(
-            map(data => {
-              if (typeof data.config === 'object') {
-                data.config = JSON.stringify(data.config);
-              }
-              return data;
-            }),
-          );
       case 'getPageList':
+      case 'getNavigations':
+      case 'getRoutes':
       case 'addPage':
       case 'editPage':
       case 'deletePage':
@@ -98,7 +73,7 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
           );
         }
       default:
-        return null;
+        return EMPTY;
     }
   }
 }

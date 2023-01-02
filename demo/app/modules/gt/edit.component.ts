@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
@@ -6,7 +6,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { GtEditComponent } from '@ghosten/editor';
 import { LogEvent } from '@ghosten/common';
 
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { RenderComponent } from './render.component';
@@ -15,20 +15,22 @@ import { RenderComponent } from './render.component';
   selector: 'app-gt-edit',
   template: '<gt-edit (log)="log($event)" [data]="data"></gt-edit>',
 })
-export class EditComponent {
+export class EditComponent implements OnDestroy {
   @ViewChild(GtEditComponent, { static: true }) gt: GtEditComponent;
   currentID: null | string = localStorage.getItem('currentID');
   data: any;
 
   constructor(private overlay: Overlay, private http: HttpClient) {
     this.getActivatedPage();
-    window.addEventListener('beforeunload', () => {
-      if (this.currentID) {
-        localStorage.setItem('currentID', this.currentID);
-      } else {
-        localStorage.removeItem('currentID');
-      }
-    });
+    window.addEventListener('beforeunload', () => this.ngOnDestroy());
+  }
+
+  ngOnDestroy() {
+    if (this.currentID) {
+      localStorage.setItem('currentID', this.currentID);
+    } else {
+      localStorage.removeItem('currentID');
+    }
   }
 
   getActivatedPage() {
@@ -52,12 +54,6 @@ export class EditComponent {
 
   log({ type, message, data, subType, callback }: LogEvent) {
     switch (type) {
-      case 'error':
-        console.error('[Gt Message]: ' + message, data);
-        break;
-      case 'warn':
-        console.warn('[Gt Message]: ' + message, data);
-        break;
       case 'preview':
         const overlayRef = this.overlay.create({
           hasBackdrop: true,
@@ -80,22 +76,10 @@ export class EditComponent {
         console.info('Gt Message: ' + message, data);
         break;
       case 'save':
-        return (
-          this.currentID
-            ? of(+this.currentID)
-            : this.http.post<number>('addPage', {
-                pageTitle: 'untitled1',
-                pageDescription: 'untitled1',
-                pageUrl: 'untitled1',
-              })
-        ).subscribe(id =>
-          this.http
-            .post('save', {
-              data,
-              id,
-            })
-            .subscribe(callback),
-        );
+        return this.http
+          .post<any>('save', { data, id: this.currentID })
+          .pipe(tap(({ id }) => (this.currentID = id)))
+          .subscribe(callback);
       case 'Manipulate Page':
         switch (subType) {
           case 'getPageList':
@@ -119,6 +103,12 @@ export class EditComponent {
           });
         }
         console.info('[Gt Message]: ' + message + ' %O', data);
+        break;
+      case 'error':
+        console.error('[Gt Message]: ' + message, data);
+        break;
+      case 'warn':
+        console.warn('[Gt Message]: ' + message, data);
         break;
       default:
         if (message === 'CHANGE_SELECT' && data.length) {

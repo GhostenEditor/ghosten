@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
-import { MainService } from '../../providers/main.service';
 
 @Component({
   selector: 'app-main',
   template: ` <div class="d-flex h-100">
-    <app-navigation
-      [items]="mainService.menus"
-      [showSideMenu]="showSideMenu"
-    ></app-navigation>
+    <app-navigation [showSideMenu]="showSideMenu"></app-navigation>
     <div class="p-4 flex-grow-1 h-100 overflow-auto">
       <div
         class="navbar position-fixed bg-body w-100 p-4 z-1 d-lg-none"
@@ -37,6 +33,4 @@ import { MainService } from '../../providers/main.service';
 })
 export class MainComponent {
   showSideMenu = false;
-
-  constructor(public mainService: MainService) {}
 }

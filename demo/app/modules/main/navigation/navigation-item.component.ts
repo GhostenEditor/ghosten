@@ -6,7 +6,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { MenuItem } from './types';
+import { MenuItem } from '@ghosten/database';
 
 @Component({
   selector: 'app-navigation-item',
@@ -47,7 +47,7 @@ import { MenuItem } from './types';
           >
         </div>
         <app-navigation-item
-          [items]="item.children"
+          [items]="item.children!"
           [level]="level + 1"
           class="d-block"
           [@bodyExpansion]="accordionItem.expanded ? 'expanded' : 'collapsed'"
@@ -67,6 +67,6 @@ import { MenuItem } from './types';
   </ul>`,
 })
 export class NavigationItemComponent {
-  @Input() items?: MenuItem[];
+  @Input() items: MenuItem[] | null;
   @Input() level = 1;
 }
