@@ -9,15 +9,6 @@ import { PagesComponent } from '../modals';
 export const topBarButtons: Provider = {
   provide: TOP_BAR_BUTTONS,
   useFactory: (gt: GtEdit, overlay: Overlay) => [
-    // {
-    //   title: $localize`:Top Bar Button\: Template:模板`,
-    //   icon: 'bi bi-file-earmark-spreadsheet',
-    //   onclick: () => {
-    //     // gt;
-    //     // gt.destroy();
-    //     // gt.init();
-    //   },
-    // },
     {
       title: $localize`:Top Bar Button\: Undo:撤销`,
       icon: 'rotate_ccw',
@@ -52,17 +43,6 @@ export const topBarButtons: Provider = {
       title: $localize`:Top Bar Button\: Add Data Source:添加数据源`,
       icon: 'bind',
       onclick: () => {
-        /*          dialog.openFromComponent(ModalGlobalDatasourceComponent, {
-                      disableClose: false,
-                      position: {
-                        top: '50px'
-                      },
-                      data: {
-                        mode: 'global'
-                      }
-                    }).afterClosed()
-                      .pipe(take(1))
-                      .subscribe();*/
       },
     },
     {
