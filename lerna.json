@@ -11,7 +11,8 @@
     "version": {
       "conventionalCommits": true,
       "private": false,
-      "yes": true
+      "yes": true,
+      "noPush": true
     }
   },
   "version": "0.1.0-alpha.5"
