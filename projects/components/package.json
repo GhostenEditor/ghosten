@@ -1,6 +1,12 @@
 {
   "name": "@ghosten/components",
   "version": "0.1.0-alpha.5",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/components"
+  },
   "scripts": {
     "build": "ng build components",
     "lint": "ng lint components --fix"

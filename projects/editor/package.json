@@ -1,6 +1,12 @@
 {
   "name": "@ghosten/editor",
   "version": "0.1.0-alpha.5",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/editor"
+  },
   "scripts": {
     "build": "ng build editor",
     "lint": "ng lint editor --fix"

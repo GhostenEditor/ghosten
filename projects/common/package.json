@@ -1,6 +1,12 @@
 {
   "name": "@ghosten/common",
   "version": "0.1.0-alpha.5",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/common"
+  },
   "scripts": {
     "build": "ng build common",
     "lint": "ng lint common --fix"

@@ -1,6 +1,12 @@
 {
   "name": "@ghosten/database",
   "version": "0.1.0-alpha.5",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/database"
+  },
   "scripts": {
     "build": "ng build database",
     "lint": "ng lint database --fix"
