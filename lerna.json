@@ -6,7 +6,8 @@
       "contents": true,
       "yes": true,
       "gitReset": false,
-      "private": false
+      "private": false,
+      "conventionalCommits": true
     },
     "version": {
       "conventionalCommits": true,
