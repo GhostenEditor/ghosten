@@ -146,7 +146,7 @@
               "mousetrap",
               "stats.js"
             ],
-            "outputPath": "docs/browser",
+            "outputPath": "dist/demo/browser",
             "index": "demo/index.html",
             "main": "demo/main.ts",
             "polyfills": "demo/polyfills.ts",
@@ -259,7 +259,7 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "docs/server",
+            "outputPath": "dist/demo/server",
             "main": "demo/server.ts",
             "tsConfig": "demo/tsconfig.server.json",
             "localize": true
