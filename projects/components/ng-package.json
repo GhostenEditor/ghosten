@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/components",
+  "dest": "dist",
   "allowedNonPeerDependencies": ["d3-interpolate", "@ctrl/tinycolor"],
   "lib": {
     "flatModuleFile": "components"
