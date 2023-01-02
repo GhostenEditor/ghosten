@@ -13,7 +13,7 @@
       "conventionalCommits": true,
       "private": false,
       "yes": true,
-      "noPush": true
+      "push": false
     }
   },
   "version": "0.1.0-alpha.6"
