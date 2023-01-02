@@ -1,0 +1,91 @@
+{
+  "configVersion": 1,
+  "timestamp": 1672650169623,
+  "index": "/ghosten/en-US/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/ghosten/en-US/3.ebc0a9c43b5bf83e.js",
+        "/ghosten/en-US/37.c2b0af1a09145978.js",
+        "/ghosten/en-US/426.ff7f304ce4fa0a14.js",
+        "/ghosten/en-US/697.2ae137ad919ef515.js",
+        "/ghosten/en-US/index.html",
+        "/ghosten/en-US/main.2fc3a280eeb59b1b.js",
+        "/ghosten/en-US/manifest.webmanifest",
+        "/ghosten/en-US/polyfills.b06dc6e66537fa81.js",
+        "/ghosten/en-US/runtime.99ce7b656e80e6d8.js",
+        "/ghosten/en-US/styles.ffb04dce31ae7b84.css",
+        "/ghosten/en-US/vendor.b595ac211c09c84d.js"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/ghosten/en-US/Ghosten Icons-Regular.91ede498bb36bc34.woff2",
+        "/ghosten/en-US/assets/icons/128.png",
+        "/ghosten/en-US/assets/icons/144.png",
+        "/ghosten/en-US/assets/icons/152.png",
+        "/ghosten/en-US/assets/icons/256.png",
+        "/ghosten/en-US/assets/icons/512.png",
+        "/ghosten/en-US/assets/icons/favicon.ico",
+        "/ghosten/en-US/assets/icons/icon.svg",
+        "/ghosten/en-US/assets/splashscreen.html"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/ghosten/en-US/3.ebc0a9c43b5bf83e.js": "51c871903ac0c18fe94e10dc0c3c3f7cb8e34606",
+    "/ghosten/en-US/37.c2b0af1a09145978.js": "4fe07d37fe0c1c65666c7dd3093b006ec6e0208e",
+    "/ghosten/en-US/426.ff7f304ce4fa0a14.js": "b94590c80f7e3868dc8b5c8b5639872e58e7d55f",
+    "/ghosten/en-US/697.2ae137ad919ef515.js": "7e0a0c93e67d8faf198eda2aa3074f9a8f5f48a6",
+    "/ghosten/en-US/Ghosten Icons-Regular.91ede498bb36bc34.woff2": "bf318d4ff9a9a670b787a056d7c629cf0b84c56b",
+    "/ghosten/en-US/assets/icons/128.png": "69b5ade6b5502539120bdf1345fd5fee0cd19cd8",
+    "/ghosten/en-US/assets/icons/144.png": "74ad4a0c911810f88c5d44cc574c9798a7d06f59",
+    "/ghosten/en-US/assets/icons/152.png": "eeb6fcaa5b3275b6f349c611b419f0ba8f453d0b",
+    "/ghosten/en-US/assets/icons/256.png": "cd727be11eea615f582e2f140c2019b4093c7208",
+    "/ghosten/en-US/assets/icons/512.png": "421f61cd101aedaca19355d7c105bee3e2b81fbd",
+    "/ghosten/en-US/assets/icons/favicon.ico": "692f4caef77c13ed2d5ece37695faae809036af7",
+    "/ghosten/en-US/assets/icons/icon.svg": "4732796bcfb7b8d5daf9fb51b3d8e24eef02bd64",
+    "/ghosten/en-US/assets/splashscreen.html": "5b9c22073f0c0b2cc86569767a2533acdc8c46d1",
+    "/ghosten/en-US/index.html": "9d222ba66a4b120b738512ea882944595cef34ef",
+    "/ghosten/en-US/main.2fc3a280eeb59b1b.js": "2956ed4bab82b2be98b349e8bf7c09b6bfb6886f",
+    "/ghosten/en-US/manifest.webmanifest": "4e7f04b97a78f14b4e100f8f3a6366eb005320e5",
+    "/ghosten/en-US/polyfills.b06dc6e66537fa81.js": "1ee8cbd50b69e7728262397b3e991f4dbbf76751",
+    "/ghosten/en-US/runtime.99ce7b656e80e6d8.js": "56beeaef51b1b1dbbdf601812a2486c980959453",
+    "/ghosten/en-US/styles.ffb04dce31ae7b84.css": "e7a92e8f5f4703c45bb3bb314cb47af48c7d0bd7",
+    "/ghosten/en-US/vendor.b595ac211c09c84d.js": "67b6bc0396fea5880d83ba297b50937c3deb5902"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
