@@ -1,7 +1,8 @@
+<div align="center">
+
 # Ghosten Editor
 
-![](https://user-images.githubusercontent.com/121630113/210217065-c9d29044-2322-4605-915e-6c7dea42dbf6.jpg)
-<div align="center">
+![Banner](https://user-images.githubusercontent.com/121630113/210319723-d0a2e574-4197-4379-a8c5-96e4b17c52b9.png)
 
 [中文]() |
 [English]()
