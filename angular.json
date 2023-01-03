@@ -215,8 +215,7 @@
               "browserTarget": "demo:build:production"
             },
             "development": {
-              "browserTarget": "demo:build:development",
-              "host": "0.0.0.0"
+              "browserTarget": "demo:build:development"
             }
           },
           "defaultConfiguration": "development"
