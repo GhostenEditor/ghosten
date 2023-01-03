@@ -56,16 +56,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @ghosten/common
+MIT
 
 @ghosten/components
+MIT
 
 @ghosten/database
+MIT
 
 @ghosten/editor
+MIT
 
 @ghosten/plugins
+MIT
 
 @ghosten/renderer
+MIT
 
 d3-color
 BSD-3-Clause
