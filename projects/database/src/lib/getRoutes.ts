@@ -1,13 +1,14 @@
-export function getRoutes(db:IDBDatabase){
+import { MessageEvent } from './types';
+import { resolveRequest } from './resolve';
+
+export function getRoutes(db: IDBDatabase): Promise<MessageEvent> {
   const transaction = db.transaction('CONFIG', 'readonly');
   const objectStore = transaction.objectStore('CONFIG');
   const request = objectStore.getAll();
-  request.addEventListener('success', () => {
-    postMessage({
-      type: 'log',
-      subType: 'getRoutes',
-      message: '数据查询成功',
-      data: request.result,
-    });
-  });
+  return resolveRequest(request).then(() => ({
+    type: 'log',
+    subType: 'getRoutes',
+    message: '数据查询成功',
+    data: request.result,
+  }));
 }

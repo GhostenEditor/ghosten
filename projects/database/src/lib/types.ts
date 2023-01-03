@@ -8,3 +8,10 @@ export interface MenuItem {
   expanded?: boolean;
   children?: MenuItem[];
 }
+
+export interface MessageEvent {
+  type: string;
+  subType?: string;
+  message?: string;
+  data?: any;
+}

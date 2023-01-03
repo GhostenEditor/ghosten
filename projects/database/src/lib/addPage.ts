@@ -1,6 +1,10 @@
+import { MessageEvent } from './types';
 import { resolveTransaction } from './resolve';
 
-export function addPage(db: IDBDatabase, pageConfig: any) {
+export function addPage(
+  db: IDBDatabase,
+  pageConfig: any,
+): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');
@@ -42,12 +46,10 @@ export function addPage(db: IDBDatabase, pageConfig: any) {
       },
     });
   });
-  resolveTransaction(transaction).then(() => {
-    postMessage({
-      type: 'log',
-      subType: 'addPage',
-      message: '创建成功',
-      data: request.result,
-    });
-  });
+  return resolveTransaction(transaction).then(() => ({
+    type: 'log',
+    subType: 'addPage',
+    message: '创建成功',
+    data: request.result,
+  }));
 }

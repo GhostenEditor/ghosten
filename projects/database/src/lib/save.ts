@@ -1,6 +1,10 @@
 import { resolveRequest, resolveTransaction } from './resolve';
+import { MessageEvent } from './types';
 
-export function save(db: IDBDatabase, data: { id: number; data: string }) {
+export function save(
+  db: IDBDatabase,
+  data: { id: number; data: string },
+): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');
@@ -31,12 +35,10 @@ export function save(db: IDBDatabase, data: { id: number; data: string }) {
       }),
     ).then();
   }
-  resolveTransaction(transaction).then(() =>
-    postMessage({
-      type: 'log',
-      subType: 'save',
-      message: '保存成功',
-      data: { id },
-    }),
-  );
+  return resolveTransaction(transaction).then(() => ({
+    type: 'log',
+    subType: 'save',
+    message: '保存成功',
+    data: { id },
+  }));
 }

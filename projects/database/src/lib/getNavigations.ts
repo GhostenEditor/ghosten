@@ -1,10 +1,10 @@
-import { MenuItem } from './types';
+import { MenuItem, MessageEvent } from './types';
 import { resolveRequest } from './resolve';
 
-export function getNavigations(db: IDBDatabase) {
+export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
   const transaction = db.transaction('CONFIG', 'readonly');
   const objectStore = transaction.objectStore('CONFIG');
-  resolveRequest<any[]>(objectStore.getAll()).then(request => {
+  return resolveRequest<any[]>(objectStore.getAll()).then(request => {
     const data = request.result;
     const menuMap = new Map();
     const items: MenuItem[] = data.map(menu => {
@@ -41,11 +41,11 @@ export function getNavigations(db: IDBDatabase) {
     });
     // mainService.menus = items.filter(v => !v.parentId);
 
-    postMessage({
+    return {
       type: 'log',
       subType: 'getNavigations',
       message: '数据查询成功',
       data: items.filter(v => !v.parentId),
-    });
+    };
   });
 }

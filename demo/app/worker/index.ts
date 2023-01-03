@@ -52,7 +52,7 @@ export class WorkerConnector {
     }
   }
 
-  request(type: RequestType, data: any) {
+  request(type: RequestType, data: any): Observable<any> {
     this.postMessage({ type, data });
     return this.message.pipe(
       filter(({ data }) => data.subType === type),

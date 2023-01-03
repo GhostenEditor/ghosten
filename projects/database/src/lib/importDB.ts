@@ -1,8 +1,10 @@
 import pako from 'pako';
+
+import { MessageEvent } from './types';
 import { resolveTransaction } from './resolve';
 
-export function importDB(db: IDBDatabase, data: File) {
-  data.arrayBuffer().then(res => {
+export function importDB(db: IDBDatabase, data: File): Promise<MessageEvent> {
+  return data.arrayBuffer().then(res => {
     const transaction = db.transaction(
       ['CONFIG', 'CONFIG_HISTORY'],
       'readwrite',
@@ -30,13 +32,11 @@ export function importDB(db: IDBDatabase, data: File) {
           history.forEach((item: any) => configHistoryObjectStore.add(item));
         }
       });
-    resolveTransaction(transaction).then(() => {
-      postMessage({
-        type: 'log',
-        subType: 'importDB',
-        message: '导入成功',
-        data: null,
-      });
-    });
+    return resolveTransaction(transaction).then(() => ({
+      type: 'log',
+      subType: 'importDB',
+      message: '导入成功',
+      data: null,
+    }));
   });
 }

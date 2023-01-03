@@ -1,3 +1,7 @@
-import { init } from '@ghosten/database';
+import { GtDatabase } from '@ghosten/database';
 
-init();
+const gtDatabase = new GtDatabase();
+
+addEventListener('message', ({ data: { type, data } }) => {
+  gtDatabase.message(type, data).then(postMessage);
+});

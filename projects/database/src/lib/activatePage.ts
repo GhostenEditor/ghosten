@@ -1,6 +1,10 @@
+import { MessageEvent } from './types';
 import { resolveTransaction } from './resolve';
 
-export function activatePage(db: IDBDatabase, id: number) {
+export function activatePage(
+  db: IDBDatabase,
+  id: number,
+): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'EDIT_CONFIG'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   const editConfigObjectStore = transaction.objectStore('EDIT_CONFIG');
@@ -12,11 +16,9 @@ export function activatePage(db: IDBDatabase, id: number) {
       throw new Error('更新失败');
     }
   });
-  resolveTransaction(transaction).then(() => {
-    postMessage({
-      type: 'log',
-      subType: 'activatePage',
-      message: '更新成功',
-    });
-  });
+  return resolveTransaction(transaction).then(() => ({
+    type: 'log',
+    subType: 'activatePage',
+    message: '更新成功',
+  }));
 }
