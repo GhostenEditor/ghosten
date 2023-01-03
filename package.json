@@ -4,7 +4,6 @@
   "main": "dist",
   "scripts": {
     "build": "ng run demo:app-shell:production",
-    "build:all": "lerna run build",
     "build:ssr": "ng build && ng run demo:server",
     "dev:ssr": "ng run demo:serve-ssr",
     "extract-i18n": "ng extract-i18n",

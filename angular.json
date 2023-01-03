@@ -36,8 +36,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/common/**/*.ts",
-              "projects/common/**/*.html"
+              "projects/common/src/**/*.ts",
+              "projects/common/src/**/*.html"
             ]
           }
         }
@@ -77,8 +77,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/components/**/*.ts",
-              "projects/components/**/*.html"
+              "projects/components/src/**/*.ts",
+              "projects/components/src/**/*.html"
             ]
           }
         }
@@ -117,8 +117,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/database/**/*.ts",
-              "projects/database/**/*.html"
+              "projects/database/src/**/*.ts",
+              "projects/database/src/**/*.html"
             ]
           }
         }
@@ -373,8 +373,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/editor/**/*.ts",
-              "projects/editor/**/*.html"
+              "projects/editor/src/**/*.ts",
+              "projects/editor/src/**/*.html"
             ]
           }
         }
@@ -413,8 +413,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/plugins/**/*.ts",
-              "projects/plugins/**/*.html"
+              "projects/plugins/src/**/*.ts",
+              "projects/plugins/src/**/*.html"
             ]
           }
         }
@@ -453,8 +453,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/renderer/**/*.ts",
-              "projects/renderer/**/*.html"
+              "projects/renderer/src/**/*.ts",
+              "projects/renderer/src/**/*.html"
             ]
           }
         }

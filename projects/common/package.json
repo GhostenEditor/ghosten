@@ -7,9 +7,12 @@
     "url": "https://github.com/GhostenEditor/ghosten.git",
     "directory": "projects/common"
   },
+  "homepage": "https://github.com/GhostenEditor/ghosten#readme",
+  "bugs": "https://github.com/GhostenEditor/ghosten/issues",
   "scripts": {
     "build": "ng build common",
-    "lint": "ng lint common --fix"
+    "lint": "ng lint common --fix",
+    "postpublish": "rm -rf dist"
   },
   "peerDependencies": {
     "@angular/common": "^14.2.0",
@@ -21,5 +24,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "8808ad5438edf4d7bb83e759d89d5ac7e6dd2b83"
+  "gitHead": "9fa0cc0cc230186d60e0835035d79164c909e567"
 }
