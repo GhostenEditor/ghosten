@@ -1,3 +1,5 @@
+<div align="center">
+
 # @ghosten/database
 
 ![npm](https://img.shields.io/npm/dm/@ghosten/database?logo=npm)
@@ -5,3 +7,19 @@
 ![NPM](https://img.shields.io/npm/l/@ghosten/database)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@ghosten/database?logo=npm)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@ghosten/database)
+
+</div>
+
+## Installation
+
+### NPM
+
+```shell
+npm install --save @ghosten/database
+```
+
+### YARN
+
+```shell
+npm add @ghosten/database
+```

@@ -3,6 +3,15 @@
   "version": "0.1.0-alpha.8",
   "author": "GhostenEditor",
   "license": "MIT",
+  "description": "A Low-Code Web Editor",
+  "keywords": [
+    "low-code",
+    "lowcode",
+    "angular",
+    "web",
+    "framework",
+    "mobile"
+  ],
   "repository": {
     "url": "https://github.com/GhostenEditor/ghosten.git",
     "directory": "projects/common"
@@ -24,5 +33,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9fa0cc0cc230186d60e0835035d79164c909e567"
+  "gitHead": "bd6bf4145850bcab533f28eca166331db48d22e2"
 }
