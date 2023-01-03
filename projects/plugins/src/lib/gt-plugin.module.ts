@@ -10,7 +10,6 @@ import { CreateTableComponent } from './create-table.component';
 import { ModalActionComponent } from './modal-action/action-edit.component';
 import { ModalModule } from './modules/modal/modal.module';
 import { NodeEditorModule } from './modals/node-editor/node-editor.module';
-import { SelectModule } from './select/select.module';
 import { modals } from './modals';
 import { providers } from './providers';
 
@@ -22,7 +21,6 @@ import { providers } from './providers';
     DragDropModule,
     A11yModule,
     CdkListboxModule,
-    SelectModule,
     ReactiveFormsModule,
     ModalModule,
     NodeEditorModule,

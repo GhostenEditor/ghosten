@@ -7,6 +7,8 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { GtDatabase } from '@ghosten/database';
+
 import { EMPTY, Observable, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,29 +18,15 @@ import { WorkerConnector } from '../worker';
 @Injectable()
 export class HttpInterceptorAdapter implements HttpInterceptor {
   private worker = new WorkerConnector();
+  private gtDatabase = new GtDatabase();
 
-  constructor(private toast: ToastService) {
-    this.worker.message.subscribe(
-      ({ data: { type, subType, message, data } }) => {
-        switch (type) {
-          case 'log':
-            // this.toast.show({ type: '信息', message, detail: subType });
-            break;
-          case 'error':
-            console.error(data);
-        }
-      },
-    );
-    this.worker.error.subscribe(err => {
-      console.error(err);
-    });
-  }
+  constructor(private toast: ToastService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    // console.info("[HTTP REQUEST]:%O", req);
+    // console.info('[HTTP REQUEST]:%O', req);
     return this.resolveWorkerRequest(req).pipe(
       // tap(data => console.info('[HTTP RESPONSE]:%O', data)),
       map(body => new HttpResponse({ body })),
@@ -61,17 +49,20 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
       case 'deleteDB':
       case 'importDB':
       case 'exportDB':
-        if (req.method.toLocaleLowerCase() === 'post') {
-          return this.worker.request(req.url, req.body);
-        } else {
-          return this.worker.request(
-            req.url,
-            req.params.keys().reduce<Record<string, any>>((acc, cur) => {
-              acc[cur] = req.params.get(cur);
-              return acc;
-            }, {}),
-          );
-        }
+        return this.worker.request(
+          req.url,
+          req.method.toLocaleLowerCase() === 'get'
+            ? Object.fromEntries(new URLSearchParams(req.params.toString()))
+            : req.body,
+        );
+      // return from(
+      //   this.gtDatabase.message(
+      //     req.url,
+      //     req.method.toLocaleLowerCase() === 'get'
+      //       ? Object.fromEntries(new URLSearchParams(req.params.toString()))
+      //       : req.body,
+      //   ),
+      // ).pipe(map(({ data }) => data));
       default:
         return EMPTY;
     }

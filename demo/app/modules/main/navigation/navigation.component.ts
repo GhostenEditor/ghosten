@@ -155,7 +155,7 @@ export class NavigationComponent {
   async import(target: HTMLInputElement) {
     if (target.files && target.files[0]) {
       this.http
-        .post('importDB', target.files[0], { reportProgress: true })
+        .post('importDB', target.files[0])
         .subscribe(() => {
           this.toast.show({
             type: '信息',

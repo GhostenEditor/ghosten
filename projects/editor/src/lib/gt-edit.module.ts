@@ -21,8 +21,8 @@ import { DragDirective, TemplateDirective, TooltipModule } from './directives';
 import {
   GT_AUTH_CONFIG,
   GT_DEFAULT_CONFIG,
-  GT_EDIT_COMPONENT_MAP,
   GT_EDITOR_BRAND,
+  GT_EDIT_COMPONENT_MAP,
   GT_ELEMENT_LISTS,
   GT_INTERNAL_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
