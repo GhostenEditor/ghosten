@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
         <a href="/" class="navbar-brand me-0 d-flex">
           <img
             src="assets/icons/128.png"
-            alt="Ghost Logo"
+            alt="Ghosten Logo"
             class="rounded"
             style="width: 2rem;"
           />

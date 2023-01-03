@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
-  selector: 'img[ghost-image]',
+  selector: 'img[gt-image]',
   host: {
     '[src]': 'gtNode.property.src',
     '[alt]': 'gtNode.property.alt',

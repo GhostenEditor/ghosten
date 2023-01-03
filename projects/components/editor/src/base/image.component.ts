@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { EditAbstractComponent } from '@ghosten/editor';
 
 @Component({
-  selector: 'img[ghost-image]',
+  selector: 'img[gt-image]',
   host: {
     '[src]': 'gtNode.property.src',
     '[alt]': 'gtNode.property.alt',

@@ -21,7 +21,7 @@ export function exportDB(db: IDBDatabase): Promise<MessageEvent> {
           { level: 9 },
         ),
       ],
-      'export.ghost',
+      'export.gt',
       {
         type: 'application/txt',
       },

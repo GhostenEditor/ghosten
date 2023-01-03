@@ -29,7 +29,7 @@ import { ToastService } from '../../toast/toast.service';
         <a href="/" class="navbar-brand me-0 d-flex">
           <img
             src="assets/icons/128.png"
-            alt="Ghost Logo"
+            alt="Ghosten Logo"
             class="rounded"
             style="width: 2rem;"
           />
@@ -72,7 +72,7 @@ import { ToastService } from '../../toast/toast.service';
               type="file"
               class="position-absolute w-100 h-100 opacity-0"
               style="left: 0"
-              accept=".ghost"
+              accept=".gt"
               (change)="import(file)"
             />
             <ng-container i18n="Button: Import">导入</ng-container>
