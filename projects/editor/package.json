@@ -21,6 +21,7 @@
   "scripts": {
     "build": "ng build editor",
     "lint": "ng lint editor --fix",
+    "prepublishOnly": "cp -rf ../../dist/editor dist",
     "postpublish": "rm -rf dist"
   },
   "peerDependencies": {

@@ -1,7 +1,23 @@
 {
   "name": "ghosten",
-  "version": "0.1.0-alpha.1",
-  "main": "dist",
+  "version": "0.1.0",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "description": "A Low-Code Web Editor",
+  "keywords": [
+    "low-code",
+    "lowcode",
+    "angular",
+    "web",
+    "framework",
+    "mobile"
+  ],
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/common"
+  },
+  "homepage": "https://github.com/GhostenEditor/ghosten#readme",
+  "bugs": "https://github.com/GhostenEditor/ghosten/issues",
   "scripts": {
     "build": "ng run demo:app-shell:production",
     "build:ssr": "ng build && ng run demo:server",
