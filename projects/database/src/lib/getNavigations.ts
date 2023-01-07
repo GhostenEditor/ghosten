@@ -1,21 +1,21 @@
 import { MenuItem, MessageEvent } from './types';
-import { resolveRequest } from './resolve';
+import { resolveTransaction } from './resolve';
 
 export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
   const transaction = db.transaction('CONFIG', 'readonly');
   const objectStore = transaction.objectStore('CONFIG');
-  return resolveRequest<any[]>(objectStore.getAll()).then(request => {
+  const request = objectStore.getAll();
+  return resolveTransaction(transaction).then(() => {
     const data = request.result;
     const menuMap = new Map();
     const items: MenuItem[] = data.map(menu => {
       const item: MenuItem = {
         id: menu.id,
-        label: menu.pageTitle,
-        path: menu.pageUrl,
-        parentId:
-          typeof menu.pageParentID === 'undefined'
-            ? undefined
-            : +menu.pageParentID,
+        label: menu.title,
+        path: menu.url,
+        icon: menu.icon,
+        directory: menu.type === 'Directory',
+        parentId: menu.parentId === 'null' ? null : +menu.parentId,
         children: [],
       };
       menuMap.set(item.id, item);

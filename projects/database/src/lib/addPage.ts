@@ -1,5 +1,5 @@
+import { resolveRequest, resolveTransaction } from './resolve';
 import { MessageEvent } from './types';
-import { resolveTransaction } from './resolve';
 
 export function addPage(
   db: IDBDatabase,
@@ -7,49 +7,30 @@ export function addPage(
 ): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
-  const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');
+  if (pageConfig.parentId === null) pageConfig.parentId = 'null';
 
-  const request = configObjectStore.add(pageConfig);
-  request.addEventListener('success', function (event) {
-    const id = request.result;
-    configHistoryObjectStore.add({
-      id,
-      timestamp: Date.now(),
-      config: {
-        metadata: {
-          id: null,
-          name: 'Untitled',
-          description: null,
-          status: null,
+  return resolveRequest(
+    configObjectStore
+      .index('url_parentId')
+      .get(IDBKeyRange.only([pageConfig.url, pageConfig.parentId])),
+  ).then(request => {
+    if (request.result) {
+      throw {
+        type: 'error',
+        name: 'url',
+        message: '该条数据路径重复',
+      };
+    } else {
+      const request = configObjectStore.add(pageConfig);
+      return resolveTransaction(transaction).then(() => ({
+        type: 'log',
+        subType: 'addPage',
+        message: '创建成功',
+        data: {
+          ...pageConfig,
+          id: request.result,
         },
-        global: {},
-        boards: [
-          {
-            id: 'main',
-            type: 'main',
-            gt: 'root',
-            url: '',
-            size: '',
-            description: '',
-            name: 'Main',
-            noFooter: false,
-            events: null,
-            nodeList: [
-              {
-                type: 'root',
-                id: 'root',
-              },
-            ],
-          },
-        ],
-        template: [],
-      },
-    });
+      }));
+    }
   });
-  return resolveTransaction(transaction).then(() => ({
-    type: 'log',
-    subType: 'addPage',
-    message: '创建成功',
-    data: request.result,
-  }));
 }

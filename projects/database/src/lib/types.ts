@@ -1,7 +1,9 @@
 export interface MenuItem {
   id: number;
   label: string;
-  parentId?: number;
+  icon: string | null;
+  directory: boolean;
+  parentId: number | null;
   parent?: MenuItem;
   path?: string;
   url?: string;

@@ -1,19 +1,21 @@
 import { MessageEvent } from './types';
 import { resolveRequest } from './resolve';
 
-export function deleteDB(DBName: string): Promise<MessageEvent> {
+export function deleteDB(
+  db: IDBDatabase,
+  DBName: string,
+): Promise<MessageEvent> {
+  db.close();
   const request = indexedDB.deleteDatabase(DBName);
 
   return resolveRequest(request).then(
     () => ({
-      type: 'error',
+      type: 'log',
       subType: 'deleteDB',
-      message: '数据库删除失败',
+      message: '数据库删除成功',
     }),
-    () => ({
-      type: 'error',
-      subType: 'deleteDB',
-      message: '数据库删除失败',
-    }),
+    reason => {
+      throw new Error(reason);
+    },
   );
 }

@@ -96,7 +96,12 @@ export abstract class Gt {
   removeNode?(gtNode: GtNode): void;
 
   public init(data?: string | null | GtData) {
-    const { global, metadata, boards, template } = this._parseGtData(data);
+    const {
+      global,
+      metadata = {},
+      boards = [],
+      template = [],
+    } = this._parseGtData(data);
     this.global = Object.assign(this.global, global);
     this.metadata.setProperties(metadata);
     this.customComponent = template.map(data =>
@@ -276,15 +281,26 @@ export abstract class Gt {
    * @Return: string
    */
   public exportString(): string {
-    return JSON.stringify(this.export(), (key, value) => {
+    const replacer = (key: string, value: any) => {
       if (value instanceof RegExp) {
         return value.toString();
       } else if (value instanceof DataBinding) {
         return `[DataBinding]${value.data}`;
+      } else if (Array.isArray(value) && value.length === 0) {
+        return undefined;
+      } else if (
+        Object.prototype.toString.call(value) === '[object Object]' &&
+        Object.keys(value).length === 0
+      ) {
+        return undefined;
       } else {
         return value;
       }
-    });
+    };
+    return JSON.stringify(
+      JSON.parse(JSON.stringify(this.export(), replacer)),
+      replacer,
+    );
   }
 
   public destroy() {

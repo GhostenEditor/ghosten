@@ -1,24 +1,25 @@
 export function resolveTransaction(
   transaction: IDBTransaction,
 ): Promise<Event> {
-  // transaction.addEventListener(
-  //   'error',
-  //   error => postMessage({ type: 'error', data: error }),
-  //   { once: true },
-  // );
-  return new Promise(resolve =>
-    transaction.addEventListener('complete', event => resolve(event)),
-  );
+  return new Promise((resolve, reject) => {
+    transaction.addEventListener('complete', event => resolve(event), {
+      once: true,
+    });
+    transaction.addEventListener(
+      'error',
+      event => {
+        reject(event);
+      },
+      {
+        once: true,
+      },
+    );
+  });
 }
 
 export function resolveRequest<T>(request: IDBRequest): Promise<IDBRequest<T>> {
-  // request.addEventListener('error', () => {
-  //   postMessage({
-  //     type: 'error',
-  //     data: request.error!.message,
-  //   });
-  // });
-  return new Promise(resolve =>
-    request.addEventListener('success', () => resolve(request)),
-  );
+  return new Promise((resolve, reject) => {
+    request.addEventListener('success', () => resolve(request), { once: true });
+    request.addEventListener('error', event => reject(event), { once: true });
+  });
 }
