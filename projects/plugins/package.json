@@ -21,7 +21,7 @@
   "scripts": {
     "build": "ng build plugins",
     "lint": "ng lint plugins --fix",
-    "prepublishOnly": "cp -rf ../../dist/plugins dist",
+    "prepublishOnly": "rm -rf dist && cp -rf ../../dist/plugins/ dist",
     "postpublish": "rm -rf dist"
   },
   "peerDependencies": {
