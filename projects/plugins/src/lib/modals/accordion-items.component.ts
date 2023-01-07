@@ -5,7 +5,8 @@ import { GtNode } from '@ghosten/common';
   selector: 'gt-accordion-items',
   template: ` <gt-modal
     modalTitle="Accordion Item 编辑"
-    size="lg"
+    modalSize="lg"
+    [modalFooter]="true"
     (confirm)="_confirm()"
     (cancel)="cancel.emit()"
   >

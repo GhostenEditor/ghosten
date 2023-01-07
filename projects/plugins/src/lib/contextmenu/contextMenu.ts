@@ -190,6 +190,7 @@ export class ContextMenu {
         injector,
       );
       const overlayRef = this.overlay.create({
+        disposeOnNavigation: true,
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo(level === 0 ? event : (event.target as any))

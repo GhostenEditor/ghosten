@@ -20,7 +20,8 @@ declare const monaco: typeof Monaco;
     <gt-modal
       i18n-modalTitle="Modal Title: Action Editor"
       modalTitle="事件编辑器"
-      size="xl"
+      modalSize="xl"
+      [modalFooter]="true"
       (confirm)="confirm.emit(script)"
       (cancel)="cancel.emit()"
     >

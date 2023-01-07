@@ -19,7 +19,8 @@ interface NodeGroup {
   selector: 'node-editor-component-implements',
   template: ` <gt-modal
     modalTitle="数据绑定"
-    size="xl"
+    modalSize="xl"
+    [modalFooter]="true"
     [fullscreen]="true"
     (confirm)="save()"
     (cancel)="cancel.emit()"

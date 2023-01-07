@@ -101,6 +101,7 @@ export class SelectComponent implements OnInit {
       hasBackdrop: true,
       backdropClass: '',
       maxHeight: '90%',
+      disposeOnNavigation: true,
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(el)

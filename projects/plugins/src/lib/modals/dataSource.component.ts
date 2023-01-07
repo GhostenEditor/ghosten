@@ -5,7 +5,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
   template: ` <gt-modal
     i18n-modalTitle="Modal Title: Data Source Binding"
     modalTitle="数据绑定"
-    size="lg"
+    modalSize="lg"
+    [modalFooter]="true"
     (confirm)="_confirm()"
     (cancel)="cancel.emit()"
   >

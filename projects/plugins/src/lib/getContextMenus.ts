@@ -12,7 +12,7 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
   return [
     {
       label: $localize`:Context Menu\: Move Left:向前移动`,
-      desc: '⌘⇦',
+      desc: '⌘←',
       disabled: !(gtNode.parent && gtNode.parent.children.indexOf(gtNode) > 0),
       onclick: () =>
         gt.dropNode(
@@ -23,7 +23,7 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
     },
     {
       label: $localize`:Context Menu\: Move Right:向后移动`,
-      desc: '⌘⇨',
+      desc: '⌘→',
       disabled: !(
         gtNode.parent &&
         gtNode.parent.children.indexOf(gtNode) <
@@ -38,7 +38,7 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
     },
     {
       label: $localize`:Context Menu\: Move Up:向上移动`,
-      desc: '⌘⇧️',
+      desc: '⌘↑️',
       disabled: !(gtNode.parent && gtNode.parent.parent),
       onclick: () =>
         gt.dropNode(
@@ -52,23 +52,23 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
     },
     {
       label: $localize`:Context Menu\: Copy:复制`,
+      desc: '⌘C',
       disabled: !gt.selected.length || !gt.selected[0].core.canCopy,
       onclick: () => gt.copyNode(),
     },
     {
       label: $localize`:Context Menu\: Paste:粘贴`,
-      disabled:
-        gt.selected.length !== 1 ||
-        !gt.copiedNode.length ||
-        !gt.selected[0].core.canHasChild ||
-        !gt.selected[0].core.canPaste,
+      desc: '⌘V',
+      disabled: gt.selected.length !== 1 || !gt.copiedNode.length,
       onclick: () => {
-        gt.pasteNode(gtNode.core.canPaste ? gtNode : gtNode.parent!);
+        gt.pasteNode(gtNode);
       },
     },
     {
       label: $localize`:Context Menu\: Cut:剪切`,
-      disabled: !gt.selected.length || !gt.selected[0].core.canCut,
+      desc: 'Todo',
+      disabled: true,
+      // disabled: !gt.selected.length || !gt.selected[0].core.canCut,
     },
     {
       label: $localize`:Context Menu\: Remove:删除`,
@@ -79,15 +79,14 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
     { divider: true },
     {
       label: $localize`:Context Menu\: Copy Style:复制样式`,
+      desc: '⌘⇧C',
       disabled: gt.selected.length !== 1 || !gt.selected[0].core.canCopyStyle,
       onclick: () => gt.copyStyle(),
     },
     {
       label: $localize`:Context Menu\: Paste Style:粘贴样式`,
-      disabled:
-        !gt.copiedStyle ||
-        !gt.selected.length ||
-        !gt.selected[0].core.canPasteStyle,
+      desc: '⌘⇧V',
+      disabled: !gt.copiedStyle || !gt.selected.length,
       onclick: () => gt.pasteStyle(),
     },
     { divider: true },
@@ -98,6 +97,7 @@ export function getContextMenus(gt: GtEdit, gtNode: GtNode, overlay: Overlay) {
         const overlayRef = overlay.create({
           hasBackdrop: true,
           backdropClass: '',
+          disposeOnNavigation: true,
           positionStrategy: overlay
             .position()
             .flexibleConnectedTo({

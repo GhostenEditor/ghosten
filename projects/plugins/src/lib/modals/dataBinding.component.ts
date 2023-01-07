@@ -6,7 +6,8 @@ import { GtNode } from '@ghosten/common';
   template: ` <gt-modal
     i18n-modalTitle="Modal Title: Data Source Binding"
     modalTitle="数据绑定"
-    size="sm"
+    modalSize="sm"
+    [modalFooter]="true"
     (confirm)="_confirm()"
     (cancel)="cancel.emit()"
   >
@@ -16,7 +17,7 @@ import { GtNode } from '@ghosten/common';
         <optgroup label="Local">
           <option
             *ngFor="let option of gtNode.dataSource.data"
-            [value]="option.id"
+            [ngValue]="option.id"
           >
             {{ option.id }}
           </option>

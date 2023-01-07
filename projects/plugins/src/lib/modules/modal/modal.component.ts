@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   animate,
   state,
@@ -32,7 +39,7 @@ const fadeAnimation = trigger('fade', [
     >
       <div
         class="modal-dialog modal-dialog-scrollable"
-        [ngClass]="'modal-' + size"
+        [ngClass]="'modal-' + modalSize"
         [class.modal-fullscreen]="fullscreen"
       >
         <div
@@ -47,7 +54,7 @@ const fadeAnimation = trigger('fade', [
             <h4 class="modal-title flex-grow-1">{{ modalTitle }}</h4>
             <button
               type="button"
-              class="btn btn-link"
+              class="btn btn-text"
               (mousedown)="$event.stopPropagation()"
               (click)="fullscreen = !fullscreen; cdkDrag.reset()"
             >
@@ -55,28 +62,38 @@ const fadeAnimation = trigger('fade', [
             </button>
             <button
               type="button"
-              class="btn btn-close"
+              class="btn btn-text"
               data-bs-dismiss="modal"
               aria-label="Close"
               (mousedown)="$event.stopPropagation()"
               (click)="cancel.emit()"
-            ></button>
+            >
+              <i class="gt-icon">close</i>
+            </button>
           </div>
           <div class="modal-body">
             <ng-content></ng-content>
           </div>
-          <div class="modal-footer" *ngIf="!noFooter">
+          <div class="modal-footer" *ngIf="modalFooter">
             <button
               type="button"
               class="btn btn-light"
+              [disabled]="modalPending"
               (click)="confirm.emit()"
               i18n="Button: Confirm"
             >
+              <div
+                class="spinner-border spinner-border-sm"
+                role="status"
+                *ngIf="modalPending"
+              >
+                <span class="visually-hidden">Loading...</span>
+              </div>
               确定
             </button>
             <button
               type="button"
-              class="btn btn-link"
+              class="btn btn-text"
               (click)="cancel.emit()"
               i18n="Button: Cancel"
             >
@@ -88,11 +105,24 @@ const fadeAnimation = trigger('fade', [
     </div>
   `,
 })
-export class ModalComponent {
+export class ModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
-  @Input() size: 'xl' | 'lg' | 'md' | 'sm' = 'md';
-  @Input() noFooter: boolean;
+  @Input() modalSize: 'xl' | 'lg' | 'md' | 'sm' = 'md';
+  @Input() modalFooter: boolean;
+  @Input() modalPending: boolean;
   @Input() fullscreen: boolean;
   @Output() confirm: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
+
+  ngOnInit() {
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.scrollWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollbarWidth + 'px';
+  }
+
+  ngOnDestroy() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
 }

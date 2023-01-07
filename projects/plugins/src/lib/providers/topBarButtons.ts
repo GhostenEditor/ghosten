@@ -1,10 +1,12 @@
-import { ComponentPortal } from '@angular/cdk/portal';
 import { Overlay } from '@angular/cdk/overlay';
 import { Provider } from '@angular/core';
 
 import { GtEdit, TOP_BAR_BUTTONS } from '@ghosten/editor';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { merge } from 'rxjs';
 
-import { PagesComponent } from '../modals';
+import { SettingsComponent } from '../modals';
+import { take } from 'rxjs/operators';
 
 export const topBarButtons: Provider = {
   provide: TOP_BAR_BUTTONS,
@@ -42,8 +44,7 @@ export const topBarButtons: Provider = {
     {
       title: $localize`:Top Bar Button\: Add Data Source:添加数据源`,
       icon: 'bind',
-      onclick: () => {
-      },
+      onclick: () => {},
     },
     {
       title: $localize`:Top Bar Button\: Preview:预览`,
@@ -63,21 +64,29 @@ export const topBarButtons: Provider = {
         gt.log.next({
           type: 'save',
           message: '保存',
-          data: gt.exportString(),
+          data: { config: gt.exportString(), settings: gt.exportSettings() },
         });
       },
     },
     {
-      title: $localize`:Top Bar Button\: List:页面列表`,
-      icon: 'list',
+      title: $localize`:Top Bar Button\: History:历史`,
+      icon: 'history',
+      onclick: () => {},
+    },
+    {
+      title: $localize`:Top Bar Button\: Setting:设置`,
+      icon: 'tools',
       onclick: () => {
         const overlayRef = overlay.create({
           hasBackdrop: true,
+          disposeOnNavigation: true,
         });
-        const componentRef = overlayRef.attach(
-          new ComponentPortal(PagesComponent),
-        );
-        componentRef.instance.modalClose.subscribe(() => overlayRef.dispose());
+        const component = overlayRef.attach(
+          new ComponentPortal(SettingsComponent),
+        ).instance;
+        merge(component.confirm, component.cancel)
+          .pipe(take(1))
+          .subscribe(() => overlayRef.dispose());
       },
     },
   ],

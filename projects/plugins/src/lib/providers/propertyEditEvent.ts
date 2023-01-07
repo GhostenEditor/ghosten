@@ -28,7 +28,10 @@ export const propertyEditEvent: Provider = {
       switch (event.type) {
         case 'expression':
         case 'action': {
-          const overlayRef = overlay.create({ hasBackdrop: true });
+          const overlayRef = overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+          });
           const componentRef = overlayRef.attach(
             new ComponentPortal(ModalActionComponent),
           );
@@ -42,7 +45,10 @@ export const propertyEditEvent: Provider = {
           break;
         }
         case 'dataSource': {
-          const overlayRef = overlay.create({ hasBackdrop: true });
+          const overlayRef = overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+          });
           const componentRef = overlayRef.attach(
             new ComponentPortal(DataSourceComponent),
           );
@@ -63,7 +69,10 @@ export const propertyEditEvent: Provider = {
           switch (event.args[0]) {
             case 'bindData':
               {
-                const overlayRef = overlay.create({ hasBackdrop: true });
+                const overlayRef = overlay.create({
+                  hasBackdrop: true,
+                  disposeOnNavigation: true,
+                });
                 const componentRef = overlayRef.attach(
                   new ComponentPortal(DataBindingTemporaryComponent),
                 );
