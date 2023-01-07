@@ -1,6 +1,6 @@
 {
   "name": "@ghosten/common",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0-alpha.10",
   "author": "GhostenEditor",
   "license": "MIT",
   "description": "A Low-Code Web Editor",
@@ -22,7 +22,6 @@
     "build": "ng build common",
     "lint": "ng lint common --fix",
     "prepublishOnly": "rm -rf dist && cp -rf ../../dist/common/ dist",
-
     "postpublish": "rm -rf dist"
   },
   "peerDependencies": {

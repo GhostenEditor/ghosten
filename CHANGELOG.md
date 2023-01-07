@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.10](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-01-07)
+
+### Bug Fixes
+
+- **components:** 修复组件已知 bug ([28acca1](https://github.com/GhostenEditor/ghosten/commit/28acca1403d5a9da47be37b758ed843933af1aac))
+- **renderer:** 修复 font size 不生效的 bug ([cebb2bb](https://github.com/GhostenEditor/ghosten/commit/cebb2bb43f8210c719557c16a026a45ec1930026))
+
+### Features
+
+- **database:** 页面配置进行压缩储存 ([979df3e](https://github.com/GhostenEditor/ghosten/commit/979df3ed290336c10362dd47036917b8a394493b))
+- **editor:** 适配手机分辨率 ([f6c4e20](https://github.com/GhostenEditor/ghosten/commit/f6c4e20df4830714686deb9c2f2f7f67e658b630))
+- **plugins:** modal 接口调整 ([9b8cbe8](https://github.com/GhostenEditor/ghosten/commit/9b8cbe809bd23b0042f9a876acdb9ec4463b6211))
+
 # [0.1.0-alpha.9](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.8...v0.1.0-alpha.9) (2023-01-03)
 
 **Note:** Version bump only for package ghosten

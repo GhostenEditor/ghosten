@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.10](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-01-07)
+
+### Features
+
+- **editor:** 适配手机分辨率 ([f6c4e20](https://github.com/GhostenEditor/ghosten/commit/f6c4e20df4830714686deb9c2f2f7f67e658b630))
+
 # [0.1.0-alpha.9](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.8...v0.1.0-alpha.9) (2023-01-03)
 
 **Note:** Version bump only for package @ghosten/editor

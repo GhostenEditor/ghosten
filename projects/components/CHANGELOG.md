@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.10](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-01-07)
+
+### Bug Fixes
+
+- **components:** 修复组件已知 bug ([28acca1](https://github.com/GhostenEditor/ghosten/commit/28acca1403d5a9da47be37b758ed843933af1aac))
+
 # [0.1.0-alpha.9](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.8...v0.1.0-alpha.9) (2023-01-03)
 
 **Note:** Version bump only for package @ghosten/components
