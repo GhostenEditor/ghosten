@@ -23,6 +23,7 @@ export class GtRenderComponent implements OnInit, OnDestroy {
   constructor(private gt: GtRender) {}
 
   ngOnInit() {
+    // (this.data as Blob).arrayBuffer().then(console.log);
     this.gt.init(this.data);
     this.gt.log.next({
       type: 'init',

@@ -72,7 +72,7 @@ export function getUsedStyle({
     styles.push(['bottom', bottom]);
   }
   if (fontSize) {
-    styles.push(['fontSize', fontSize + 'px']);
+    styles.push(['fontSize', fontSize]);
   }
   if (float) {
     styles.push(['float', float]);
