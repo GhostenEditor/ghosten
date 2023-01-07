@@ -17,7 +17,8 @@ import { TemplateDirective } from '../../directives';
 
 @Component({ template: '' })
 export class EditAbstractComponent<T = any>
-implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
 
@@ -28,7 +29,7 @@ implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostBinding('class.opacity-25') get isHidden() {
-    return !this.gtNode.property.show;
+    return !this.gtNode.property.show || (this.property as any).disabled;
   }
 
   @HostBinding('class.clearfix') get clearfix() {
@@ -65,10 +66,6 @@ implements OnInit, AfterViewInit, OnDestroy {
     return res ? '' : null;
   }
 
-  @HostBinding('style.fontSize') get fontSize() {
-    return this.gtNode.style.fontSize + 'px';
-  }
-
   @HostBinding('style.width') get width() {
     return this.gtNode.style.width;
   }
@@ -101,31 +98,31 @@ implements OnInit, AfterViewInit, OnDestroy {
     return this.gtNode.style.overflow;
   }
 
-  @HostBinding('style.flexDirection') get flexDirection() {
+  @HostBinding('style.flex-direction') get flexDirection() {
     return this.gtNode.style.flexDirection;
   }
 
-  @HostBinding('style.flexGrow') get flexGrow() {
+  @HostBinding('style.flex-grow') get flexGrow() {
     return this.gtNode.style.flexGrow;
   }
 
-  @HostBinding('style.flexShrink') get flexShrink() {
+  @HostBinding('style.flex-shrink') get flexShrink() {
     return this.gtNode.style.flexShrink;
   }
 
-  @HostBinding('style.flexWrap') get flexWrap() {
+  @HostBinding('style.flex-wrap') get flexWrap() {
     return this.gtNode.style.flexWrap;
   }
 
-  @HostBinding('style.justifyContent') get justifyContent() {
+  @HostBinding('style.justify-content') get justifyContent() {
     return this.gtNode.style.justifyContent;
   }
 
-  @HostBinding('style.alignItems') get alignItems() {
+  @HostBinding('style.align-items') get alignItems() {
     return this.gtNode.style.alignItems;
   }
 
-  @HostBinding('style.alignContent') get alignContent() {
+  @HostBinding('style.align-content') get alignContent() {
     return this.gtNode.style.alignContent;
   }
 
@@ -137,7 +134,7 @@ implements OnInit, AfterViewInit, OnDestroy {
     return this.gtNode.style.color;
   }
 
-  @HostBinding('style.textAlign') get textAlign() {
+  @HostBinding('style.text-align') get textAlign() {
     return this.gtNode.style.textAlign;
   }
 
@@ -157,7 +154,7 @@ implements OnInit, AfterViewInit, OnDestroy {
     return this.gtNode.style.bottom;
   }
 
-  @HostBinding('style.zIndex') get zIndex() {
+  @HostBinding('style.z-index') get zIndex() {
     return this.gtNode.style.zIndex;
   }
 
@@ -193,6 +190,10 @@ implements OnInit, AfterViewInit, OnDestroy {
 
   @HostBinding('style.font-weight') get fontWeight() {
     return this.gtNode.style.fontWeight;
+  }
+
+  @HostBinding('style.font-size') get fontSize() {
+    return this.gtNode.style.fontSize;
   }
 
   subscriptions: Subscription[] = [];

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormItem } from '../types';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormItem } from '../types';
       <ng-container [ngSwitch]="formItem.type">
         <input
           *ngSwitchCase="'number'"
-          [type]="formItem.type"
+          type="number"
           class="form-control"
           title=""
           autocomplete="off"
@@ -35,8 +35,8 @@ import { FormItem } from '../types';
 export class InputComponent {
   constructor(
     @Inject('FormItem') public formItem: FormItem,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 
   onwheel(event: WheelEvent) {
@@ -51,7 +51,5 @@ export class InputComponent {
     }
   }
 
-  setValue(value: any) {
-    // console.log(value);
-  }
+  setValue(value: any) {}
 }

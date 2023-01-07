@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'properties-four-numbers',
@@ -19,24 +19,22 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
     />
   `,
 })
-export class FourNumbersComponent implements OnInit {
-  values: any[];
-
-  constructor(
-    @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
-  ) {}
-
-  ngOnInit() {
+export class FourNumbersComponent {
+  get values(): any[] {
     const values = ('' + (this.formControl.value || '')).split(' ');
-    this.values = [
+    return [
       { value: values[0] ? values[0].match(/(-|\d)+/)![0] : '' },
       { value: values[1] ? values[1].match(/(-|\d)+/)![0] : '' },
       { value: values[2] ? values[2].match(/(-|\d)+/)![0] : '' },
       { value: values[3] ? values[3].match(/(-|\d)+/)![0] : '' },
     ];
   }
+
+  constructor(
+    @Inject('FormItem') public formItem: any,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
+  ) {}
 
   _onchange(v: any, index: number) {
     this.values[index].value = v;

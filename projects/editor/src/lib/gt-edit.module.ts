@@ -7,16 +7,13 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 
 import { Core, IGtNode, Property, Style } from '@ghosten/common';
+
 import { BlackboardComponent } from './components/frames/blackboard.component';
 import { EditAbstractComponent } from './components/items/abstract.component';
 import { NavbarComponent } from './components/frames/navbar.component';
 import { SidebarModule } from './components/sidebar/sidebar.module';
 
-import {
-  CommonSourceService,
-  EditorSettingService,
-  EventsService,
-} from './services';
+import { CommonSourceService, EventsService } from './services';
 import { DragDirective, TemplateDirective, TooltipModule } from './directives';
 import {
   GT_AUTH_CONFIG,
@@ -34,6 +31,7 @@ import {
   GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP,
 } from './injectors-internal';
 import { DataBindingPipe } from './components/items/data-binding.pipe';
+import { DropdownModule } from './directives/dropdown/dropdown.module';
 import { ElementList } from './types';
 import { GtEdit } from './classes';
 import { GtEditComponent } from './gt-edit.component';
@@ -57,6 +55,7 @@ import { authConfig } from './configs';
     PageStructureModule,
     ZoomModule,
     PanModule,
+    DropdownModule,
   ],
   declarations: [
     GtEditComponent,
@@ -72,14 +71,13 @@ import { authConfig } from './configs';
     GtEdit,
     CommonSourceService,
     EventsService,
-    EditorSettingService,
     {
       provide: GT_EDITOR_BRAND,
       useValue: {
         title: 'GHOSTEN',
-        href: '/',
-        src: 'assets/icons/icon.svg',
+        src: 'assets/icons/128.png',
         alt: 'Ghosten Logo',
+        click() {},
       },
     },
     {

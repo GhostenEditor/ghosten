@@ -2,6 +2,10 @@ import { EventEmitter, Inject, Injectable } from '@angular/core';
 
 import { Board, Gt, GtNode, IGtNode, randomizer } from '@ghosten/common';
 
+import { debounceTime } from 'rxjs/operators';
+import { merge } from 'rxjs';
+
+import { GtSettings, IGtSettings } from './gt-settings';
 import { EventsService } from '../services';
 import { GT_EDIT_COMPONENT_MAP } from '../injectors';
 import { GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP } from '../injectors-internal';
@@ -41,6 +45,7 @@ export class GtEdit extends Gt {
   onEvents: EventEmitter<any> = new EventEmitter<any>();
   history: GtHistory = new GtHistory();
   undoHistory: GtHistory = new GtHistory();
+  settings = new GtSettings();
 
   constructor(
     private events: EventsService,
@@ -49,7 +54,6 @@ export class GtEdit extends Gt {
     public override defaultConfigMap: IGtNode.DefaultConfigMap,
   ) {
     super();
-    // this.defaultConfig = Object.assign({}, ...defaultConfig);
     this.componentMap = Object.assign({}, ...componentMap);
     this.events.onEvent.subscribe(data => {
       switch (data.type) {
@@ -61,10 +65,44 @@ export class GtEdit extends Gt {
           this.undoHistory.clear();
       }
     });
+    merge(
+      this.events.CHANGE_STYLE,
+      this.events.CHANGE_PROPERTY,
+      this.events.CHANGE_ACTION,
+      this.events.CHANGE_DATASOURCE,
+      this.events.CHANGE_VALIDATOR,
+      this.events.CHANGE_RIGHTS,
+      this.events.PASTE_STYLE,
+      this.events.MOVE_NODE,
+      this.events.REMOVE_NODE,
+      this.events.INSERT_NODE,
+      this.events.UNDO,
+      this.events.REDO,
+    )
+      .pipe(debounceTime(30000))
+      .subscribe(data =>
+        this.events.AUTO_SAVE.next({
+          config: this.exportString(),
+          setting: this.settings.export(),
+        }),
+      );
+    this.events.CHANGE_SELECT.subscribe(
+      selected => (this.settings.selected = selected.map(({ id }) => id)),
+    );
     this.events.UPDATE_TEMPLATE.subscribe(({ template, list }) => {
       // list.forEach((node: any) => {
       //   node.children = template.children.map((data: GtNode) => this._createCustomNode(data, node, node, node.overwrite));
       // });
+    });
+  }
+
+  initSettings(settings: IGtSettings) {
+    this.settings.init(settings);
+    this.settings.selected.forEach(id => {
+      const gtNode = this.getNodeById(id);
+      if (gtNode) {
+        this.changeSelect(gtNode, true);
+      }
     });
   }
 
@@ -205,7 +243,7 @@ export class GtEdit extends Gt {
         }
       } else {
         if (multi) {
-          this.selected.unshift(gtNode);
+          this.selected.push(gtNode);
         } else {
           this.selected = [gtNode];
         }
@@ -316,26 +354,18 @@ export class GtEdit extends Gt {
    * @Return: void
    */
   dropNode(drag: GtNode, drop: GtNode, index?: number, outletID?: string) {
-    // if (drag && drop) {
-    // const dragParent = drag.parent;
-    // let dragIndex = dragParent!.children.indexOf(drag);
-    // // dragParent!.children.splice(dragIndex, 1);
-    // // drop.children.splice(index || drop.children.length, 0, drag);
-    // if (dragParent === drop && dragIndex > index!) {
-    //   dragIndex++;
-    // }
-
-    // if (dragParent === drop) {
-    //   drop.componentRef!.instance.move(drag, index);
-    // } else {
+    if (
+      drag.parent === drop &&
+      (index === undefined
+        ? drag.parent!.children.indexOf(drag) ===
+          drag.parent!.children.length - 1
+        : drag.parent!.children.indexOf(drag) === index)
+    ) {
+      return;
+    }
     const previousParent = drag.parent!;
     const previousIndex = previousParent.children.indexOf(drag);
     drag.setParent(drop, index, outletID);
-    // drop.componentRef!.instance.insert(drag, index);
-    // dragParent!.componentRef!.instance.remove(dragIndex);
-    // }
-
-    // this._setValidator(drag, !!drop.findClosest('form'));
     this.events.MOVE_NODE.next({
       gtNode: drag,
       parent: drop,
@@ -454,9 +484,13 @@ export class GtEdit extends Gt {
    */
   copyStyle() {
     if (this.selected.length !== 1) {
-      // return this.notice.noticeWarning('无法复制', '当前选中了多个节点');
+      this.log.next({
+        type: 'error',
+        message: '无法复制样式，因为当前选中了多个节点',
+      });
+      return;
     }
-    this.copiedStyle = JSON.stringify(this.selected[0].style);
+    this.copiedStyle = this.selected[0].style.export();
     this.events.COPY_STYLE.next(this.copiedStyle);
   }
 
@@ -465,13 +499,9 @@ export class GtEdit extends Gt {
    * @Return: void
    */
   pasteStyle() {
-    const copiedStyle = JSON.parse(this.copiedStyle);
-    this.selected.forEach(({ style }) =>
-      Object.keys(style).forEach(key => {
-        if (copiedStyle[key] !== undefined) {
-          style[key] = copiedStyle[key];
-        }
-      }),
+    const copiedStyle = this.copiedStyle;
+    this.selected.forEach(
+      ({ core, style }) => core.canPasteStyle && style.setStyles(copiedStyle),
     );
     this.events.PASTE_STYLE.next({
       pastedNodes: this.selected,
@@ -491,7 +521,7 @@ export class GtEdit extends Gt {
    * @Description: 如果选中的GtNode都可以添加childNode，给选中的GtNode逐个插入复制的GtNode
    * @Return: void
    */
-  pasteNode(parentNode: GtNode, index?: number) {
+  pasteNode(targetNode: GtNode) {
     const getGtNodeConfig = (gtNode: GtNode): IGtNode.Config => {
       const config = gtNode.export();
       if (!gtNode.isTemplateRoot) {
@@ -508,13 +538,33 @@ export class GtEdit extends Gt {
       delete config.id;
       return config;
     };
+    let parentNode: GtNode | null = null;
+    let index: number;
+    if (targetNode.core.canHasChild) {
+      parentNode = targetNode;
+    } else {
+      while (targetNode.parent) {
+        if (targetNode.parent.core.canHasChild) {
+          parentNode = targetNode.parent;
+          index = targetNode.parent.children.indexOf(targetNode) + 1;
+          break;
+        } else {
+          targetNode = targetNode.parent!;
+        }
+      }
+    }
+    if (!parentNode) {
+      return;
+    }
     this.copiedNode.forEach(id => {
       const insertedNode = this.createGtNode(
         getGtNodeConfig(this.getNodeById(id)!),
         parentNode,
+        undefined,
+        typeof index === 'undefined' ? index : index++,
       );
       this.events.INSERT_NODE.next({
-        parent: parentNode,
+        parent: parentNode!,
         gtNode: insertedNode!,
         index,
       });
@@ -546,6 +596,10 @@ export class GtEdit extends Gt {
     this.currentBoard!.nodeList.delete(node.id);
     this.nodeList.delete(node.id);
     node.children.forEach(child => this._removeGtNode(child));
+  }
+
+  exportSettings(): any {
+    return this.settings.export();
   }
 }
 

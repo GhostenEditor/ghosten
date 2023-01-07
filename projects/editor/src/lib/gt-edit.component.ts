@@ -11,65 +11,68 @@ import { SPACE } from '@angular/cdk/keycodes';
 import { GtNode, LogEvent } from '@ghosten/common';
 
 import { Subject, Subscription, fromEvent } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import Mousetrap from 'mousetrap';
 
-import { EditorSettingService, EventsService } from './services';
 import { BlackboardComponent } from './components/frames/blackboard.component';
+import { EventsService } from './services';
 import { GtEdit } from './classes';
 
 @Component({
   preserveWhitespaces: false,
   selector: 'gt-edit',
   template: `
-    <div class="gt-wrapper d-flex h-100 flex-column" style="min-width: 50rem;">
+    <div
+      class="d-flex vh-100 flex-column"
+      style="padding: env(safe-area-inset-right) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"
+    >
       <gt-navbar></gt-navbar>
-      <div class="d-flex flex-grow-1 overflow-hidden">
-        <div class="h-100 border-end">
-          <div
-            class="toolbox btn-group-vertical"
-            (mousedown)="$event.stopPropagation()"
+      <div class="d-flex flex-grow-1 flex-md-row flex-column overflow-hidden">
+        <div
+          class="d-inline-flex flex-md-column flex-row p-1"
+          (mousedown)="$event.stopPropagation()"
+        >
+          <button
+            class="btn btn-text mb-md-1 me-1 me-md-0"
+            tooltip
+            tooltipTitle="光标"
+            i18n-tooltipTitle="Button: Cursor"
+            [class.active]="gt.mode === 'edit'"
+            (click)="gt.mode = 'edit'"
           >
-            <button
-              class="btn btn-text rounded-0 border-0"
-              style="border-top-left-radius: 0"
-              tooltip
-              tooltipTitle="光标"
-              i18n-tooltipTitle="Button: Cursor"
-              [class.active]="gt.mode === 'edit'"
-              (click)="gt.mode = 'edit'"
-            >
-              <i class="gt-icon">mouse_pointer</i>
-            </button>
-            <button
-              class="btn btn-text rounded-0 border-0"
-              tooltip
-              tooltipTitle="平移"
-              i18n-tooltipTitle="Button: Pan"
-              [class.active]="gt.mode === 'move'"
-              (click)="gt.mode = 'move'; gt.selected = []"
-            >
-              <i class="gt-icon">move</i>
-            </button>
-            <button
-              class="btn btn-text rounded-0 border-0"
-              tooltip
-              tooltipTitle="重置"
-              i18n-tooltipTitle="Button: Reset"
-              style="border-bottom-left-radius: 0"
-              (click)="resetPosition()"
-            >
-              <i class="gt-icon">refresh_ccw</i>
-            </button>
-          </div>
+            <i class="gt-icon">mouse_pointer</i>
+          </button>
+          <button
+            class="btn btn-text mb-md-1 me-1 me-md-0"
+            tooltip
+            tooltipTitle="平移"
+            i18n-tooltipTitle="Button: Pan"
+            [class.active]="gt.mode === 'move'"
+            (click)="gt.mode = 'move'; gt.selected = []"
+          >
+            <i class="gt-icon">move</i>
+          </button>
+          <button
+            class="btn btn-text"
+            tooltip
+            tooltipTitle="重置"
+            i18n-tooltipTitle="Button: Reset"
+            (click)="resetPosition()"
+          >
+            <i class="gt-icon">refresh_ccw</i>
+          </button>
         </div>
+        <div class="vr d-none d-md-flex h-100 text-body-secondary"></div>
+        <hr class="d-lg-none text-body-secondary m-0" />
         <div class="d-flex flex-column flex-grow-1 overflow-hidden">
           <gt-blackboard
             #blackboard
             class="flex-grow-1"
             (gtNodeHover)="hoveredGtNode = $event"
           ></gt-blackboard>
-          <div class="d-flex justify-content-between border-top px-3">
+          <div
+            class="d-flex justify-content-between align-items-center border-top px-2"
+          >
             <ol class="breadcrumb mb-0 flex-shrink-0">
               <li
                 class="breadcrumb-item"
@@ -96,13 +99,14 @@ import { GtEdit } from './classes';
             }}</span>
           </div>
         </div>
+        <div class="vr d-none d-md-flex h-100 text-body-secondary"></div>
+        <hr class="d-lg-none text-body-secondary m-0" />
         <gt-sidebar
-          class="border-start"
           gtResize
           style="width: 20rem"
           [maxWidth]="400"
           [minWidth]="230"
-          [resizes]="['l']"
+          [resizes]="['l', 't']"
         ></gt-sidebar>
       </div>
     </div>
@@ -113,7 +117,12 @@ export class GtEditComponent implements OnDestroy {
   blackboard: BlackboardComponent;
 
   @Input() set data(data: any) {
-    this.gt.init(data);
+    this.gt.init(data.config);
+    this.gt.initSettings({
+      name: data.title,
+      description: data.description,
+      ...data.settings,
+    });
     this.gt.log.next({
       type: 'init',
       message: 'Application Initialization',
@@ -126,17 +135,29 @@ export class GtEditComponent implements OnDestroy {
   private eventSubscription: Subscription = Subscription.EMPTY;
   hoveredGtNode: GtNode | null = null;
 
-  constructor(
-    public gt: GtEdit,
-    private events: EventsService,
-    editorSetting: EditorSettingService,
-  ) {
+  constructor(public gt: GtEdit, private events: EventsService) {
     this.eventSubscription = this.events.onEvent.subscribe(data => {
       this.log.next({
         type: 'log',
         message: data.type,
         data: data.data,
       });
+    });
+    Mousetrap.bind(['ctrl+c', 'meta+c'], event => {
+      event.preventDefault();
+      gt.copyNode();
+    });
+    Mousetrap.bind(['ctrl+v', 'meta+v'], event => {
+      event.preventDefault();
+      gt.pasteNode(gt.selected[0]);
+    });
+    Mousetrap.bind(['ctrl+shift+c', 'meta+shift+c'], event => {
+      event.preventDefault();
+      gt.copyStyle();
+    });
+    Mousetrap.bind(['ctrl+shift+v', 'meta+shift+v'], event => {
+      event.preventDefault();
+      gt.pasteStyle();
     });
     Mousetrap.bind(['ctrl+z', 'meta+z'], event => {
       event.preventDefault();
@@ -148,19 +169,19 @@ export class GtEditComponent implements OnDestroy {
     });
     Mousetrap.bind('alt+1', event => {
       event.preventDefault();
-      editorSetting.activateRightTab(0);
+      gt.settings.activateRightTab(0);
     });
     Mousetrap.bind('alt+2', event => {
       event.preventDefault();
-      editorSetting.activateRightTab(1);
+      gt.settings.activateRightTab(1);
     });
     Mousetrap.bind('alt+3', event => {
       event.preventDefault();
-      editorSetting.activateRightTab(2);
+      gt.settings.activateRightTab(2);
     });
     Mousetrap.bind('alt+4', event => {
       event.preventDefault();
-      editorSetting.activateRightTab(3);
+      gt.settings.activateRightTab(3);
     });
     Mousetrap.bind('del', event => {
       event.preventDefault();
@@ -176,8 +197,8 @@ export class GtEditComponent implements OnDestroy {
     });
     fromEvent<KeyboardEvent>(document, 'keypress')
       .pipe(
+        filter(() => document.activeElement === document.body),
         filter(event => event.keyCode === SPACE),
-        map(() => gt.mode),
         tap(() => (gt.mode = 'move')),
         switchMap(() =>
           fromEvent<KeyboardEvent>(document, 'keyup').pipe(

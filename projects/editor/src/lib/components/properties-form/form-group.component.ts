@@ -8,7 +8,7 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DataBinding } from '@ghosten/common';
 
 import { Subscription, merge, of } from 'rxjs';
@@ -74,8 +74,8 @@ export class FormGroupComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject('FormItem') public formItem: FormItem,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 
   ngOnInit() {
@@ -94,8 +94,8 @@ export class FormGroupComponent implements OnInit, OnDestroy {
           return;
         }
         this.template.insert(this.formItem, component, [
-          { provide: UntypedFormGroup, useValue: this.formGroup },
-          { provide: UntypedFormControl, useValue: this.formControl },
+          { provide: FormGroup, useValue: this.formGroup },
+          { provide: FormControl, useValue: this.formControl },
           { provide: 'FormItem', useValue: this.formItem },
         ]);
       });

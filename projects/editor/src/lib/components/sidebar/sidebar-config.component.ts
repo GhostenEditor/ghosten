@@ -12,8 +12,9 @@ import { GtNode } from '@ghosten/common';
 import { Subscription, combineLatest, merge, of } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { EditorSettingService, EventsService } from '../../services';
 import { AccordionItemComponent } from '../../modules/accordion';
+import { EventsService } from '../../services';
+import { GtEdit } from '../../classes';
 import { PROPERTY_EDIT_EVENT } from '../../injectors';
 
 @Component({
@@ -32,7 +33,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.variable"
         i18n-cardTitle="Config Card Title: Variable"
         cardTitle="变量"
-        [expanded]="editorSetting.configAccordionExpanded.variable"
+        [expanded]="gt.settings.configAccordionExpanded.variable"
         (opened)="opened('variable')"
         (closed)="closed('variable')"
       >
@@ -45,7 +46,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.property"
         i18n-cardTitle="Config Card Title: Property"
         cardTitle="属性"
-        [expanded]="editorSetting.configAccordionExpanded.property"
+        [expanded]="gt.settings.configAccordionExpanded.property"
         (opened)="opened('property')"
         (closed)="closed('property')"
       >
@@ -59,7 +60,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.style"
         i18n-cardTitle="Config Card Title: Style"
         cardTitle="样式"
-        [expanded]="editorSetting.configAccordionExpanded.style"
+        [expanded]="gt.settings.configAccordionExpanded.style"
         (opened)="opened('style')"
         (closed)="closed('style')"
       >
@@ -73,7 +74,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.rights"
         i18n-cardTitle="Config Card Title: Authorization"
         cardTitle="权限"
-        [expanded]="editorSetting.configAccordionExpanded.rights"
+        [expanded]="gt.settings.configAccordionExpanded.rights"
         (opened)="opened('rights')"
         (closed)="closed('rights')"
       >
@@ -103,7 +104,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.directive"
         i18n-cardTitle="Config Card Title: Directive"
         cardTitle="指令"
-        [expanded]="editorSetting.configAccordionExpanded.directive"
+        [expanded]="gt.settings.configAccordionExpanded.directive"
         (opened)="opened('directive')"
         (closed)="closed('directive')"
       >
@@ -116,7 +117,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.validator"
         i18n-cardTitle="Config Card Title: Validator"
         cardTitle="校验"
-        [expanded]="editorSetting.configAccordionExpanded.validator"
+        [expanded]="gt.settings.configAccordionExpanded.validator"
         (opened)="opened('validator')"
         (closed)="closed('validator')"
       >
@@ -126,7 +127,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         *ngIf="gtNode.validator"
         i18n-cardTitle="Config Card Title: Action"
         cardTitle="事件"
-        [expanded]="editorSetting.configAccordionExpanded.action"
+        [expanded]="gt.settings.configAccordionExpanded.action"
         (opened)="opened('action')"
         (closed)="closed('action')"
       >
@@ -143,12 +144,12 @@ export class SidebarConfigComponent implements OnDestroy {
 
   constructor(
     @Inject(PROPERTY_EDIT_EVENT) public editEvent: any,
+    public gt: GtEdit,
     cdr: ChangeDetectorRef,
     events: EventsService,
-    public editorSetting: EditorSettingService,
   ) {
     this.subscription = combineLatest([
-      events.CHANGE_SELECT,
+      merge(of(gt.selected), events.CHANGE_SELECT),
       merge(of(null), events.REDO, events.UNDO, events.PASTE_STYLE),
     ])
       .pipe(debounceTime(10))
@@ -176,10 +177,10 @@ export class SidebarConfigComponent implements OnDestroy {
   }
 
   opened(type: string) {
-    this.editorSetting.changeConfigAccordionExpanded(type, true);
+    this.gt.settings.changeConfigAccordionExpanded(type, true);
   }
 
   closed(type: string) {
-    this.editorSetting.changeConfigAccordionExpanded(type, false);
+    this.gt.settings.changeConfigAccordionExpanded(type, false);
   }
 }

@@ -23,7 +23,7 @@ export class DropdownDirective {
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: '',
-      width: this.elementRef.nativeElement.offsetWidth,
+      disposeOnNavigation: true,
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(this.elementRef)
@@ -41,6 +41,20 @@ export class DropdownDirective {
             originX: 'start',
             originY: 'top',
             offsetY: -6,
+          },
+          {
+            overlayX: 'end',
+            overlayY: 'bottom',
+            originX: 'end',
+            originY: 'top',
+            offsetY: -6,
+          },
+          {
+            overlayX: 'end',
+            overlayY: 'top',
+            originX: 'end',
+            originY: 'bottom',
+            offsetY: 6,
           },
         ]),
     });

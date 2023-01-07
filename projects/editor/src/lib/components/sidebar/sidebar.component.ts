@@ -5,7 +5,6 @@ import { Overlay } from '@angular/cdk/overlay';
 
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 
-import { EditorSettingService } from '../../services';
 import { GT_AUTH_CONFIG } from '../../injectors';
 import { GtAuth } from '../../types';
 import { GtEdit } from '../../classes';
@@ -26,7 +25,7 @@ interface Tab {
 @Component({
   selector: 'gt-sidebar',
   host: {
-    class: 'flex-shrink-0',
+    class: 'gt-sidebar flex-shrink-0',
   },
   template: `
     <div class="card border-0 h-100">
@@ -43,11 +42,11 @@ interface Tab {
               *ngIf="!tab.hide"
               [attr.data-id]="tab.id"
               #cdkDrag="cdkDrag"
-              [class.active]="editorSetting.rightTabIndex === tab.id"
+              [class.active]="gt.settings.rightTabIndex === tab.id"
               [style.cursor]="
-                editorSetting.rightTabIndex === tab.id ? 'default' : 'pointer'
+                gt.settings.rightTabIndex === tab.id ? 'default' : 'pointer'
               "
-              (click)="editorSetting.activateRightTab(tab.id)"
+              (click)="gt.settings.activateRightTab(tab.id)"
               (cdkDragEnded)="dragEnd($event, $any(cdkDrag), tab)"
             >
               <i class="gt-icon">{{ tab.icon }}</i>
@@ -59,22 +58,22 @@ interface Tab {
         <gt-accordion-element
           class="tab-panel"
           *ngIf="!tabs[0].hide"
-          [style.display]="editorSetting.rightTabIndex === 0 ? '' : 'none'"
+          [style.display]="gt.settings.rightTabIndex === 0 ? '' : 'none'"
         ></gt-accordion-element>
         <gt-accordion-config
           class="tab-panel"
           *ngIf="!tabs[1].hide"
-          [style.display]="editorSetting.rightTabIndex === 1 ? '' : 'none'"
+          [style.display]="gt.settings.rightTabIndex === 1 ? '' : 'none'"
         ></gt-accordion-config>
         <gt-accordion-elTree
           class="tab-panel"
           *ngIf="!tabs[2].hide"
-          [style.display]="editorSetting.rightTabIndex === 2 ? '' : 'none'"
+          [style.display]="gt.settings.rightTabIndex === 2 ? '' : 'none'"
         ></gt-accordion-elTree>
         <gt-accordion-page
           class="tab-panel"
           *ngIf="gtAuth.modal && !tabs[3].hide"
-          [style.display]="editorSetting.rightTabIndex === 3 ? '' : 'none'"
+          [style.display]="gt.settings.rightTabIndex === 3 ? '' : 'none'"
         ></gt-accordion-page>
       </div>
     </div>
@@ -108,7 +107,6 @@ export class SidebarComponent {
 
   constructor(
     public gt: GtEdit,
-    public editorSetting: EditorSettingService,
     private _overlay: Overlay,
     @Inject(GT_AUTH_CONFIG) public gtAuth: GtAuth,
   ) {}

@@ -40,6 +40,7 @@ import { TemplateDirective } from '../../directives';
       class="oblique-stripes overflow-auto position-relative h-100"
       [class.overflow-auto]="gt.mode === 'edit'"
       [class.overflow-hidden]="gt.mode === 'move'"
+      (updateTransform)="transform = $event"
     >
       <div
         gtResize
@@ -55,7 +56,8 @@ import { TemplateDirective } from '../../directives';
         [transform]="true"
         [gtZoomDisabled]="gt.mode !== 'move'"
         [zoomZone]="el.nativeElement"
-        [ngStyle]="{ transform: transform }"
+        [style.transform]="transform"
+        (updateTransform)="transform = $event"
       >
         <ng-template gtTemplate></ng-template>
       </div>
@@ -140,10 +142,17 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
   resetPosition() {
     const containerWidth =
       this.viewContainerRef.element.nativeElement.offsetWidth;
+    const containerHeight =
+      this.viewContainerRef.element.nativeElement.offsetHeight;
+    this.page.nativeElement.style.width =
+      Math.min(containerWidth - 100, 800) + 'px';
+    this.page.nativeElement.style.height =
+      Math.max(containerHeight - 100, 1000) + 'px';
     this.transform = `matrix(1,0,0,1,${
       (this.direction.value === 'ltr' ? 1 : -1) *
-      Math.max(containerWidth / 2 - 400, 50)
-    },120)`;
+      Math.max(containerWidth / 2 - this.page.nativeElement.offsetWidth / 2, 50)
+    },60)`;
+
     this.cdr.detectChanges();
   }
 

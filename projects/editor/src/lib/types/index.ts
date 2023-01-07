@@ -81,7 +81,7 @@ export interface PanelTableColumn {
 
 export interface EditorBrand {
   title: string;
-  href: string;
   src: string;
   alt: string;
+  click: () => void;
 }

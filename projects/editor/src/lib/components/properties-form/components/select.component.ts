@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { FormItem } from '../types';
 
@@ -8,7 +8,11 @@ import { FormItem } from '../types';
   template: `
     <div class="input-group" [formGroup]="formGroup">
       <select class="form-select" [formControlName]="formItem.name">
-        <option *ngFor="let option of formItem.options!" [value]="option.value">
+        <option [ngValue]="undefined"></option>
+        <option
+          *ngFor="let option of formItem.options!"
+          [ngValue]="option.value"
+        >
           {{ option.label }}
         </option>
       </select>
@@ -20,7 +24,7 @@ export class SelectComponent {
 
   constructor(
     @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 }

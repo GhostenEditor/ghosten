@@ -4,29 +4,45 @@ import { Board } from '@ghosten/common';
 
 import { EditorBrand, TopBarButton } from '../../types';
 import { GT_EDITOR_BRAND, TOP_BAR_BUTTONS } from '../../injectors';
+import { DropdownItem } from '../../directives/dropdown/dropdown.component';
 import { GtEdit } from '../../classes';
 
 @Component({
   preserveWhitespaces: false,
   selector: 'gt-navbar',
   host: {
-    class: 'navbar border-bottom',
+    class: 'navbar navbar-expand-md border-bottom',
   },
-  template: ` <div class="container-fluid">
-    <a [href]="editorBrand.href" class="navbar-brand me-0 d-flex">
+  template: ` <div class="container-fluid flex-nowrap">
+    <button
+      class="navbar-toggler me-auto"
+      type="button"
+      data-bs-toggle="collapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      gt-dropdown
+      [items]="getLeftDropdown()"
+      (itemClick)="switchBoard($event.data)"
+    >
+      <i class="gt-icon">list</i>
+    </button>
+    <a
+      style="cursor: pointer"
+      (click)="editorBrand.click && editorBrand.click()"
+      class="navbar-brand d-flex"
+    >
       <img
         [src]="editorBrand.src"
         [alt]="editorBrand.alt"
         class="rounded"
         style="width: 2rem;"
       />
-      <span class="fw-bold mx-3">{{ editorBrand.title }}</span>
+      <span class="fw-bold ms-2 d-md-inline d-none">{{
+        editorBrand.title
+      }}</span>
     </a>
-    <span
-      class="border-start border-secondary me-3"
-      style="height: 2rem;"
-    ></span>
-    <nav class="nav nav-pills">
+    <div class="vr my-2 text-body"></div>
+    <nav class="nav nav-pills me-auto ms-3 d-none d-md-block">
       <button
         *ngFor="let board of gt.boards"
         class="nav-link"
@@ -48,8 +64,25 @@ import { GtEdit } from '../../classes';
         {{ board.name || board.type }}
       </button>
     </nav>
-    <div class="fw-bold fs-5 ms-auto me-auto">{{ gt.metadata.name }}</div>
-    <div>
+    <div class="ms-3 me-auto text-nowrap">
+      <span class="fw-bold fs-5">{{ gt.settings.name }}</span>
+      &nbsp;<small class="d-none d-sm-inline">{{
+        gt.settings.description
+      }}</small>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      gt-dropdown
+      [items]="getRightDropdown()"
+      (itemClick)="$event.data.onclick!(gt)"
+    >
+      <i class="gt-icon">dotted_line</i>
+    </button>
+    <div class="text-nowrap ms-3 overflow-x-auto d-none d-md-block">
       <ng-container *ngFor="let item of topBarButtons">
         <button
           type="button"
@@ -83,6 +116,23 @@ export class NavbarComponent {
     @Optional() @Inject(GT_EDITOR_BRAND) public editorBrand: EditorBrand,
     @Optional() @Inject(TOP_BAR_BUTTONS) public topBarButtons: TopBarButton[],
   ) {}
+
+  getLeftDropdown(): DropdownItem[] {
+    return this.gt.boards.concat(this.gt.customComponent).map(data => ({
+      text: data.type,
+      active: this.gt.currentBoard === data,
+      data,
+    }));
+  }
+
+  getRightDropdown(): DropdownItem[] {
+    return this.topBarButtons.map(data => ({
+      text: data.title!,
+      active: data.active,
+      icon: data.icon,
+      data,
+    }));
+  }
 
   switchBoard(board: Board) {
     if (this.gt.currentBoard !== board) {

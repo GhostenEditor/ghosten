@@ -1,16 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Inject,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormItem } from '../types';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'properties-table',
   template: `
     <div style="overflow-x:auto;margin-bottom: 10px;">
@@ -25,8 +18,8 @@ import { FormItem } from '../types';
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngIf="formItem.value.length">
-            <tr *ngFor="let row of formItem.value; let i = index">
+          <ng-container *ngIf="formControl.value.length">
+            <tr *ngFor="let row of formControl.value; let i = index">
               <ng-container *ngFor="let column of formItem.columns">
                 <td
                   *ngIf="!editMap[column.prop + i]"
@@ -76,8 +69,8 @@ export class TableComponent {
 
   constructor(
     @Inject('FormItem') public formItem: FormItem,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 
   add() {

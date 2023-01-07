@@ -6,7 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Overlay } from '@angular/cdk/overlay';
 import { SketchComponent } from 'ngx-color/sketch';
@@ -56,8 +56,8 @@ export class ColorComponent {
     private overlay: Overlay,
     private elementRef: ElementRef,
     @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 
   showColorPicker() {
@@ -65,6 +65,7 @@ export class ColorComponent {
       width: '16rem',
       hasBackdrop: true,
       backdropClass: '',
+      disposeOnNavigation: true,
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(this.elementRef.nativeElement)

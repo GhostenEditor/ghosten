@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'properties-toggle',
@@ -20,7 +20,7 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 export class ToggleComponent {
   constructor(
     @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 }

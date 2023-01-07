@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import { FormItem } from '../types';
 
@@ -21,6 +21,6 @@ export class DataBindingComponent {
 
   constructor(
     @Inject('FormItem') public formItem: FormItem,
-    public formControl: UntypedFormControl,
+    public formControl: FormControl,
   ) {}
 }

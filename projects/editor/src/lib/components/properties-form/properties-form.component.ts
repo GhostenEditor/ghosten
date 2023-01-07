@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -9,7 +10,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 // import { DataSourcePicker } from '@ghosten/common';
 
 import { Subscription, merge } from 'rxjs';
@@ -28,7 +29,7 @@ import { TemplateDirective } from './template.directive';
 })
 export class PropertiesFormComponent implements OnDestroy {
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
-  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
+  public formGroup: FormGroup = new FormGroup({});
   // private _differ: IterableDiffer<FormItem> = this.iterableDiffers.find([]).create<FormItem>((index, item) => item.value instanceof DataSourcePicker ? item.value : item.type + item.name);
   private _differ: IterableDiffer<FormItem> = this.iterableDiffers
     .find([])
@@ -43,7 +44,7 @@ export class PropertiesFormComponent implements OnDestroy {
         ({ item, previousIndex }, adjustedPreviousIndex, currentIndex) => {
           const controlValue = item.value === undefined ? null : item.value;
           if (previousIndex === null) {
-            const formControl = new UntypedFormControl(controlValue, {
+            const formControl = new FormControl(controlValue, {
               validators: item.validator,
               updateOn: item.updateOn,
             });
@@ -52,8 +53,8 @@ export class PropertiesFormComponent implements OnDestroy {
               item,
               FormGroupComponent,
               [
-                { provide: UntypedFormGroup, useValue: this.formGroup },
-                { provide: UntypedFormControl, useValue: formControl },
+                { provide: FormGroup, useValue: this.formGroup },
+                { provide: FormControl, useValue: formControl },
                 { provide: 'FormItem', useValue: item },
               ],
               currentIndex!,
@@ -64,7 +65,7 @@ export class PropertiesFormComponent implements OnDestroy {
                 formControl.valueChanges.pipe(
                   // distinctUntilChanged(),
                   // todo 临时修复formControl触发change事件无法更新formGroup的值的bug
-                  debounceTime(10),
+                  debounceTime(100),
                   tap(value => {
                     item.value = value;
                     this.formChange.emit({ formItem: item, formControl });
@@ -100,6 +101,8 @@ export class PropertiesFormComponent implements OnDestroy {
       const formControl = this.formGroup.get(name);
       if (formControl) formControl.setValue(value, { emitEvent: false });
     });
+    this.cdr.markForCheck();
+    // this.cdr.detectChanges();
   }
 
   @Output() formChange = new EventEmitter<FormEvent>();
@@ -109,6 +112,7 @@ export class PropertiesFormComponent implements OnDestroy {
   @Output() dataReset = new EventEmitter<FormEvent>();
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private iterableDiffers: IterableDiffers,
     private formControlService: FormControlService,
   ) {

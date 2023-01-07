@@ -10,8 +10,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { take } from 'rxjs/operators';
 
@@ -82,8 +82,8 @@ export class UnitInputComponent {
     private overlay: Overlay,
     private vcr: ViewContainerRef,
     @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {
     this.setValue(formControl.value);
     this.formControl.valueChanges.subscribe(value => this.setValue(value));
@@ -122,6 +122,7 @@ export class UnitInputComponent {
 
     this.overlayRef = this.overlay.create({
       positionStrategy: strategy,
+      disposeOnNavigation: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       backdropClass: '',
       hasBackdrop: true,

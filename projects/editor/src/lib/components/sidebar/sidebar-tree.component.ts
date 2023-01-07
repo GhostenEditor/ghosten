@@ -55,7 +55,9 @@ interface FlattenNode {
           *cdkTreeNodeDef="let node"
           cdkDrag
           cdkDragLockAxis="y"
-          [cdkDragDisabled]="node.source.template && !node.source.isTemplateRoot"
+          [cdkDragDisabled]="
+            node.source.template && !node.source.isTemplateRoot
+          "
           [cdkDragData]="node.source"
           cdkDropList
           [cdkDropListEnterPredicate]="cdkDropListEnterPredicate"

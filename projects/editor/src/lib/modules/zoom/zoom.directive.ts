@@ -1,10 +1,12 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
+  Output,
   Renderer2,
 } from '@angular/core';
 import { Subscription, fromEvent } from 'rxjs';
@@ -18,6 +20,8 @@ import { getDOMTransformMatrix } from '../../utils';
 export class ZoomDirective implements OnInit, OnDestroy {
   @Input() zoomZone: HTMLElement;
   @Input() gtZoomDisabled: boolean;
+  @Output() updateTransform = new EventEmitter<string>();
+
   private readonly _container: HTMLElement;
   private subscription = Subscription.EMPTY;
 
@@ -64,10 +68,7 @@ export class ZoomDirective implements OnInit, OnDestroy {
     const domRect = this._container.getBoundingClientRect();
     const containerRect =
       this._container.parentElement!.getBoundingClientRect();
-
-    this._renderer.setStyle(
-      this._container,
-      'transform',
+    this.updateTransform.emit(
       new WebKitCSSMatrix()
         .scale(scale, scale)
         .translate(
@@ -75,7 +76,8 @@ export class ZoomDirective implements OnInit, OnDestroy {
             scale,
           (event.pageY - (event.pageY - domRect.y) * delta - containerRect.y) /
             scale,
-        ),
+        )
+        .toString(),
     );
   }
 }

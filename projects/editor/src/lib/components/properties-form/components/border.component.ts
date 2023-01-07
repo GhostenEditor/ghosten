@@ -8,8 +8,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { take } from 'rxjs/operators';
 
@@ -135,8 +135,8 @@ export class BorderComponent {
     private overlay: Overlay,
     private vcr: ViewContainerRef,
     @Inject('FormItem') public formItem: any,
-    public formControl: UntypedFormControl,
-    public formGroup: UntypedFormGroup,
+    public formControl: FormControl,
+    public formGroup: FormGroup,
   ) {}
 
   switchBorder(type: 'left' | 'right' | 'top' | 'bottom' | 'all') {
@@ -204,6 +204,7 @@ export class BorderComponent {
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: '',
+      disposeOnNavigation: true,
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(event.target as HTMLElement)

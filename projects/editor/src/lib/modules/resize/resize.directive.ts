@@ -1,10 +1,12 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   Inject,
   Input,
   NgZone,
   OnInit,
+  Output,
   Renderer2,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -32,6 +34,8 @@ export class ResizeDirective implements OnInit {
   @Input() maxWidth: number = Infinity;
   @Input() minHeight: number = 0;
   @Input() maxHeight: number = Infinity;
+  @Output() updateTransform = new EventEmitter<string>();
+
   private readonly container: HTMLElement;
   private _widthResize: boolean = false;
   private _heightResize: boolean = false;
@@ -332,9 +336,7 @@ export class ResizeDirective implements OnInit {
           break;
       }
       if (this.transform) {
-        this._renderer.setStyle(
-          this.container,
-          'transform',
+        this.updateTransform.emit(
           matrix.translate(dx / matrix.a, dy / matrix.d).toString(),
         );
       }

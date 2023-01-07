@@ -6,7 +6,6 @@ import {
   Optional,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { Board } from '@ghosten/common';
 
@@ -28,7 +27,6 @@ import {
 } from '../../injectors';
 import {
   TranslateAnimation,
-  closest,
   dragEnd,
   dragMove,
   findGtElement,
@@ -40,7 +38,6 @@ import {
   removeDragRootStyle,
   setDragRootStyle,
 } from '../../utils';
-import { EditorSettingService } from '../../services';
 import { GtEdit } from '../../classes';
 
 @Component({
@@ -56,20 +53,20 @@ import { GtEdit } from '../../classes';
       (closed)="closed(list)"
     >
       <div class="item-container row">
-        <div
-          class="gt-element col-4 d-flex flex-column align-items-center text-center"
+        <button
+          type="button"
+          class="col-4 px-0 text-center btn btn-text"
+          #target
           *ngFor="let element of list.elements; let i = index"
           [attr.data-type]="element.type"
-          (mousedown)="itemDrag(element, $event)"
-          (touchstart)="itemDrag(element, $event)"
+          (mousedown)="itemDrag(element, target, $event)"
+          (touchstart)="itemDrag(element, target, $event)"
         >
-          <i
-            class="d-block fs-1 gt-icon"
-            *ngIf="element.icon"
-            >{{ element.icon || 'custom' }}</i
-          >
-          <div>{{ element.label }}</div>
-        </div>
+          <i class="fs-1 gt-icon" *ngIf="element.icon">{{
+            element.icon || 'custom'
+          }}</i>
+          <div class="text-truncate">{{ element.label }}</div>
+        </button>
       </div>
     </gt-accordion-item>
     <gt-accordion-item
@@ -80,12 +77,14 @@ import { GtEdit } from '../../classes';
       (closed)="closed(customList)"
     >
       <div class="item-container clearfix">
-        <div
-          class="gt-element col-4 mb-2 d-flex flex-column align-items-center text-center"
+        <button
+          type="button"
+          class="col-4 px-0 text-center btn btn-text"
           *ngFor="let custom of gt.customComponent; let i = index"
+          #target
           [attr.data-id]="custom.id"
-          (mousedown)="itemDrag(custom, $event)"
-          (touchstart)="itemDrag(custom, $event)"
+          (mousedown)="itemDrag(custom, target, $event)"
+          (touchstart)="itemDrag(custom, target, $event)"
           (dblclick)="editCustom(custom)"
           (contextmenu)="editCustomInfo(custom, $event)"
         >
@@ -105,10 +104,12 @@ import { GtEdit } from '../../classes';
             *ngIf="editTypeMode"
             [(ngModel)]="custom.type"
           />
-          <div *ngIf="!editTypeMode">{{ custom.name || custom.type }}</div>
-        </div>
+          <div *ngIf="!editTypeMode" class="text-truncate">
+            {{ custom.name || custom.type }}
+          </div>
+        </button>
       </div>
-      <div class="d-grid gap-2">
+      <div class="d-grid gap-2" [class.mt-2]="gt.customComponent.length">
         <button class="btn btn-light" (click)="addCustom()">
           {{ editMode ? '完成' : '添加' }}
         </button>
@@ -123,7 +124,7 @@ export class SidebarElementComponent {
     title: $localize`:Element Group Title\: Custom Component:自定义`,
     elements: this.gt.customComponent,
     expanded:
-      this.editorSetting.elementAccordionExpanded[
+      this.gt.settings.elementAccordionExpanded[
         $localize`:Element Group Title\: Custom Component:自定义`
       ],
   };
@@ -132,8 +133,6 @@ export class SidebarElementComponent {
     public gt: GtEdit,
     private cdr: ChangeDetectorRef,
     private translateAnimation: TranslateAnimation,
-    public domSanitizer: DomSanitizer,
-    private editorSetting: EditorSettingService,
     @Inject(DOCUMENT) private _document: Document,
     @Inject(GT_TEMPLATE_MAP) private templateMap: any,
     @Inject(GT_INTERNAL_ELEMENT_LISTS)
@@ -143,7 +142,7 @@ export class SidebarElementComponent {
   ) {
     this.internalElementLists.forEach(elementList => {
       elementList.expanded =
-        this.editorSetting.elementAccordionExpanded[elementList.title];
+        this.gt.settings.elementAccordionExpanded[elementList.title];
     });
     this.templateMap = templateMap.reduce(
       (acc: any, cur: any) => ({ ...acc, ...cur }),
@@ -151,7 +150,11 @@ export class SidebarElementComponent {
     );
   }
 
-  itemDrag(element: GtElement | Board, event: MouseEvent | TouchEvent) {
+  itemDrag(
+    element: GtElement | Board,
+    dragEl: HTMLElement,
+    event: MouseEvent | TouchEvent,
+  ) {
     if (!isTouchEvent(event) && event.button !== 0) {
       return;
     }
@@ -163,11 +166,11 @@ export class SidebarElementComponent {
     setDragRootStyle('userSelect', 'none');
     fromDragEvent(event)
       .pipe(
-        map((evt): HTMLElement | null =>
-          closest(evt.target as HTMLElement, '.gt-element'),
-        ),
-        filter((dragEl: HTMLElement | null): dragEl is HTMLElement => !!dragEl),
-        map((dragEl: HTMLElement) => {
+        // map((evt): HTMLElement | null =>
+        //   closest(evt.target as HTMLElement, '.gt-element'),
+        // ),
+        // filter((dragEl: HTMLElement | null): dragEl is HTMLElement => !!dragEl),
+        map(() => {
           this.cdr.detach();
           const container = this._document.createElement('div');
           originalTarget = dragEl;
@@ -177,10 +180,10 @@ export class SidebarElementComponent {
             if (this.templateMap[type]) {
               template = this.templateMap[type];
             } else {
-              template = `<div style="width: 200px;height: 200px;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">未知组件</div>`;
+              template = `<div style="width: 10rem;height: 10rem;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">未知组件</div>`;
             }
           } else {
-            template = `<div style="width: 200px;height: 200px;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">自定义组件</div>`;
+            template = `<div style="width: 10rem;height: 10rem;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">自定义组件</div>`;
           }
           container.style.setProperty('max-width', '10rem');
           container.innerHTML = template;
@@ -368,11 +371,11 @@ export class SidebarElementComponent {
 
   opened(panel: ElementList) {
     panel.expanded = true;
-    this.editorSetting.changeElementAccordionExpanded(panel.title, true);
+    this.gt.settings.changeElementAccordionExpanded(panel.title, true);
   }
 
   closed(panel: ElementList) {
     panel.expanded = false;
-    this.editorSetting.changeElementAccordionExpanded(panel.title, false);
+    this.gt.settings.changeElementAccordionExpanded(panel.title, false);
   }
 }

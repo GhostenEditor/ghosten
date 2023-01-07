@@ -1,9 +1,11 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   Input,
   NgZone,
   OnDestroy,
+  Output,
   Renderer2,
 } from '@angular/core';
 import { EMPTY, Subscription } from 'rxjs';
@@ -23,6 +25,7 @@ import {
 export class PanDirective implements OnDestroy {
   @Input() panDisabled = false;
   @Input() panTarget: HTMLElement;
+  @Output() updateTransform = new EventEmitter<string>();
   private subscription = Subscription.EMPTY;
 
   constructor(private el: ElementRef, renderer: Renderer2, ngZone: NgZone) {
@@ -46,13 +49,11 @@ export class PanDirective implements OnDestroy {
                 ),
               ),
               map(evt => calculateOffset(event, evt)),
-              tap(({ x, y }) => {
-                renderer.setStyle(
-                  this.panTarget,
-                  'transform',
+              tap(({ x, y }) =>
+                this.updateTransform.emit(
                   matrix.translate(x / matrix.a, y / matrix.d).toString(),
-                );
-              }),
+                ),
+              ),
             );
           }),
         )
