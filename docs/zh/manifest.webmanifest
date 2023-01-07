@@ -6,8 +6,8 @@
   "background_color": "#404dff",
   "orientation": "landscape",
   "display": "fullscreen",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/ghosten/",
+  "start_url": "/ghosten/",
   "icons": [
     {
       "src": "assets/icons/128.png",
