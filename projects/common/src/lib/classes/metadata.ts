@@ -2,9 +2,9 @@ import { IMetadata } from '../types';
 
 export class Metadata {
   /**
-   * @Description: Ghost的版本
+   * @Description: Ghosten的版本
    */
-  readonly version = '3.0.0';
+  readonly version = '0.1.0';
   id: string | null = null;
   name: string | null = null;
   description: string | null = null;
