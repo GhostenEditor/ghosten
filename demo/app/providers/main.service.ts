@@ -11,12 +11,11 @@ export class MainService {
       this.rawMenus.map(menu => {
         const item: Route & { id: number; parentId: number | null } = {
           id: menu.id,
-          path: menu.pageUrl,
+          path: menu.url,
           parentId:
-            typeof menu.pageParentID === 'undefined' ||
-            menu.pageParentID === null
+            typeof menu.parentId === 'undefined' || menu.parentID === null
               ? null
-              : +menu.pageParentID,
+              : +menu.parentId,
           component,
           data: {
             id: menu.id,

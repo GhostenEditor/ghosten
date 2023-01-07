@@ -9,8 +9,7 @@ import { AppShellComponent } from './app-shell/app-shell.component';
   selector: 'app-root',
   template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
-}
+export class AppComponent {}
 
 @NgModule({
   imports: [
@@ -19,13 +18,7 @@ export class AppComponent {
     RouterModule.forRoot([{ path: 'shell', component: AppShellComponent }]),
   ],
   bootstrap: [AppComponent],
-  declarations: [
-    AppShellComponent,
-    AppComponent
-  ],
-  exports: [
-    AppShellComponent
-  ]
+  declarations: [AppShellComponent, AppComponent],
+  exports: [AppShellComponent],
 })
-export class AppServerModule {
-}
+export class AppServerModule {}

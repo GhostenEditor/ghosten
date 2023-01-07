@@ -1,24 +1,38 @@
 import { ROUTES, Route, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { GtComponentsRendererModule } from '@ghosten/components/renderer';
 import { GtRenderCoreModule } from '@ghosten/renderer';
 
 import { ErrorComponent } from './error.component';
+import { FooterComponent } from './footer.component';
 import { MainComponent } from './main.component';
 import { MainService } from '../../providers/main.service';
-import { NavigationModule } from './navigation/navigation.module';
+import { NavbarComponent } from './navbar.component';
+import { NavigationModule } from '../navigation/navigation.module';
+import { OffcanvasComponent } from './offcanvas.component';
 import { TemplateComponent } from './template.component';
 import { TemplateResolve } from './main.resovle';
+import { HomeComponent } from './home.component';
 
 @NgModule({
   imports: [
+    CommonModule,
     RouterModule,
     NavigationModule,
     GtRenderCoreModule,
     GtComponentsRendererModule,
   ],
-  declarations: [MainComponent, ErrorComponent, TemplateComponent],
+  declarations: [
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    TemplateComponent,
+    FooterComponent,
+    OffcanvasComponent,
+    HomeComponent,
+  ],
   providers: [
     {
       provide: ROUTES,
@@ -28,6 +42,10 @@ import { TemplateResolve } from './main.resovle';
           path: '',
           component: MainComponent,
           children: [
+            {
+              path: '',
+              component: HomeComponent,
+            },
             {
               path: '404',
               component: ErrorComponent,

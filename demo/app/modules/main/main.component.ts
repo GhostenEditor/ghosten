@@ -2,34 +2,32 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-main',
-  template: ` <div class="d-flex h-100">
-    <app-navigation [showSideMenu]="showSideMenu"></app-navigation>
-    <div class="p-4 flex-grow-1 h-100 overflow-auto">
-      <div
-        class="navbar position-fixed bg-body w-100 p-4 z-1 d-lg-none"
-        style="top: 0; left: 0;"
-      >
-        <a href="/" class="navbar-brand me-0 d-flex">
-          <img
-            src="assets/icons/128.png"
-            alt="Ghosten Logo"
-            class="rounded"
-            style="width: 2rem;"
-          />
-          <span class="fw-bold mx-3">GHOSTEN</span>
-        </a>
-        <button
-          type="button"
-          class="btn btn-sm btn-light rounded-circle"
-          (click)="showSideMenu = !showSideMenu"
+  template: ` <app-navbar (showLeftSidebar)="showSideMenu = true"></app-navbar>
+    <div class="container pt-4">
+      <div class="row">
+        <app-offcanvas
+          class="col-2"
+          position="start"
+          offCanvasTitle="Navigation"
+          [show]="showSideMenu"
+          (offCanvasClose)="showSideMenu = false"
         >
-          <i class="gt-icon">dotted_line</i>
-        </button>
+          <app-navigation
+            class="w-100"
+            [showSideMenu]="showSideMenu"
+          ></app-navigation>
+        </app-offcanvas>
+        <div
+          *ngIf="showSideMenu"
+          class="offcanvas-backdrop fade show"
+          (click)="showSideMenu = false"
+        ></div>
+        <div class="col-lg-10 px-4 min-vh-100">
+          <router-outlet></router-outlet>
+        </div>
       </div>
-      <div class="p-5 d-lg-none"></div>
-      <router-outlet></router-outlet>
     </div>
-  </div>`,
+    <app-footer></app-footer>`,
 })
 export class MainComponent {
   showSideMenu = false;

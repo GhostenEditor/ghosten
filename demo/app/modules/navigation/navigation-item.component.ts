@@ -23,7 +23,12 @@ import { MenuItem } from '@ghosten/database';
   host: {
     class: 'overflow-hidden',
   },
-  template: ` <ul class="list-unstyled mt-2" cdkAccordion>
+  template: ` <ul
+    class="list-unstyled"
+    [class.mt-1]="level !== 1"
+    cdkAccordion
+    [multi]="true"
+  >
     <li
       class="mb-1"
       *ngFor="let item of items"
@@ -31,35 +36,35 @@ import { MenuItem } from '@ghosten/database';
       #accordionItem="cdkAccordionItem"
       [class.open]="accordionItem.expanded"
     >
-      <ng-container *ngIf="item.children?.length">
+      <ng-container *ngIf="item.directory">
         <div
-          class="btn btn-text d-flex"
+          class="btn btn-text d-flex btn-sm"
           routerLinkActive="active"
           [style.padding-left]="level * 0.75 + 'rem'"
           [attr.aria-expanded]="accordionItem.expanded"
           (click)="accordionItem.toggle()"
         >
           <a [routerLink]="item.url" class="d-none"></a>
-          <i class="gt-icon me-2" *ngIf="level === 1">toys</i
-          ><span class="flex-grow-1 text-start">{{ item.label }}</span
-          ><i class="gt-icon ms-2" *ngIf="item.children?.length"
-            >chevron_right</i
-          >
+          <i class="gt-icon me-2">{{ item.icon }}</i>
+          <span class="flex-grow-1 text-start">{{ item.label }}</span>
+          <i class="gt-icon ms-2">{{
+            accordionItem.expanded ? 'chevron_down' : 'chevron_right'
+          }}</i>
         </div>
         <app-navigation-item
+          class="d-block"
           [items]="item.children!"
           [level]="level + 1"
-          class="d-block"
           [@bodyExpansion]="accordionItem.expanded ? 'expanded' : 'collapsed'"
         ></app-navigation-item>
       </ng-container>
-      <ng-container *ngIf="!item.children?.length"
+      <ng-container *ngIf="!item.directory"
         ><a
           [routerLink]="item.url"
           [style.padding-left]="level * 0.75 + 'rem'"
           routerLinkActive="active"
-          class="btn btn-text d-flex"
-          ><i class="gt-icon me-2" *ngIf="level === 1">toys</i
+          class="btn btn-text d-flex btn-sm"
+          ><i class="gt-icon me-2">{{ item.icon }}</i
           >{{ item.label }}</a
         >
       </ng-container>

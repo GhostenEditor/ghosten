@@ -1,4 +1,4 @@
-import { EMPTY, Observable, filter, fromEvent, take } from 'rxjs';
+import { EMPTY, Observable, filter, fromEvent, merge, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 interface WorkerMessage {
@@ -36,7 +36,10 @@ export class WorkerConnector {
       if (typeof Worker !== 'undefined') {
         this.worker = new Worker(new URL('./app.worker', import.meta.url));
         this.message = fromEvent<MessageEvent>(this.worker, 'message');
-        this.error = fromEvent<MessageEvent>(this.worker, 'messageerror');
+        this.error = merge(
+          fromEvent<MessageEvent>(this.worker, 'messageerror'),
+          fromEvent<MessageEvent>(this.worker, 'error'),
+        );
       } else {
         throw new Error('Web Worker is not supported by you browser!');
       }
@@ -56,7 +59,13 @@ export class WorkerConnector {
     this.postMessage({ type, data });
     return this.message.pipe(
       filter(({ data }) => data.subType === type),
-      map(({ data }) => data.data),
+      map(event => {
+        if (event.data.type === 'log') {
+          return event.data;
+        } else {
+          throw new Error(event.data.message);
+        }
+      }),
       take(1),
     );
   }

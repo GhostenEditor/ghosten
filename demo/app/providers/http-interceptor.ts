@@ -9,10 +9,9 @@ import { Injectable } from '@angular/core';
 
 import { GtDatabase } from '@ghosten/database';
 
-import { EMPTY, Observable, take } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EMPTY, Observable, catchError, from, take } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
-import { ToastService } from '../modules/toast/toast.service';
 import { WorkerConnector } from '../worker';
 
 @Injectable()
@@ -20,17 +19,19 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
   private worker = new WorkerConnector();
   private gtDatabase = new GtDatabase();
 
-  constructor(private toast: ToastService) {}
-
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    // console.info('[HTTP REQUEST]:%O', req);
+    console.info('[HTTP REQUEST]:%O', req);
     return this.resolveWorkerRequest(req).pipe(
-      // tap(data => console.info('[HTTP RESPONSE]:%O', data)),
-      map(body => new HttpResponse({ body })),
+      map(({ data }) => new HttpResponse({ url: req.url, body: data })),
+      tap(data => console.info('[HTTP RESPONSE]:%O', data)),
       take(1),
+      catchError(error => {
+        console.error(error.message);
+        throw error;
+      }),
     );
   }
 
@@ -49,20 +50,12 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
       case 'deleteDB':
       case 'importDB':
       case 'exportDB':
-        return this.worker.request(
-          req.url,
+        const paramsOrBody =
           req.method.toLocaleLowerCase() === 'get'
             ? Object.fromEntries(new URLSearchParams(req.params.toString()))
-            : req.body,
-        );
-      // return from(
-      //   this.gtDatabase.message(
-      //     req.url,
-      //     req.method.toLocaleLowerCase() === 'get'
-      //       ? Object.fromEntries(new URLSearchParams(req.params.toString()))
-      //       : req.body,
-      //   ),
-      // ).pipe(map(({ data }) => data));
+            : req.body;
+        return this.worker.request(req.url, paramsOrBody);
+        // return from(this.gtDatabase.message(req.url, paramsOrBody));
       default:
         return EMPTY;
     }
