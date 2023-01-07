@@ -142,7 +142,6 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "d3-interpolate",
               "mousetrap",
               "stats.js"
             ],

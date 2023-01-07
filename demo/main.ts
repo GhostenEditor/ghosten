@@ -43,13 +43,13 @@ bootstrap();
 const darkMode = matchMedia('(prefers-color-scheme: dark)');
 const setColorScheme = (dark: boolean) =>
   (document.documentElement.dataset.bsTheme = dark ? 'dark' : 'light');
-const convertStyle = () => {
-  document.body.style.height = `${window.innerHeight}px`;
-  document.documentElement.style.fontSize =
-    Math.max(12, window.innerWidth / 100) + 'px';
-};
+// const convertStyle = () => {
+//   // document.body.style.height = `${window.innerHeight}px`;
+//   document.documentElement.style.fontSize =
+//     Math.max(0, Math.round((window.innerWidth - 1000) / 200)) + 12 + 'px';
+// };
 
 setColorScheme(darkMode.matches);
 darkMode.addEventListener('change', event => setColorScheme(event.matches));
-window.addEventListener('resize', convertStyle);
-window.addEventListener('DOMContentLoaded', convertStyle);
+// window.addEventListener('resize', convertStyle);
+// window.addEventListener('DOMContentLoaded', convertStyle);

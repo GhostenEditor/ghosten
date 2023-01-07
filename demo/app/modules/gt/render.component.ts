@@ -5,8 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template: ` <gt-modal
     i18n-modalTitle="Modal Title: Preview"
     modalTitle="预览"
-    size="xl"
-    [noFooter]="true"
+    modalSize="xl"
     (cancel)="modalDismiss.emit()"
   >
     <gt-render [data]="data" (log)="log($event)"></gt-render>
