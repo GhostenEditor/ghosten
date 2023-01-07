@@ -1,10 +1,8 @@
 import { createDefaultConfig } from '@ghosten/common';
 
-export interface BatteryProperty {
-  gaugeMax: number;
-  title: string;
-  data: number;
-}
+export * from './gauge.module';
+export * from './gauge.directive';
+export * from './water.directive';
 
 export interface GaugeProperty {
   title: string;
@@ -12,6 +10,8 @@ export interface GaugeProperty {
   gaugeNormalMax: number;
   gaugeMin: number;
   gaugeMax: number;
+  startColor: string;
+  endColor: string;
   data: number;
 }
 
@@ -21,7 +21,18 @@ export interface WaterProperty {
   gaugeNormalMax: number;
   gaugeMin: number;
   gaugeMax: number;
+  minColor: string;
+  maxColor: string;
   data: number;
+  background: string;
+}
+
+export interface BatteryProperty {
+  title: string;
+  data: number;
+  gaugeMax: number;
+  gaugeMin: number;
+  direction: 'horizontal' | 'vertical';
 }
 
 export const gtGaugeConfigMap = () => {
@@ -32,6 +43,8 @@ export const gtGaugeConfigMap = () => {
       { name: 'gaugeNormalMax', type: 'number' },
       { name: 'gaugeMin', type: 'number', value: 0 },
       { name: 'gaugeMax', type: 'number', value: 100 },
+      { name: 'startColor', type: 'color', value: '#5b79f1' },
+      { name: 'endColor', type: 'color', value: '#29ffc6' },
       { name: 'data', type: 'number', canBind: true },
     ],
     style: [{ name: 'display', type: 'select', value: 'inline-block' }],
@@ -43,14 +56,12 @@ export const gtGaugeConfigMap = () => {
       { name: 'gaugeNormalMax', type: 'number' },
       { name: 'gaugeMin', type: 'number', value: 0 },
       { name: 'gaugeMax', type: 'number', value: 100 },
-      { name: 'color', type: 'color', value: '#16D985' },
+      { name: 'minColor', type: 'color', value: '#5b79f1' },
+      { name: 'maxColor', type: 'color', value: '#29ffc6' },
       { name: 'background', type: 'color', value: '#033E49' },
       { name: 'data', type: 'number', value: 50 },
     ],
-    style: [
-      { name: 'display', type: 'select', value: 'block' },
-      { name: 'height', type: 'numberHasUnit', value: '100px' },
-    ],
+    style: [{ name: 'display', type: 'select', value: 'inline-block' }],
   });
   const battery = createDefaultConfig({
     property: [
@@ -71,7 +82,7 @@ export const gtGaugeConfigMap = () => {
     style: [
       { name: 'display', type: 'select', value: 'flex' },
       { name: 'flexDirection', type: 'select', value: 'column' },
-      { name: 'alignItems', type: 'select', value: 'center' },
+      { name: 'alignItems', type: 'select', value: 'stretch' },
     ],
   });
   return {

@@ -34,8 +34,8 @@ export class Gauge {
   private readonly startRadian: number;
   private readonly endRadian: number;
 
-  private color1 = '#5b79f1';
-  private color2 = '#29ffc6';
+  public color1 = '#5b79f1';
+  public color2 = '#29ffc6';
 
   private fontColor1 = '#fff';
   // private fontColor2 = '#a0a7e2';
@@ -68,6 +68,7 @@ export class Gauge {
 
   constructor(
     private container = document.body,
+    private isSafari: boolean,
     { background, foreground, min = 0, max = 100 }: any = {
       min: 0,
       max: 100,
@@ -102,9 +103,13 @@ export class Gauge {
     ctx.beginPath();
     ctx.arc(0, 0, radius, this.startRadian, this.endRadian);
     ctx.stroke();
-    const gradient = ctx.createConicGradient(radius - 0.2, 0, 0);
-    gradient.addColorStop(0, this.color1);
-    gradient.addColorStop(.75, this.color2);
+    const gradient = ctx.createConicGradient(
+      this.isSafari ? Math.PI : Math.PI / 2,
+      0,
+      0,
+    );
+    gradient.addColorStop(0.2, this.color1);
+    gradient.addColorStop(0.8, this.color2);
     ctx.strokeStyle = gradient;
     ctx.beginPath();
     ctx.arc(

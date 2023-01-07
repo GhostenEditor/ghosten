@@ -8,7 +8,6 @@ export function waterBall(canvas: HTMLCanvasElement) {
     time: 0,
     process: 0,
     _color: [0, 0, 0],
-    // @ts-ignore
     get color(): number[] {
       return this._color;
     },
@@ -16,7 +15,6 @@ export function waterBall(canvas: HTMLCanvasElement) {
       this._color = c;
     },
     _background: [0, 0, 0],
-    // @ts-ignore
     get background(): number[] {
       return this._background;
     },
@@ -112,10 +110,10 @@ export function resizeCanvasToDisplaySize(
 ) {
   const size = Math.max(
     Math.min(
-      canvas.parentElement!.clientWidth - 20,
-      canvas.parentElement!.clientHeight - 34,
+      canvas.parentElement!.clientWidth,
+      canvas.parentElement!.clientHeight,
     ),
-    0,
+    100,
   );
   if (canvas.width !== size) {
     canvas.width = canvas.height = size * devicePixelRatio;

@@ -1,5 +1,5 @@
 import { Component, HostBinding, HostListener } from '@angular/core';
-import { DataBinding } from '@ghosten/common';
+import { ButtonProperty } from '@ghosten/components';
 import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
@@ -8,10 +8,7 @@ import { RenderAbstractComponent } from '@ghosten/renderer';
   exportAs: 'gt-button',
   template: '{{gtNode.property.text | dataBinding}}',
 })
-export class ButtonComponent extends RenderAbstractComponent<{
-  text: string;
-  disabled: boolean | DataBinding;
-}> {
+export class ButtonComponent extends RenderAbstractComponent<ButtonProperty> {
   @HostListener('click', ['$event']) buttonClick(event: Event) {
     this.onEvent('click', event);
   }
@@ -23,6 +20,10 @@ export class ButtonComponent extends RenderAbstractComponent<{
       this.gtNode.property.buttonColor,
       this.gtNode.property.buttonType,
     ].join(' ');
+  }
+
+  @HostBinding('class.active') get buttonActive() {
+    return this.resolveDataBinding(this.property.active);
   }
 
   @HostBinding('disabled') get disabled() {

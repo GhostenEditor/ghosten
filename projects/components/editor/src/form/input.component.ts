@@ -20,7 +20,7 @@ import { InputProperty } from '@ghosten/components';
         -
       </button>
       <input
-        type="text"
+        [type]="property.inputType"
         class="form-control"
         [style]="property.inputType"
         [ngClass]="gtNode.property.inputSize"
@@ -39,22 +39,4 @@ import { InputProperty } from '@ghosten/components';
   `,
 })
 export class InputComponent extends EditAbstractComponent<InputProperty> {
-  /*@HostBinding('class') get className() {
-    return [
-      'form-control',
-      'gt-node',
-      'isDraggable',
-      this.gtNode.property.inputSize,
-    ].join(' ');
-  }
-
-  @HostBinding('disabled') get disabled() {
-    return this.gtNode.property.disabled;
-  }
-  @HostBinding('placeholder') get placeholder() {
-    return this.gtNode.property.placeholder;
-  }
-  @HostBinding('readonly') get readonly() {
-    return this.gtNode.property.readonly;
-  }*/
 }

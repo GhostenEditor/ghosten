@@ -1,11 +1,17 @@
 import { DataBinding, createDefaultConfig } from '@ghosten/common';
 
+export interface ButtonProperty {
+  text: string;
+  active: boolean | DataBinding;
+  disabled: boolean | DataBinding;
+}
+
 export interface InputProperty {
   name: string;
   showLabel: boolean;
   labelText: string;
   inputSize: string;
-  inputType: 'text' | 'number' | 'password';
+  inputType: 'text' | 'number' | 'password' | 'file';
   readonly: boolean;
   disabled: boolean | DataBinding;
   value: string | number | null;
@@ -87,8 +93,45 @@ export function gtFormConfigMap() {
         name: 'options',
         type: 'table',
         columns: [
-          { prop: 'label', name: 'label' },
-          { prop: 'value', name: 'value' },
+          { prop: 'label', name: 'label', value: null },
+          { prop: 'value', name: 'value', value: null },
+        ],
+        value: [],
+      },
+    ],
+  });
+  const checkbox = createDefaultConfig({
+    property: [
+      {
+        label: 'name',
+        name: 'name',
+        type: 'text',
+      },
+      {
+        label: '显示label',
+        name: 'showLabel',
+        type: 'toggle',
+        value: true,
+      },
+      {
+        name: 'layout',
+        type: 'select',
+        options: [
+          { label: 'Default', value: '' },
+          { label: 'Inline', value: 'form-check-inline' },
+          { label: 'Reverse', value: 'form-check-reverse' },
+        ],
+      },
+      {
+        name: 'value',
+        type: 'text',
+      },
+      {
+        name: 'options',
+        type: 'table',
+        columns: [
+          { prop: 'label', name: 'label', value: null },
+          { prop: 'value', name: 'value', value: null },
         ],
         value: [],
       },
@@ -134,25 +177,33 @@ export function gtFormConfigMap() {
         value: 'btn-primary',
         options: [
           { label: 'primary', value: 'btn-primary' },
-          { label: 'default', value: 'btn-default' },
           { label: 'secondary', value: 'btn-secondary' },
+          { label: 'success', value: 'btn-success' },
           { label: 'warning', value: 'btn-warning' },
           { label: 'danger', value: 'btn-danger' },
           { label: 'info', value: 'btn-info' },
-        ],
-      },
-      {
-        label: '类型',
-        name: 'buttonType',
-        type: 'select',
-        options: [
-          { label: 'rect', value: '' },
-          { label: 'block', value: 'btn-block' },
+          { label: 'light', value: 'btn-light' },
+          { label: 'dark', value: 'btn-dark' },
+          { label: 'link', value: 'btn-link' },
+          { label: 'primary-outline', value: 'btn-outline-primary' },
+          { label: 'secondary-outline', value: 'btn-outline-secondary' },
+          { label: 'success-outline', value: 'btn-outline-success' },
+          { label: 'warning-outline', value: 'btn-outline-warning' },
+          { label: 'danger-outline', value: 'btn-outline-danger' },
+          { label: 'info-outline', value: 'btn-outline-info' },
+          { label: 'light-outline', value: 'btn-outline-light' },
+          { label: 'dark-outline', value: 'btn-outline-dark' },
         ],
       },
       {
         label: '禁用',
         name: 'disabled',
+        type: 'toggle',
+        canBind: true,
+      },
+      {
+        label: 'Active',
+        name: 'active',
         type: 'toggle',
         canBind: true,
       },
@@ -198,6 +249,7 @@ export function gtFormConfigMap() {
           { label: 'text', value: 'text' },
           { label: 'number', value: 'number' },
           { label: 'password', value: 'password' },
+          { label: 'file', value: 'file' },
         ],
       },
       {
@@ -360,7 +412,7 @@ export function gtFormConfigMap() {
   });
   return {
     radio,
-    checkbox: radio,
+    checkbox,
     toggle,
     button,
     input,

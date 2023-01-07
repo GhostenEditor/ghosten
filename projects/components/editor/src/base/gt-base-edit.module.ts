@@ -33,10 +33,10 @@ import { TextComponent } from './text.component';
     {
       provide: GT_TEMPLATE_MAP,
       useValue: {
-        division: '<div style="width: 100px;height:100px;"></div>',
-        slot: '<div class="gt-node gt-slot" style="width: 100px;height:100px;"></div>',
+        division: '<div class="gt-node" style="border: .15rem dashed"></div>',
+        slot: '<div class="gt-node" style="border: .15rem dashed"></div>',
         text: '<span>Some Text</span>',
-        image: `<img src='...' alt='...'/>`,
+        image: `<img src="..." alt="..."/>`,
       },
       multi: true,
     },

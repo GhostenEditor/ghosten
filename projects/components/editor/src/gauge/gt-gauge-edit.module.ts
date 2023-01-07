@@ -6,22 +6,15 @@ import {
   GT_TEMPLATE_MAP,
   GtEditCoreModule,
 } from '@ghosten/editor';
-import { WaterModule, gtGaugeConfigMap } from '@ghosten/components';
+import { GaugeModule, gtGaugeConfigMap } from '@ghosten/components';
 
 import { BatteryComponent } from './battery.component';
 import { GaugeComponent } from './gauge.component';
-import { GaugeDirective } from './gauge.directive';
 import { WaterComponent } from './water.component';
 
 @NgModule({
-  imports: [GtEditCoreModule, WaterModule],
-  declarations: [
-    GaugeDirective,
-    GaugeComponent,
-    WaterComponent,
-    BatteryComponent,
-  ],
-  exports: [WaterModule],
+  imports: [GtEditCoreModule, GaugeModule],
+  declarations: [GaugeComponent, WaterComponent, BatteryComponent],
   providers: [
     {
       provide: GT_EDIT_COMPONENT_MAP,

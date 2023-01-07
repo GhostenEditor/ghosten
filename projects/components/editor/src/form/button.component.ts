@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import { ButtonProperty } from '@ghosten/components';
 import { EditAbstractComponent } from '@ghosten/editor';
 
 @Component({
@@ -6,7 +7,7 @@ import { EditAbstractComponent } from '@ghosten/editor';
   selector: 'button[gt-button][type="button"]',
   template: `{{ gtNode.property.text | dataBinding }}`,
 })
-export class ButtonComponent extends EditAbstractComponent {
+export class ButtonComponent extends EditAbstractComponent<ButtonProperty> {
   @HostBinding('class') get className() {
     return [
       'btn',
@@ -15,5 +16,9 @@ export class ButtonComponent extends EditAbstractComponent {
       this.gtNode.property.buttonColor,
       this.gtNode.property.buttonType,
     ].join(' ');
+  }
+
+  @HostBinding('class.active') get buttonActive() {
+    return this.property.active;
   }
 }

@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.0.0",
-    "d3-interpolate": "~0.8.0",
     "tslib": "^2.4.0"
   },
   "publishConfig": {

@@ -6,21 +6,15 @@ import {
   GT_RENDER_COMPONENT_MAP,
   GtRenderCoreModule,
 } from '@ghosten/renderer';
-import { WaterModule, gtGaugeConfigMap } from '@ghosten/components';
+import { GaugeModule, gtGaugeConfigMap } from '@ghosten/components';
 
 import { BatteryComponent } from './battery.component';
 import { GaugeComponent } from './gauge.component';
-import { GaugeDirective } from './gauge.directive';
 import { WaterComponent } from './water.component';
 
 @NgModule({
-  imports: [CommonModule, GtRenderCoreModule, WaterModule],
-  declarations: [
-    GaugeComponent,
-    WaterComponent,
-    BatteryComponent,
-    GaugeDirective,
-  ],
+  imports: [CommonModule, GtRenderCoreModule, GaugeModule],
+  declarations: [GaugeComponent, WaterComponent, BatteryComponent],
   providers: [
     {
       provide: GT_RENDER_COMPONENT_MAP,

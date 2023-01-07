@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormAbstractComponent } from '@ghosten/renderer';
 import { InputProperty } from '@ghosten/components';
 
+import { fromEvent, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'gt-input',
   host: {
@@ -64,6 +66,7 @@ import { InputProperty } from '@ghosten/components';
         <input
           type="text"
           class="form-control"
+          #input
           #ngModel="ngModel"
           [id]="'form-node-' + gtNode.id"
           [type]="property.inputType"
@@ -76,7 +79,7 @@ import { InputProperty } from '@ghosten/components';
           [(ngModel)]="gtNode.property.value"
           (change)="onEvent('change')"
           (blur)="onEvent('blur')"
-          (wheel)="onwheel($event)"
+          (focus)="onFocus($event, input)"
         />
         <button
           *ngIf="property.inputType === 'number'"
@@ -97,15 +100,21 @@ import { InputProperty } from '@ghosten/components';
   `,
 })
 export class InputComponent extends FormAbstractComponent<InputProperty> {
-  onwheel(event: WheelEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  onFocus(event: FocusEvent, target: HTMLInputElement) {
     if (this.property.inputType === 'number') {
-      const value = this.property.value;
-      const toNumber = value ? +value : 0;
-      if (!Number.isNaN(toNumber)) {
-        this.property.value = toNumber - event.deltaY / 100;
-      }
+      fromEvent<WheelEvent>(target, 'wheel')
+        .pipe(takeUntil(fromEvent(target, 'blur')))
+        .subscribe(event => {
+          event.preventDefault();
+          event.stopPropagation();
+          const value = this.property.value;
+          const toNumber = value ? +value : 0;
+          if (!Number.isNaN(toNumber)) {
+            this.property.value =
+              toNumber -
+              Math.sign(event.deltaY) * Math.ceil(Math.abs(event.deltaY) / 100);
+          }
+        });
     }
   }
 

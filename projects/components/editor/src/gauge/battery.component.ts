@@ -1,20 +1,24 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+import { BatteryProperty, battery } from '@ghosten/components';
 import { EditAbstractComponent } from '@ghosten/editor';
-import { battery } from '@ghosten/components';
 
 @Component({
   selector: 'gt-battery',
-  template: ` <div class="battery-title">{{ this.gtNode.property.title }}</div>
-    <div class="battery-canvas flex-grow-1 overflow-hidden">
-      <canvas #canvas></canvas>
+  template: ` <div class="text-center text-truncate">
+      {{ this.property.title }}
     </div>
-    <div class="battery-value">
-      {{ this.gtNode.property.get('data') || 0 }}/{{
-        this.gtNode.property.gaugeMax
-      }}
+    <div class="flex-grow-1 overflow-hidden h-100">
+      <canvas class="d-block" #canvas></canvas>
+    </div>
+    <div class="text-center text-truncate">
+      {{ this.property.data || 0 }}/{{ this.property.gaugeMax }}
     </div>`,
 })
-export class BatteryComponent extends EditAbstractComponent implements OnInit {
+export class BatteryComponent
+  extends EditAbstractComponent<BatteryProperty>
+  implements OnInit
+{
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
   override ngOnInit() {
@@ -26,11 +30,11 @@ export class BatteryComponent extends EditAbstractComponent implements OnInit {
   draw(context: CanvasRenderingContext2D) {
     battery(
       context,
-      this.gtNode.property.title,
-      this.gtNode.property.data,
-      this.gtNode.property.gaugeMax,
-      this.gtNode.property.gaugeMin,
-      this.gtNode.property.direction,
+      this.property.title,
+      this.property.data,
+      this.property.gaugeMax,
+      this.property.gaugeMin,
+      this.property.direction,
     );
     requestAnimationFrame(() => this.draw(context));
   }
