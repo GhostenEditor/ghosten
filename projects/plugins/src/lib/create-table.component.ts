@@ -2,12 +2,12 @@ import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 
 @Component({
   selector: 'gt-create-table',
-  template: ` <div class="p-2 bg-white rounded border shadow">
+  template: ` <div class="p-2 bg-body rounded border shadow">
     <div class="d-flex" *ngFor="let row of rows; let i = index">
       <div
         class="table-cell border"
         *ngFor="let column of rows; let j = index"
-        [class.active]="i <= current[0] && j <= current[1]"
+        [class.bg-body-tertiary]="i <= current[0] && j <= current[1]"
         (mouseenter)="current = [i, j]"
       ></div>
     </div>
@@ -18,11 +18,6 @@ import { Component, EventEmitter, HostListener, Output } from '@angular/core';
         width: 1.25rem;
         height: 1.25rem;
         margin: 0.15rem;
-      }
-
-      .table-cell.active {
-        background-color: var(--bs-light);
-        border-color: var(--bs-border-color);
       }
     `,
   ],

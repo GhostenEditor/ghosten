@@ -26,11 +26,7 @@ export class TemplateDirective<T = Type<any>> {
       // return (this.gt as any).log.emit(`type为${gtNode.type}的组件不存在！`);
     }
     const injector: Injector = Injector.create({
-      providers: [
-        // { provide: HttpService, useValue: this._http },
-        { provide: GtNode, useValue: gtNode },
-        // { provide: GtNode, useValue: item },
-      ],
+      providers: [{ provide: GtNode, useValue: gtNode }],
       parent: this.injector,
     });
     const componentRef = this.viewContainerRef.createComponent<K>(
@@ -39,14 +35,13 @@ export class TemplateDirective<T = Type<any>> {
     );
     gtNode.componentRef = componentRef;
     this.cdr.detectChanges();
+    // this.cdr.markForCheck();
     return componentRef;
-    // componentRef.instance.gtNode = gtNode;
-    // componentRef.instance.gt = this.gt;
   }
 
   remove(index?: number) {
     this.viewContainerRef.remove(index);
-    this.cdr.detectChanges();
+    // this.cdr.detectChanges();
   }
 
   move(gtNode: GtNode, index: number) {
@@ -55,11 +50,13 @@ export class TemplateDirective<T = Type<any>> {
       index,
     );
     this.cdr.detectChanges();
+    // this.cdr.markForCheck();
     return viewRef;
   }
 
   clear() {
     this.viewContainerRef.clear();
+    // this.cdr.markForCheck();
     this.cdr.detectChanges();
   }
 }

@@ -10,10 +10,7 @@ if (environment.production) {
 }
 const Stats = require('stats.js');
 const stats = new Stats();
-stats.dom.style.position = 'fixed';
-stats.dom.style.left = '';
 stats.dom.style.top = '';
-stats.dom.style.right = 'env(safe-area-inset-right)';
 stats.dom.style.bottom = 'env(safe-area-inset-bottom)';
 document.body.appendChild(stats.dom);
 const monitor = () => {

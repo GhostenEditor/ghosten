@@ -199,7 +199,10 @@ export class GtEditComponent implements OnDestroy {
       .pipe(
         filter(() => document.activeElement === document.body),
         filter(event => event.keyCode === SPACE),
-        tap(() => (gt.mode = 'move')),
+        tap(event => {
+          event.preventDefault();
+          gt.mode = 'move';
+        }),
         switchMap(() =>
           fromEvent<KeyboardEvent>(document, 'keyup').pipe(
             filter(event => event.keyCode === SPACE),

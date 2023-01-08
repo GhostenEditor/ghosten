@@ -1,6 +1,6 @@
 .gt-page {
   background-color: var(--bs-body-bg);
-  outline: 2rem solid var(--bs-body-bg);
+  box-shadow: 0 0 0 2rem var(--bs-body-bg), 0 1rem 3rem 3rem rgba(0, 0, 0, .175);
 }
 
 .gt-node {

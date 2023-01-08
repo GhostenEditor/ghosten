@@ -6,6 +6,7 @@ import {
   EventEmitter,
   HostListener,
   Inject,
+  NgZone,
   OnInit,
   Optional,
   Output,
@@ -15,6 +16,13 @@ import {
 import { Directionality } from '@angular/cdk/bidi';
 
 import { GtNode } from '@ghosten/common';
+
+import {
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  map,
+} from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 import { Drag, TranslateAnimation, closest, findGtElement } from '../../utils';
 import { EventsService } from '../../services';
@@ -36,18 +44,18 @@ import { TemplateDirective } from '../../directives';
       page-structure
       gtPan
       [panTarget]="page"
-      [panDisabled]="this.gt.mode !== 'move'"
+      [panDisabled]="gt.mode !== 'move'"
       class="oblique-stripes overflow-auto position-relative h-100"
       [class.overflow-auto]="gt.mode === 'edit'"
       [class.overflow-hidden]="gt.mode === 'move'"
-      (updateTransform)="transform = $event"
+      (updateTransform)="updateTransform($event)"
     >
       <div
         gtResize
         gtZoom
         resizes="all"
+        class="gt-page"
         page-structure-source
-        class="gt-page shadow-lg"
         #page
         [minWidth]="300"
         [maxWidth]="5000"
@@ -57,7 +65,7 @@ import { TemplateDirective } from '../../directives';
         [gtZoomDisabled]="gt.mode !== 'move'"
         [zoomZone]="el.nativeElement"
         [style.transform]="transform"
-        (updateTransform)="transform = $event"
+        (updateTransform)="updateTransform($event)"
       >
         <ng-template gtTemplate></ng-template>
       </div>
@@ -101,15 +109,6 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  @HostListener('mousemove', ['$event']) blackboardMousemove(
-    event: MouseEvent,
-  ) {
-    if (this.gt.mode !== 'move') {
-      const gtNode = this.getTargetNode(event);
-      this.gtNodeHover.emit(gtNode);
-    }
-  }
-
   constructor(
     public el: ElementRef,
     public gt: GtEdit,
@@ -118,16 +117,36 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
     private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
     private direction: Directionality,
+    private ngZone: NgZone,
     @Optional() @Inject(GT_CONTEXTMENU) private _gtContextMenu: GtContextMenu,
   ) {
+    // this.cdr.detach();
     this.events.CHANGE_BOARD.subscribe(() => this.init());
   }
 
   ngOnInit() {
     // todo bug fix 此处会是element tree的contextmenu事件runOutsideAngular
-    // this._ngZone.runOutsideAngular(() => {
-    this.initDragEvent();
-    // });
+    this.ngZone.runOutsideAngular(() => {
+      this.initDragEvent();
+    });
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<MouseEvent>(this.el.nativeElement, 'mousemove')
+        .pipe(
+          distinctUntilKeyChanged('target'),
+          map(event => {
+            if (this.gt.mode !== 'move') {
+              return this.getTargetNode(event);
+            } else {
+              return null;
+            }
+          }),
+          distinctUntilChanged(),
+        )
+        .subscribe(node => {
+          // this.gtNodeHover.emit(node);
+          this.ngZone.run(() => this.gtNodeHover.emit(node));
+        });
+    });
   }
 
   ngAfterViewInit() {
@@ -137,6 +156,11 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
   init() {
     this.template.clear();
     this.template.insert(this.gt.gt!);
+  }
+
+  updateTransform(transform: string) {
+    this.transform = transform;
+    this.cdr.detectChanges();
   }
 
   resetPosition() {
@@ -178,7 +202,6 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
       },
     });
     drag.drop.subscribe(({ parentElement, refChild, target, placeholder }) => {
-      // console.log(parentElement, refChild, target);
       const beforePositions = Array.prototype.filter
         .call(parentElement.children, child => child !== target)
         .map(child => child.getBoundingClientRect());

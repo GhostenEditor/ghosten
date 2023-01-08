@@ -1,4 +1,9 @@
-import { Component, Inject, Optional } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Optional,
+} from '@angular/core';
 
 import { Board } from '@ghosten/common';
 
@@ -9,6 +14,7 @@ import { GtEdit } from '../../classes';
 
 @Component({
   preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'gt-navbar',
   host: {
     class: 'navbar navbar-expand-md border-bottom',
@@ -29,13 +35,15 @@ import { GtEdit } from '../../classes';
     <a
       style="cursor: pointer"
       (click)="editorBrand.click && editorBrand.click()"
-      class="navbar-brand d-flex"
+      class="navbar-brand d-flex align-items-center"
     >
       <img
         [src]="editorBrand.src"
         [alt]="editorBrand.alt"
         class="rounded"
-        style="width: 2rem;"
+        width="32"
+        height="32"
+        style="width: 2rem; height: 2rem;"
       />
       <span class="fw-bold ms-2 d-md-inline d-none">{{
         editorBrand.title

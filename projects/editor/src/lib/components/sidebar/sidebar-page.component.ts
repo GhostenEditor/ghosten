@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import { Board } from '@ghosten/common';
 
@@ -6,6 +6,7 @@ import { GtEdit } from '../../classes';
 
 @Component({
   selector: 'gt-accordion-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <gt-accordion [multi]="false">
       <gt-accordion-item

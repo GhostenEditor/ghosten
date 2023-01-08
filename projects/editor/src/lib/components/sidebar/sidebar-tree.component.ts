@@ -6,6 +6,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { CdkNestedTreeNode, CdkTree, FlatTreeControl } from '@angular/cdk/tree';
 import {
+  ChangeDetectionStrategy,
   Component,
   Inject,
   OnDestroy,
@@ -13,8 +14,8 @@ import {
   Optional,
   QueryList,
   ViewChild,
-  ViewChildren,
-} from '@angular/core';
+  ViewChildren
+} from "@angular/core";
 import { TreeFlatDataSource, TreeFlattener } from './flat-data-source';
 
 import { GtNode } from '@ghosten/common';
@@ -36,6 +37,7 @@ interface FlattenNode {
 
 @Component({
   selector: 'gt-accordion-elTree',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="bg-secondary-subtle p-2 text-center border-bottom" i18n>
       共{{ gt.currentBoard!.nodeList.size }}个节点

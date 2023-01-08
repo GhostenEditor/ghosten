@@ -3,7 +3,6 @@ import { Point } from '@angular/cdk/drag-drop';
 import { EMPTY, Observable, Subject, of } from 'rxjs';
 
 import {
-  debounceTime,
   distinctUntilChanged,
   filter,
   map,
@@ -44,7 +43,7 @@ export class Drag<T> {
     refChild: HTMLElement | null;
     target: HTMLElement;
   }>();
-  drop = this._drop.asObservable().pipe(debounceTime(50));
+  drop = this._drop.asObservable();
   dragEnd = this._dragEnd$.asObservable();
   public disabled: boolean;
 
@@ -82,8 +81,8 @@ export class Drag<T> {
                 node.style.width = dragClientRect.width + 'px';
                 node.style.height = dragClientRect.height + 'px';
                 const container = document.createElement('div');
-                container.appendChild(node);
                 container.classList.add('draggable-mirror');
+                container.appendChild(node);
                 return container;
               }
 
