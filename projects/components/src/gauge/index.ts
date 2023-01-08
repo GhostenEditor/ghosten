@@ -3,6 +3,7 @@ import { createDefaultConfig } from '@ghosten/common';
 export * from './gauge.module';
 export * from './gauge.directive';
 export * from './water.directive';
+export * from './battery.directive';
 
 export interface GaugeProperty {
   title: string;

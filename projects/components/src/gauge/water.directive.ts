@@ -1,21 +1,28 @@
-import { Directive, ElementRef, Input, NgZone } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { tween, waterBall } from '../plugins';
+import { WaterBall, interpolate, tween } from '../plugins';
 import { convertColorToGL } from '../utils';
-import { interpolate } from '../plugins/tween';
 
 @Directive({
   selector: '[gt-waterBall]',
 })
-export class WaterDirective {
-  private waterBall: any;
+export class WaterDirective implements OnInit, OnDestroy {
+  private waterBall: WaterBall;
   private _min: number | undefined;
   private _max: number | undefined;
   private _minColor: string;
   private _maxColor: string;
   private _value: number | undefined;
   private subscription = Subscription.EMPTY;
+  private frameId: number;
 
   @Input() get min() {
     return this._min;
@@ -70,10 +77,23 @@ export class WaterDirective {
     );
   }
 
-  constructor(elementRef: ElementRef, private _ngZone: NgZone) {
-    this._ngZone.runOutsideAngular(
-      () => (this.waterBall = waterBall(elementRef.nativeElement)),
-    );
+  constructor(private elementRef: ElementRef, private _ngZone: NgZone) {
+    this.waterBall = new WaterBall(this.elementRef.nativeElement);
+  }
+
+  ngOnInit() {
+    this._ngZone.runOutsideAngular(() => {
+      const loop = (time: number) => {
+        this.waterBall.render(time);
+        this.frameId = requestAnimationFrame(loop);
+      };
+      this.frameId = requestAnimationFrame(loop);
+    });
+  }
+
+  ngOnDestroy() {
+    this.waterBall.destroy();
+    cancelAnimationFrame(this.frameId);
   }
 
   private updateValue() {
