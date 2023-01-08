@@ -41,7 +41,6 @@ import { MenuItem } from '@ghosten/database';
           class="btn btn-text d-flex btn-sm"
           routerLinkActive="active"
           [style.padding-left]="level * 0.75 + 'rem'"
-          [attr.aria-expanded]="accordionItem.expanded"
           (click)="accordionItem.toggle()"
         >
           <a [routerLink]="item.url" class="d-none"></a>

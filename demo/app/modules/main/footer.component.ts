@@ -14,6 +14,8 @@ import { Component } from '@angular/core';
               src="assets/icons/128.png"
               alt="Ghosten Logo"
               class="rounded"
+              width="80"
+              height="80"
               style="width: 5rem;"
             />
             <span class="fw-bold my-2">GHOSTEN</span>
@@ -33,7 +35,7 @@ import { Component } from '@angular/core';
               <a target="_blank" href="/ghosten/en-US/">English</a>
             </li>
             <li class="mb-2">
-              <a target="_blank">日本語版 (todo)</a>
+              <span>日本語版 (todo)</span>
             </li>
           </ul>
         </div>

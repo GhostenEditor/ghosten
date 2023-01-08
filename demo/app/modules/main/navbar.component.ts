@@ -13,7 +13,7 @@ import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-navbar',
-  template: ` <nav class="navbar navbar-expand-lg bg-primary sticky-top">
+  template: ` <nav class="navbar navbar-expand-lg bg-primary sticky-top" data-bs-theme="dark">
     <div class="container">
       <button
         class="navbar-toggler"
@@ -29,8 +29,10 @@ import { ToastService } from '../toast/toast.service';
         <img
           src="assets/icons/128.png"
           alt="Ghosten Logo"
+          width="32"
+          height="32"
           class="rounded"
-          style="width: 2rem;"
+          style="width: 2rem; height: 2rem;"
         />
         <span class="fw-bold mx-1">GHOSTEN</span>
       </a>
@@ -75,22 +77,23 @@ import { ToastService } from '../toast/toast.service';
             </button>
           </li>
           <!--          <li class="nav-item py-2 col-12 col-lg-auto">
-                                                                                                <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
-                                                                                              </li>-->
+                                                                                                    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                                                                                                  </li>-->
           <li class="nav-item col-6 col-lg-auto">
             <button
               type="button"
               class="btn btn-link nav-link position-relative overflow-hidden"
               title="导入"
             >
-              <input
-                #file
-                type="file"
-                class="position-absolute w-100 h-100 opacity-0"
-                style="left: 0;top: 0"
-                accept=".gt"
-                (change)="import(file)"
-              />
+              <label
+                ><input
+                  #file
+                  type="file"
+                  class="position-absolute w-100 h-100 opacity-0"
+                  style="left: 0;top: 0"
+                  accept=".gt"
+                  (change)="import(file)"
+              /></label>
               <i class="gt-icon">input</i>
               <small class="d-lg-none ms-2">导入</small>
             </button>

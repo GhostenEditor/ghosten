@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       </h1>
       <h6
         class="fw-normal mb-5 text-secondary font-monospace m-auto"
-        style="width: 24rem;"
+        style="max-width: 24rem;"
       >
         A Low-Code Web Editor. Fast and easy to build web page.
       </h6>
