@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.11](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.10...v0.1.0-alpha.11) (2023-01-10)
+
+### Performance Improvements
+
+- **editor:** 性能优化 ([ac35c54](https://github.com/GhostenEditor/ghosten/commit/ac35c54ca35f1545f1ba16334119ec59ef4ca9e9))
+
 # [0.1.0-alpha.10](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-01-07)
 
 ### Features

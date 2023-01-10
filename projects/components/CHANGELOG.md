@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.11](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.10...v0.1.0-alpha.11) (2023-01-10)
+
+### Bug Fixes
+
+- **components:** Gauge bug 修复，性能优化 ([62956f8](https://github.com/GhostenEditor/ghosten/commit/62956f822adb44cefe1fbe36f7307d9e20448b75))
+
 # [0.1.0-alpha.10](https://github.com/GhostenEditor/ghosten/compare/v0.1.0-alpha.9...v0.1.0-alpha.10) (2023-01-07)
 
 ### Bug Fixes
