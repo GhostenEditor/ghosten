@@ -20,11 +20,7 @@ function easeQuadInOut(p: number) {
   return 1 - Math.pow(p - 1, 4);
 }
 
-function tweenSource<T>(
-  valueScale: (t: number) => T,
-  timeScale: (t: number) => number,
-  duration: number,
-) {
+function tweenSource<T>(valueScale: (t: number) => T, timeScale: (t: number) => number, duration: number) {
   return concat(
     animationFrames().pipe(
       map(({ elapsed }) => elapsed / duration),

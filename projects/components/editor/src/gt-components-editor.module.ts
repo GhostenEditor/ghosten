@@ -6,11 +6,6 @@ import { GtFormEditModule } from './form/gt-form-edit.module';
 import { GtGaugeEditModule } from './gauge/gt-gauge-edit.module';
 
 @NgModule({
-  exports: [
-    GtBaseEditModule,
-    GtGaugeEditModule,
-    GtFormEditModule,
-    GtContainerEditModule,
-  ],
+  exports: [GtContainerEditModule, GtBaseEditModule, GtFormEditModule, GtGaugeEditModule],
 })
 export class GtComponentsEditorModule {}

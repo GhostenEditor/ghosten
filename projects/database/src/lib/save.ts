@@ -4,12 +4,7 @@ import pako from 'pako';
 
 export function save(
   db: IDBDatabase,
-  {
-    id,
-    config,
-    settings,
-    type,
-  }: { id: number; config: string; settings: any; type: string },
+  { id, config, settings, type }: { id: number; config: string; settings: any; type: string },
 ): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');

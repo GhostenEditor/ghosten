@@ -8,9 +8,7 @@ import { TextareaProperty } from '@ghosten/components';
     class: 'd-block',
   },
   template: `
-    <label class="form-label" *ngIf="gtNode.property.showLabel">{{
-      gtNode.property.labelText
-    }}</label>
+    <label class="form-label" *ngIf="gtNode.property.showLabel">{{ gtNode.property.labelText }}</label>
     <div class="input-group has-validation" [ngClass]="property.inputSize">
       <textarea
         class="form-control"

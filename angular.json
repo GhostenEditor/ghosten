@@ -156,6 +156,7 @@
               "demo/manifest.webmanifest"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "demo/styles/index.sass"
             ],
             "scripts": [],
@@ -269,7 +270,8 @@
             "development": {
               "optimization": false,
               "sourceMap": true,
-              "extractLicenses": false
+              "extractLicenses": false,
+              "localize": false
             }
           },
           "defaultConfiguration": "production"
@@ -292,8 +294,7 @@
           "builder": "@nguniversal/builders:prerender",
           "options": {
             "routes": [
-              "/",
-              "/edit"
+              "/"
             ]
           },
           "configurations": {

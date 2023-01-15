@@ -2,27 +2,33 @@ import { ROUTES, Route, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { GtComponentsEditorModule } from '@ghosten/components/editor';
 import { GtComponentsRendererModule } from '@ghosten/components/renderer';
+import { GtEditCoreModule } from '@ghosten/editor';
 import { GtRenderCoreModule } from '@ghosten/renderer';
+import { GtPluginModule } from '@ghosten/plugins';
 
 import { ErrorComponent } from './error.component';
 import { FooterComponent } from './footer.component';
+import { HomeComponent } from './home.component';
 import { MainComponent } from './main.component';
 import { MainService } from '../../providers/main.service';
 import { NavbarComponent } from './navbar.component';
 import { NavigationModule } from '../navigation/navigation.module';
 import { OffcanvasComponent } from './offcanvas.component';
 import { TemplateComponent } from './template.component';
-import { TemplateResolve } from './main.resovle';
-import { HomeComponent } from './home.component';
+import { TemplateResolve } from './template.resovle';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     NavigationModule,
+    GtEditCoreModule,
     GtRenderCoreModule,
+    // GtComponentsEditorModule,
     GtComponentsRendererModule,
+    // GtPluginModule,
   ],
   declarations: [
     MainComponent,

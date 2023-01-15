@@ -1,10 +1,7 @@
 import { MessageEvent } from './types';
 import { resolveTransaction } from './resolve';
 
-export function activatePage(
-  db: IDBDatabase,
-  id: number,
-): Promise<MessageEvent> {
+export function activatePage(db: IDBDatabase, id: number): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'EDIT_CONFIG'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   const editConfigObjectStore = transaction.objectStore('EDIT_CONFIG');

@@ -3,28 +3,38 @@ import { NgModule } from '@angular/core';
 
 import {
   GT_EDIT_COMPONENT_MAP,
+  GT_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
   GT_TEMPLATE_MAP,
   GtEditCoreModule,
 } from '@ghosten/editor';
 import { gtBaseConfigMap } from '@ghosten/components';
 
-import { DivisionComponent } from './division.component';
 import { ImageComponent } from './image.component';
 import { TextComponent } from './text.component';
 
 @NgModule({
   imports: [CommonModule, GtEditCoreModule],
-  declarations: [DivisionComponent, TextComponent, ImageComponent],
+  declarations: [TextComponent, ImageComponent],
   providers: [
+    {
+      provide: GT_ELEMENT_LISTS,
+      useValue: {
+        title: $localize`:Element Group Title\: Normal:通用`,
+        elements: [
+          {
+            label: $localize`:Element Label\: Text:文字`,
+            type: 'text',
+            icon: 'text',
+          },
+          { label: '图片', type: 'image', icon: 'picture' },
+        ],
+      },
+      multi: true,
+    },
     {
       provide: GT_EDIT_COMPONENT_MAP,
       useValue: {
-        root: DivisionComponent,
-        division: DivisionComponent,
-        template: DivisionComponent,
-        slot: DivisionComponent,
-        outlet: DivisionComponent,
         text: TextComponent,
         image: ImageComponent,
       },

@@ -1,3 +1,6 @@
+import { MessageEvent } from './types';
+import { log } from './log';
+
 import { activatePage } from './activatePage';
 import { addPage } from './addPage';
 import { deleteDB } from './deleteDB';
@@ -5,15 +8,15 @@ import { deletePage } from './deletePage';
 import { editPage } from './editPage';
 import { exportDB } from './exportDB';
 import { getActivatedPageID } from './getActivatedPageID';
+import { getHistoryByID } from './getHistoryByID';
 import { getLatestConfigByID } from './getLatestConfigByID';
 import { getNavigations } from './getNavigations';
 import { getPageList } from './getPageList';
 import { getRoutes } from './getRoutes';
 import { importDB } from './importDB';
+import { removeComponent } from './removeComponent';
 import { save } from './save';
-
-import { MessageEvent } from './types';
-import { log } from './log';
+import { saveComponent } from './saveComponent';
 
 export class GtDatabase {
   private DBName = 'GHOSTEN';
@@ -23,13 +26,11 @@ export class GtDatabase {
 
   init(): Promise<IDBDatabase> {
     return new Promise(resolve => {
-      const dbRequest = indexedDB.open(this.DBName, 2);
+      const dbRequest = indexedDB.open(this.DBName, 4);
 
       dbRequest.addEventListener('upgradeneeded', function () {
         const db = this.result;
-        Array.from(db.objectStoreNames).forEach(name =>
-          db.deleteObjectStore(name),
-        );
+        Array.from(db.objectStoreNames).forEach(name => db.deleteObjectStore(name));
         const interactionStore = db.createObjectStore('USER_INTERACTION', {
           keyPath: 'category',
         });
@@ -38,6 +39,12 @@ export class GtDatabase {
           autoIncrement: true,
         });
         const configHistoryStore = db.createObjectStore('CONFIG_HISTORY', {
+          keyPath: ['id', 'timestamp'],
+        });
+        const componentStore = db.createObjectStore('COMPONENT', {
+          keyPath: 'id',
+        });
+        const componentHistory = db.createObjectStore('COMPONENT_HISTORY', {
           keyPath: ['id', 'timestamp'],
         });
         const editConfigStore = db.createObjectStore('EDIT_CONFIG', {
@@ -55,6 +62,11 @@ export class GtDatabase {
         configHistoryStore.createIndex('id', 'id');
         configHistoryStore.createIndex('type', 'type');
         configHistoryStore.createIndex('timestamp', 'timestamp');
+        configHistoryStore.createIndex('id_timestamp', ['id', 'timestamp']);
+        componentStore.createIndex('id', 'id');
+        componentHistory.createIndex('id', 'id');
+        componentHistory.createIndex('timestamp', 'timestamp');
+        componentHistory.createIndex('id_timestamp', ['id', 'timestamp']);
         editConfigStore.createIndex('type', 'type');
         editConfigStore.createIndex('value', 'value');
       });
@@ -67,9 +79,7 @@ export class GtDatabase {
         });
         resolve(this.db);
       });
-      dbRequest.addEventListener('error', error =>
-        log('error', 'IndexedDB connect request failed %O', error),
-      );
+      dbRequest.addEventListener('error', error => log('error', 'IndexedDB connect request failed %O', error));
     });
   }
 
@@ -104,6 +114,12 @@ export class GtDatabase {
               return getNavigations(db);
             case 'getRoutes':
               return getRoutes(db);
+            case 'getHistoryByID':
+              return getHistoryByID(db, data);
+            case 'saveComponent':
+              return saveComponent(db, data);
+            case 'removeComponent':
+              return removeComponent(db, data);
             default:
               throw new Error('未知方法');
           }

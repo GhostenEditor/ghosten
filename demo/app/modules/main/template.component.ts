@@ -1,10 +1,33 @@
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
+import { LogEvent } from '@ghosten/common';
 
 @Component({
   selector: 'app-template',
-  template: ` <gt-render [data]="route.snapshot.data.data"></gt-render>`,
+  template: ` <gt-renderer [data]="route.snapshot.data.data" (log)="log($event)"></gt-renderer>`,
 })
 export class TemplateComponent {
-  constructor(public route: ActivatedRoute) {}
+  private readonly isBrowser: boolean;
+
+  constructor(public route: ActivatedRoute, @Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  log({ type, message, data }: LogEvent) {
+    if (this.isBrowser) {
+      switch (type) {
+        case 'info':
+          console.info('[GHOSTEN  INFO]: ' + message + ' %O', data);
+          break;
+        case 'error':
+          console.error('[GHOSTEN ERROR]: ' + message, data);
+          break;
+        case 'warning':
+          console.warn('[GHOSTEN WARNING]: ' + message, data);
+          break;
+      }
+    }
+  }
 }

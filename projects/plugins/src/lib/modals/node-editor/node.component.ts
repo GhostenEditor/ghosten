@@ -13,11 +13,7 @@ import { Node } from './node';
 
 @Component({
   selector: 'node-editor-item',
-  template: ` <div
-    class="card rete-node position-absolute"
-    cdkDrag
-    (cdkDragMoved)="cdkDragMoved()"
-  >
+  template: ` <div class="card rete-node position-absolute" cdkDrag (cdkDragMoved)="cdkDragMoved()">
     <div class="card-header">{{ node.name }}</div>
     <div class="card-body" *ngIf="node.outputs.length">
       <div class="output text-end" *ngFor="let output of node.outputs">
@@ -26,10 +22,7 @@ import { Node } from './node';
       </div>
     </div>
     <ul class="list-group list-group-flush">
-      <li
-        class="list-group-item position-static"
-        *ngFor="let input of node.inputs"
-      >
+      <li class="list-group-item position-static" *ngFor="let input of node.inputs">
         <div class="socket input" nodeSocket [socket]="input"></div>
         <div class="d-inline-block">
           <div class="input-title">{{ input.name }}</div>
@@ -46,11 +39,7 @@ export class NodeComponent implements OnInit {
   @ViewChild(CdkDrag, { static: true }) cdkDrag: CdkDrag;
   @Output() contextmenuEvent = new EventEmitter();
 
-  constructor(
-    protected cdr: ChangeDetectorRef,
-    public node: Node,
-    protected connectionService: ConnectionService,
-  ) {}
+  constructor(protected cdr: ChangeDetectorRef, public node: Node, protected connectionService: ConnectionService) {}
 
   ngOnInit() {
     this.cdkDrag.setFreeDragPosition(this.node.position);

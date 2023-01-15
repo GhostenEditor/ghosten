@@ -5,9 +5,8 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 
-import { ContextmenuModule } from './contextmenu/contextmenu.module';
+import { ConfigFormModule } from './modules/config-form/config-form.module';
 import { CreateTableComponent } from './create-table.component';
-import { ModalActionComponent } from './modal-action/action-edit.component';
 import { ModalModule } from './modules/modal/modal.module';
 import { NodeEditorModule } from './modals/node-editor/node-editor.module';
 import { modals } from './modals';
@@ -16,7 +15,6 @@ import { providers } from './providers';
 @NgModule({
   imports: [
     CommonModule,
-    ContextmenuModule,
     FormsModule,
     DragDropModule,
     A11yModule,
@@ -24,9 +22,9 @@ import { providers } from './providers';
     ReactiveFormsModule,
     ModalModule,
     NodeEditorModule,
+    ConfigFormModule,
   ],
-  declarations: [CreateTableComponent, ModalActionComponent, ...modals],
-  exports: [ModalModule],
+  declarations: [CreateTableComponent, ...modals],
   providers,
 })
 export class GtPluginModule {}

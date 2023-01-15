@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  HostBinding,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, HostBinding, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, NgModel, ValidationErrors } from '@angular/forms';
 import { DataBinding } from '@ghosten/common';
 
@@ -13,20 +8,14 @@ import { RenderAbstractComponent } from './abstract.component';
 import { getValidatorsFromGtNode } from '../utils';
 
 @Component({
-  selector: 'gt-form-abstract',
+  selector: 'gt-config-form-abstract',
   template: '',
 })
-export class FormAbstractComponent<T>
-  extends RenderAbstractComponent<T>
-  implements AfterViewInit {
+export class FormAbstractComponent<T> extends RenderAbstractComponent<T> implements AfterViewInit, OnDestroy {
   @ViewChild('ngModel') ngModel: NgModel;
 
   @HostBinding('class.has-error') get hasError() {
-    return (
-      this.control &&
-      this.control.invalid &&
-      (this.control.dirty || this.control.touched)
-    );
+    return this.control && this.control.invalid && (this.control.dirty || this.control.touched);
   }
 
   private errorTextMap: Map<string, string>;
@@ -75,6 +64,13 @@ export class FormAbstractComponent<T>
           }),
         )
         .subscribe();
+    }
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.control && this.formGroup && this.formGroup.contains(this.gtNode.property.name)) {
+      this.formGroup.removeControl(this.gtNode.property.name);
     }
   }
 

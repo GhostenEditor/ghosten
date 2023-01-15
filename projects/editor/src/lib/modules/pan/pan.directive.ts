@@ -2,6 +2,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   NgZone,
   OnDestroy,
@@ -20,6 +21,7 @@ import {
   removeDragRootStyle,
   setDragRootStyle,
 } from '../../utils';
+import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[gtPan]' })
 export class PanDirective implements OnDestroy {
@@ -28,7 +30,7 @@ export class PanDirective implements OnDestroy {
   @Output() updateTransform = new EventEmitter<string>();
   private subscription = Subscription.EMPTY;
 
-  constructor(private el: ElementRef, renderer: Renderer2, ngZone: NgZone) {
+  constructor(private el: ElementRef, renderer: Renderer2, ngZone: NgZone, @Inject(DOCUMENT) _document: Document) {
     ngZone.runOutsideAngular(() => {
       this.subscription = dragStart(this.el.nativeElement)
         .pipe(
@@ -37,23 +39,19 @@ export class PanDirective implements OnDestroy {
               return EMPTY;
             }
             const matrix = getDOMTransformMatrix(this.panTarget);
-            setDragRootStyle('userSelect', 'none');
-            setDragRootStyle('cursor', 'grab');
-            return dragMove(event).pipe(
+            setDragRootStyle(_document.documentElement, 'userSelect', 'none');
+            setDragRootStyle(_document.documentElement, 'cursor', 'grab');
+            return dragMove(_document, event).pipe(
               takeUntil(
-                dragEnd(event).pipe(
+                dragEnd(_document, event).pipe(
                   tap(() => {
-                    removeDragRootStyle('userSelect');
-                    removeDragRootStyle('cursor');
+                    removeDragRootStyle(_document.documentElement, 'userSelect');
+                    removeDragRootStyle(_document.documentElement, 'cursor');
                   }),
                 ),
               ),
               map(evt => calculateOffset(event, evt)),
-              tap(({ x, y }) =>
-                this.updateTransform.emit(
-                  matrix.translate(x / matrix.a, y / matrix.d).toString(),
-                ),
-              ),
+              tap(({ x, y }) => this.updateTransform.emit(matrix.translate(x / matrix.a, y / matrix.d).toString())),
             );
           }),
         )

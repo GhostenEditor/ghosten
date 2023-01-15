@@ -2,14 +2,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import {
-  GT_NODE_DEFAULT_CONFIG,
-  GT_RENDER_COMPONENT_MAP,
-  GtRenderCoreModule,
-} from '@ghosten/renderer';
+import { GT_NODE_DEFAULT_CONFIG, GT_RENDER_COMPONENT_MAP, GtRenderCoreModule } from '@ghosten/renderer';
 import { gtFormConfigMap } from '@ghosten/components';
 
 import { ButtonComponent } from './button.component';
+import { CheckboxComponent } from './checkbox.component';
 import { FormComponent } from './form.component';
 import { InputComponent } from './input.component';
 import { RadioComponent } from './radio.component';
@@ -21,6 +18,7 @@ import { ToggleComponent } from './toggle.component';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, GtRenderCoreModule],
   declarations: [
     RadioComponent,
+    CheckboxComponent,
     ToggleComponent,
     ButtonComponent,
     FormComponent,
@@ -33,7 +31,7 @@ import { ToggleComponent } from './toggle.component';
       provide: GT_RENDER_COMPONENT_MAP,
       useValue: {
         radio: RadioComponent,
-        checkbox: RadioComponent,
+        checkbox: CheckboxComponent,
         toggle: ToggleComponent,
         button: ButtonComponent,
         input: InputComponent,

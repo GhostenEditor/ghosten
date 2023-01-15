@@ -2,35 +2,36 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Inject,
   Input,
-  Output,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 
-import { GtNode } from '@ghosten/common';
+import { DataBinding, GtNode } from '@ghosten/common';
 
-import { FormEvent, FormItem } from '../properties-form/types';
+import { Subscription, fromEvent } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+import { EditExpressionEndEvent, EditExpressionStartEvent } from '../../classes';
+import { FormEvent, FormItem } from '../../types';
+import { ConfigFormComponent } from '../../modules';
 import { EventsService } from '../../services';
 import { GT_NODE_INTERNAL_CONFIG_LIST_MAP } from '../../injectors-internal';
-import { OpenDialogEvent } from './types';
-import { PropertiesFormComponent } from '../properties-form/properties-form.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'gt-panel-config',
-  template: ` <properties-form
+  template: ` <config-form
     [formList]="formList"
     (formChange)="onchange($event)"
-    (formClick)="onclick($event)"
     (dataBindClick)="dataBind($event)"
     (inheritClick)="inheritClick($event)"
-  ></properties-form>`,
+  ></config-form>`,
 })
-export class PanelConfigComponent {
-  @ViewChild(PropertiesFormComponent, { static: true })
-  formComp: PropertiesFormComponent;
+export class PanelConfigComponent implements OnDestroy {
+  @ViewChild(ConfigFormComponent, { static: true })
+  formComp: ConfigFormComponent;
   public _gtNode: GtNode;
   public formList: FormItem[];
 
@@ -46,7 +47,7 @@ export class PanelConfigComponent {
     return this._gtNode;
   }
 
-  @Output() openDialog = new EventEmitter<OpenDialogEvent>();
+  private subscription = Subscription.EMPTY;
 
   constructor(
     private events: EventsService,
@@ -54,6 +55,10 @@ export class PanelConfigComponent {
     @Inject(GT_NODE_INTERNAL_CONFIG_LIST_MAP)
     private configList: Map<string, Map<string, FormItem[]>>,
   ) {}
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   getFormList(): FormItem[] {
     return this.configList
@@ -63,23 +68,10 @@ export class PanelConfigComponent {
         ...formItem,
         value: this.gtNode[this.type][formItem.name],
         inherit: this.gtNode.template
-          ? !Object.prototype.hasOwnProperty.call(
-              this.gtNode[this.type],
-              formItem.name,
-            )
+          ? !Object.prototype.hasOwnProperty.call(this.gtNode[this.type], formItem.name)
           : undefined,
         // validator: formItem && formItem.validator && formItem.validator(this.gt)
       }));
-  }
-
-  onclick({ formItem, formControl }: FormEvent) {
-    this.openDialog.emit({
-      type: this.type,
-      gtNode: this.gtNode,
-      args: [formItem.name, formControl.value],
-      cb: (value: any) =>
-        this.onchange({ formItem: { ...formItem, value }, formControl }),
-    });
   }
 
   inheritClick({ formItem, formControl }: FormEvent) {
@@ -126,12 +118,19 @@ export class PanelConfigComponent {
   }
 
   dataBind({ formItem, formControl }: FormEvent) {
-    this.openDialog.emit({
-      type: this.type,
-      gtNode: this.gtNode,
-      args: ['bindData', formItem.name, formControl.value],
-      cb: value =>
-        this.onchange({ formItem: { ...formItem, value }, formControl }),
-    });
+    this.events.target.dispatchEvent(
+      new EditExpressionStartEvent(
+        formControl.value instanceof DataBinding ? formControl.value.data : formControl.value,
+      ),
+    );
+    this.subscription.unsubscribe();
+    this.subscription = fromEvent<EditExpressionEndEvent>(this.events.target, 'editexpressionend')
+      .pipe(take(1))
+      .subscribe(event => {
+        this.onchange({
+          formItem: { ...formItem, value: new DataBinding(event.expression) },
+          formControl,
+        });
+      });
   }
 }

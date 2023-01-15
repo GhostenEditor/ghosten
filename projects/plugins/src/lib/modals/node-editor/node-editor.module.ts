@@ -12,22 +12,9 @@ import { NodeEditorComponent } from './node-editor.component';
 import { SocketDirective } from './socket.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ModalModule,
-    AccordionModule,
-    DragDropModule,
-    ZoomModule,
-    PanModule,
-  ],
+  imports: [CommonModule, ModalModule, AccordionModule, DragDropModule, ZoomModule, PanModule],
   exports: [],
-  declarations: [
-    NodeEditorComponent,
-    NodeEditorCanvasDirective,
-    NodeComponent,
-    ConnectionsComponent,
-    SocketDirective,
-  ],
+  declarations: [NodeEditorComponent, NodeEditorCanvasDirective, NodeComponent, ConnectionsComponent, SocketDirective],
   providers: [ConnectionService],
 })
 export class NodeEditorModule {}

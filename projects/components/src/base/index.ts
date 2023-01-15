@@ -1,75 +1,6 @@
 import { createDefaultConfig } from '@ghosten/common';
 
 export const gtBaseConfigMap = () => {
-  const root = createDefaultConfig({
-    core: {
-      canHasChild: true,
-    },
-    style: [
-      {
-        label: '高度',
-        name: 'height',
-        type: 'numberHasUnit',
-        // value: '100%',
-      },
-      {
-        name: 'background',
-        type: 'color',
-      },
-      {
-        name: 'flexDirection',
-        type: 'select',
-        options: [
-          { label: 'row', value: 'row' },
-          { label: 'column', value: 'column' },
-          { label: 'row-reverse', value: 'row-reverse' },
-          { label: 'column-reverse', value: 'column-reverse' },
-        ],
-      },
-      {
-        name: 'flexGrow',
-        type: 'number',
-      },
-      {
-        name: 'flexShrink',
-        type: 'number',
-      },
-    ],
-    rights: false,
-    validator: false,
-  });
-  const division = createDefaultConfig({
-    core: { canHasChild: true },
-    style: [
-      {
-        name: 'background',
-        type: 'color',
-      },
-      {
-        name: 'flexDirection',
-        type: 'select',
-        options: [
-          { label: 'row', value: 'row' },
-          { label: 'column', value: 'column' },
-          { label: 'row-reverse', value: 'row-reverse' },
-          { label: 'column-reverse', value: 'column-reverse' },
-        ],
-      },
-      {
-        name: 'flexGrow',
-        type: 'number',
-      },
-      {
-        name: 'flexShrink',
-        type: 'number',
-      },
-      {
-        name: 'border',
-        type: 'border',
-      },
-    ],
-    rights: false,
-  });
   const text = createDefaultConfig({
     property: [
       {
@@ -102,6 +33,11 @@ export const gtBaseConfigMap = () => {
           { label: '900', value: '900' },
         ],
       },
+      {
+        label: '颜色',
+        type: 'color',
+        name: 'color',
+      },
     ],
   });
   const icon = createDefaultConfig({
@@ -113,74 +49,6 @@ export const gtBaseConfigMap = () => {
         type: 'icon',
       },
     ],
-  });
-  const template = createDefaultConfig({
-    core: {
-      canHasChild: true,
-      canCopy: true,
-      canDelete: true,
-      canCut: true,
-    },
-    style: [
-      {
-        name: 'background',
-        type: 'color',
-      },
-      {
-        name: 'flexDirection',
-        type: 'select',
-        options: [
-          { label: 'horizontal', value: 'horizontal' },
-          { label: 'vertical', value: 'vertical' },
-        ],
-      },
-      {
-        name: 'flexGrow',
-        type: 'number',
-      },
-      {
-        name: 'flexShrink',
-        type: 'number',
-      },
-    ],
-    rights: false,
-    validator: false,
-  });
-  const slot = createDefaultConfig({
-    core: {
-      canHasChild: true,
-      canDelete: true,
-    },
-    style: [
-      {
-        name: 'background',
-        type: 'color',
-      },
-      {
-        name: 'flexDirection',
-        type: 'select',
-        options: [
-          { label: 'horizontal', value: 'horizontal' },
-          { label: 'vertical', value: 'vertical' },
-        ],
-      },
-      {
-        name: 'flexGrow',
-        type: 'number',
-      },
-      {
-        name: 'flexShrink',
-        type: 'number',
-      },
-    ],
-    validator: false,
-  });
-  const outlet = createDefaultConfig({
-    core: {
-      canHasChild: true,
-      canDelete: true,
-    },
-    validator: false,
   });
   const image = createDefaultConfig({
     property: [
@@ -202,13 +70,8 @@ export const gtBaseConfigMap = () => {
     ],
   });
   return {
-    root,
-    division,
-    template,
-    slot,
     text,
     icon,
-    outlet,
     image,
   };
 };

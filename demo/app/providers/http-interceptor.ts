@@ -1,10 +1,4 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { GtDatabase } from '@ghosten/database';
@@ -12,18 +6,15 @@ import { GtDatabase } from '@ghosten/database';
 import { EMPTY, Observable, catchError, from, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { WorkerConnector } from '../worker';
+// import { WorkerConnector } from '../worker';
 
 @Injectable()
 export class HttpInterceptorAdapter implements HttpInterceptor {
-  private worker = new WorkerConnector();
+  // private worker = new WorkerConnector();
   private gtDatabase = new GtDatabase();
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
-    console.info('[HTTP REQUEST]:%O', req);
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.info('[HTTP  REQUEST]:%O', req);
     return this.resolveWorkerRequest(req).pipe(
       map(({ data }) => new HttpResponse({ url: req.url, body: data })),
       tap(data => console.info('[HTTP RESPONSE]:%O', data)),
@@ -50,12 +41,15 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
       case 'deleteDB':
       case 'importDB':
       case 'exportDB':
+      case 'getHistoryByID':
+      case 'saveComponent':
+      case 'removeComponent':
         const paramsOrBody =
           req.method.toLocaleLowerCase() === 'get'
             ? Object.fromEntries(new URLSearchParams(req.params.toString()))
             : req.body;
-        return this.worker.request(req.url, paramsOrBody);
-        // return from(this.gtDatabase.message(req.url, paramsOrBody));
+        // return this.worker.request(req.url, paramsOrBody);
+        return from(this.gtDatabase.message(req.url, paramsOrBody));
       default:
         return EMPTY;
     }

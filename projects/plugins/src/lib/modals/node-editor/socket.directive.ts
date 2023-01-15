@@ -1,10 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { ConnectionService } from './connection.service';
 import { Socket } from './node';
 
@@ -30,10 +24,7 @@ export class SocketDirective implements OnInit {
     this._stopDrawConnection(event);
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private nodeService: ConnectionService,
-  ) {}
+  constructor(private elementRef: ElementRef, private nodeService: ConnectionService) {}
 
   ngOnInit() {
     this.socket.element = this.elementRef.nativeElement;

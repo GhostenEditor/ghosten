@@ -19,8 +19,6 @@ import { RenderAbstractComponent } from '@ghosten/renderer';
         [gaugeMin]="property.gaugeMin"
       ></canvas>
     </div>
-    <div class="text-center text-truncate">
-      {{ this.property.data || 0 }}/{{ this.property.gaugeMax }}
-    </div>`,
+    <div class="text-center text-truncate">{{ this.property.data || 0 }}/{{ this.property.gaugeMax }}</div>`,
 })
 export class BatteryComponent extends RenderAbstractComponent<BatteryProperty> {}

@@ -3,19 +3,11 @@ import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 import { GtNode } from '@ghosten/common';
 
-import { FormEvent, FormItem } from '../properties-form/types';
-import { DropdownItem } from '../../directives/dropdown/dropdown.component';
+import { FormEvent, FormItem } from '../../types';
+import { DropdownItem } from '../../modules';
 import { PanelCard } from './card.component';
 
-type ValidatorTypes =
-  | 'min'
-  | 'max'
-  | 'required'
-  | 'requiredTrue'
-  | 'email'
-  | 'minLength'
-  | 'maxLength'
-  | 'pattern';
+type ValidatorTypes = 'min' | 'max' | 'required' | 'requiredTrue' | 'email' | 'minLength' | 'maxLength' | 'pattern';
 
 const validatorTypes: DropdownItem[] = [
   { text: 'min' },
@@ -38,15 +30,8 @@ interface ValidatorItem extends PanelCard {
   selector: 'gt-panel-validator',
   template: `
     <div cdkDropList (cdkDropListDropped)="dropped($event)">
-      <gt-panel-card
-        *ngFor="let validator of validators"
-        [item]="validator"
-        (removeItem)="removeValidator(validator)"
-      >
-        <properties-form
-          [formList]="validator.formList"
-          (formChange)="formChange(validator, $event)"
-        ></properties-form>
+      <gt-panel-card *ngFor="let validator of validators" [item]="validator" (removeItem)="removeValidator(validator)">
+        <config-form [formList]="validator.formList" (formChange)="formChange(validator, $event)"></config-form>
       </gt-panel-card>
     </div>
     <div class="d-grid gap-2 mt-2">
@@ -111,18 +96,11 @@ export class PanelValidatorComponent {
 
   dropped(event: CdkDragDrop<void>) {
     moveItemInArray(this.validators, event.previousIndex, event.currentIndex);
-    moveItemInArray(
-      this.gtNode.validator!,
-      event.previousIndex,
-      event.currentIndex,
-    );
+    moveItemInArray(this.gtNode.validator!, event.previousIndex, event.currentIndex);
   }
 }
 
-function getFormListByValidatorType(
-  type: string,
-  data: Record<string, any> = {},
-): FormItem[] {
+function getFormListByValidatorType(type: string, data: Record<string, any> = {}): FormItem[] {
   switch (type) {
     case 'min':
       return [

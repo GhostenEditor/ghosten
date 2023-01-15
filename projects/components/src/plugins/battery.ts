@@ -14,14 +14,9 @@ export function battery(
       ? Math.floor(canvas.height / Math.min(canvas.height * 0.02, canvas.width))
       : Math.floor(canvas.width / Math.min(canvas.width * 0.02, canvas.height));
   totalCount = Math.max(Math.min(totalCount, 30), 1);
-  const itemTotalHeight =
-    (direction === 'vertical' ? canvas.height : canvas.width) / totalCount;
+  const itemTotalHeight = (direction === 'vertical' ? canvas.height : canvas.width) / totalCount;
   const itemHeight = itemTotalHeight * 0.6;
-  const itemWidth = Math.min(
-    itemHeight * 5,
-    canvas.width * 0.6,
-    canvas.height * 0.6,
-  );
+  const itemWidth = Math.min(itemHeight * 5, canvas.width * 0.6, canvas.height * 0.6);
   const itemGutter = itemTotalHeight * 0.4;
   const itemRadius = Math.min(itemHeight, itemWidth) * 0.5;
   const foreground = '#0cc41a';
@@ -44,25 +39,13 @@ export function battery(
 
   context.fillStyle = background;
   for (let index = 0; index < totalCount; index++) {
-    drawRoundRect(
-      context,
-      itemWidth,
-      itemHeight,
-      itemRadius,
-      index * itemTotalHeight,
-    );
+    drawRoundRect(context, itemWidth, itemHeight, itemRadius, index * itemTotalHeight);
   }
   context.fillStyle = foreground;
   context.shadowBlur = itemGutter * 4;
   context.shadowColor = foreground;
   for (let index = 0; index < Math.round(percent * totalCount); index++) {
-    drawRoundRect(
-      context,
-      itemWidth,
-      itemHeight,
-      itemRadius,
-      index * itemTotalHeight,
-    );
+    drawRoundRect(context, itemWidth, itemHeight, itemRadius, index * itemTotalHeight);
   }
   context.restore();
   context.save();

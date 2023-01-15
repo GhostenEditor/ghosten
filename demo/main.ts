@@ -29,17 +29,16 @@ function bootstrap() {
     .catch(err => console.error(err));
 }
 
-bootstrap();
+// bootstrap();
 
-// if (document.readyState === 'complete') {
-//   bootstrap();
-// } else {
-//   document.addEventListener('DOMContentLoaded', bootstrap);
-// }
+if (document.readyState === 'complete') {
+  bootstrap();
+} else {
+  document.addEventListener('DOMContentLoaded', bootstrap);
+}
 
 const darkMode = matchMedia('(prefers-color-scheme: dark)');
-const setColorScheme = (dark: boolean) =>
-  (document.documentElement.dataset.bsTheme = dark ? 'dark' : 'light');
+const setColorScheme = (dark: boolean) => (document.documentElement.dataset.bsTheme = dark ? 'dark' : 'light');
 // const convertStyle = () => {
 //   // document.body.style.height = `${window.innerHeight}px`;
 //   document.documentElement.style.fontSize =

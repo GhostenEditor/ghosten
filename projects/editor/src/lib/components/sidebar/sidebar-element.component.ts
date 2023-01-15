@@ -1,30 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Optional,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 import { Board } from '@ghosten/common';
 
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  mergeMap,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { ElementList, GtAuth, GtContextMenu, GtElement } from '../../types';
-import {
-  GT_AUTH_CONFIG,
-  GT_CONTEXTMENU,
-  GT_INTERNAL_ELEMENT_LISTS,
-  GT_TEMPLATE_MAP,
-} from '../../injectors';
+import { ElementList, GtAuth, GtElement } from '../../types';
+import { GT_AUTH_CONFIG, GT_INTERNAL_ELEMENT_LISTS, GT_TEMPLATE_MAP } from '../../injectors';
 import {
   TranslateAnimation,
   dragEnd,
@@ -38,6 +20,8 @@ import {
   removeDragRootStyle,
   setDragRootStyle,
 } from '../../utils';
+import { ContextMenu } from '../../modules';
+import { EventsService } from '../../services';
 import { GtEdit } from '../../classes';
 
 @Component({
@@ -46,25 +30,24 @@ import { GtEdit } from '../../classes';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: ` <gt-accordion [multi]="true">
     <gt-accordion-item
-      *ngFor="let list of internalElementLists; let i = index"
+      *ngFor="let list of internalElementLists"
       [cardTitle]="list.title"
       [expanded]="list.expanded"
       (opened)="opened(list)"
       (closed)="closed(list)"
     >
-      <div class="item-container row">
+      <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
         <button
           type="button"
-          class="col-4 px-0 text-center btn btn-text"
+          class="text-center btn btn-text overflow-hidden"
+          *ngFor="let element of list.elements"
           #target
-          *ngFor="let element of list.elements; let i = index"
           [attr.data-type]="element.type"
+          [title]="element.label"
           (mousedown)="itemDrag(element, target, $event)"
           (touchstart)="itemDrag(element, target, $event)"
         >
-          <i class="fs-1 gt-icon" *ngIf="element.icon">{{
-            element.icon || 'custom'
-          }}</i>
+          <i class="fs-1 gt-icon" *ngIf="element.icon">{{ element.icon || 'custom' }}</i>
           <div class="text-truncate">{{ element.label }}</div>
         </button>
       </div>
@@ -76,33 +59,27 @@ import { GtEdit } from '../../classes';
       (opened)="opened(customList)"
       (closed)="closed(customList)"
     >
-      <div class="item-container clearfix">
+      <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
         <button
           type="button"
-          class="col-4 px-0 text-center btn btn-text"
-          *ngFor="let custom of gt.customComponent; let i = index"
+          class="text-center btn btn-text overflow-hidden"
+          *ngFor="let custom of gt.customComponent"
           #target
+          [class.active]="gt.currentBoard === custom"
           [attr.data-id]="custom.id"
+          [title]="custom.name || custom.type"
           (mousedown)="itemDrag(custom, target, $event)"
           (touchstart)="itemDrag(custom, target, $event)"
           (dblclick)="editCustom(custom)"
           (contextmenu)="editCustomInfo(custom, $event)"
         >
-          <i
-            class="fa fa-times-circle"
-            *ngIf="editTypeMode"
-            (click)="deleteCustom(custom)"
-            style="    font-size: 16px;
-    color: #000;
-    position: absolute;
-    margin: -9px 0 0 9px;"
-          ></i>
           <i class="fs-1 gt-icon">custom</i>
           <input
             type="text"
             class="form-control input-xs"
             *ngIf="editTypeMode"
             [(ngModel)]="custom.type"
+            (blur)="editTypeMode = false"
           />
           <div *ngIf="!editTypeMode" class="text-truncate">
             {{ custom.name || custom.type }}
@@ -110,9 +87,40 @@ import { GtEdit } from '../../classes';
         </button>
       </div>
       <div class="d-grid gap-2" [class.mt-2]="gt.customComponent.length">
-        <button class="btn btn-light" (click)="addCustom()">
-          {{ editMode ? '完成' : '添加' }}
+        <button class="btn btn-light" (click)="gt.addCustomComponent()">添加</button>
+      </div>
+    </gt-accordion-item>
+    <gt-accordion-item cardTitle="自定义(remote)">
+      <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
+        <button
+          type="button"
+          class="text-center btn btn-text overflow-hidden"
+          *ngFor="let custom of gt.remoteCustomComponent"
+          #target
+          [class.active]="gt.currentBoard === custom"
+          [attr.data-id]="custom.id"
+          [title]="custom.name || custom.type"
+          (mousedown)="itemDrag(custom, target, $event)"
+          (touchstart)="itemDrag(custom, target, $event)"
+          (dblclick)="editCustom(custom)"
+          (contextmenu)="editCustomInfo(custom, $event)"
+        >
+          <i class="fs-1 gt-icon">custom</i>
+          <input
+            type="text"
+            class="form-control input-xs"
+            *ngIf="editTypeMode"
+            [(ngModel)]="custom.name"
+            (mousedown)="$event.stopPropagation()"
+            (blur)="editTypeMode = false"
+          />
+          <div *ngIf="!editTypeMode" class="text-truncate">
+            {{ custom.name || custom.type }}
+          </div>
         </button>
+      </div>
+      <div class="d-grid gap-2" [class.mt-2]="gt.remoteCustomComponent.length">
+        <button class="btn btn-light" (click)="gt.addRemoteCustomComponent()">添加</button>
       </div>
     </gt-accordion-item>
   </gt-accordion>`,
@@ -123,38 +131,39 @@ export class SidebarElementComponent {
   customList: any = {
     title: $localize`:Element Group Title\: Custom Component:自定义`,
     elements: this.gt.customComponent,
-    expanded:
-      this.gt.settings.elementAccordionExpanded[
-        $localize`:Element Group Title\: Custom Component:自定义`
-      ],
+    expanded: this.gt.settings.elementAccordionExpanded[$localize`:Element Group Title\: Custom Component:自定义`],
   };
 
   constructor(
     public gt: GtEdit,
     private cdr: ChangeDetectorRef,
+    private events: EventsService,
     private translateAnimation: TranslateAnimation,
+    private contextmenu: ContextMenu,
     @Inject(DOCUMENT) private _document: Document,
     @Inject(GT_TEMPLATE_MAP) private templateMap: any,
+    @Inject(GT_AUTH_CONFIG)
+    public gtAuth: GtAuth,
     @Inject(GT_INTERNAL_ELEMENT_LISTS)
     public internalElementLists: ElementList[],
-    @Inject(GT_AUTH_CONFIG) public gtAuth: GtAuth,
-    @Optional() @Inject(GT_CONTEXTMENU) private _gtContextMenu: GtContextMenu,
   ) {
     this.internalElementLists.forEach(elementList => {
-      elementList.expanded =
-        this.gt.settings.elementAccordionExpanded[elementList.title];
+      elementList.expanded = this.gt.settings.elementAccordionExpanded[elementList.title];
     });
-    this.templateMap = templateMap.reduce(
-      (acc: any, cur: any) => ({ ...acc, ...cur }),
-      {},
-    );
+    this.templateMap = templateMap.reduce((acc: any, cur: any) => ({ ...acc, ...cur }), {});
+    this.events.CHANGE_BOARD.subscribe(() => {
+      this.cdr.detectChanges();
+    });
   }
 
-  itemDrag(
-    element: GtElement | Board,
-    dragEl: HTMLElement,
-    event: MouseEvent | TouchEvent,
-  ) {
+  itemDrag(element: GtElement | Board, dragEl: HTMLElement, event: MouseEvent | TouchEvent) {
+    if (
+      (!this.gt.currentBoard || this.gt.currentBoard.type === 'cc' || this.gt.currentBoard.type === 'rcc') &&
+      element instanceof Board
+    ) {
+      this.gt.log.next({ type: 'warning', message: '目前自定义组件无法嵌套使用' });
+      return;
+    }
     if (!isTouchEvent(event) && event.button !== 0) {
       return;
     }
@@ -163,8 +172,8 @@ export class SidebarElementComponent {
     let dropElement: HTMLElement | null = null;
     let referenceElement: HTMLElement | null = null;
     let originalTarget: HTMLElement | null = null;
-    setDragRootStyle('userSelect', 'none');
-    fromDragEvent(event)
+    setDragRootStyle(this._document.documentElement, 'userSelect', 'none');
+    fromDragEvent(this._document, event)
       .pipe(
         // map((evt): HTMLElement | null =>
         //   closest(evt.target as HTMLElement, '.gt-element'),
@@ -188,9 +197,7 @@ export class SidebarElementComponent {
           container.style.setProperty('max-width', '10rem');
           container.innerHTML = template;
           const mirror = container.cloneNode(true) as HTMLElement;
-          const placeholder = container.children[0].cloneNode(
-            true,
-          ) as HTMLElement;
+          const placeholder = container.children[0].cloneNode(true) as HTMLElement;
           const source = container.children[0].cloneNode(true) as HTMLElement;
           mirror.classList.add('draggable-mirror');
           placeholder.classList.add('draggable-placeholder');
@@ -213,12 +220,12 @@ export class SidebarElementComponent {
       )
       .pipe(
         mergeMap(({ event, mirror, placeholder, source }) =>
-          dragMove(event).pipe(
+          dragMove(this._document, event).pipe(
             tap(e => {
               const { x, y } = getEventPoint(e);
               mirror!.style.transform = `translate(${x}px,${y}px)`;
             }),
-            map(e => getDropAndRefElementByTarget(e, source)),
+            map(e => getDropAndRefElementByTarget(e, source, this._document)),
             filter(
               (
                 e,
@@ -228,12 +235,8 @@ export class SidebarElementComponent {
               } => !!e,
             ),
             filter(({ parentElement }) => {
-              const parentID = findGtElement(parentElement)!.dataset.id!;
-              const parentNode = this.gt.getNodeById(parentID)!;
-              if (parentNode.core.acceptedChildType.length) {
-                return parentNode.core.acceptedChildType.includes(
-                  originalTarget!.dataset.type!,
-                );
+              if (parentElement.dataset.accept) {
+                return parentElement.dataset.accept.split(',').includes(originalTarget!.dataset.type!);
               } else {
                 return true;
               }
@@ -244,11 +247,7 @@ export class SidebarElementComponent {
               dropElement = parentElement;
               return { refChild, parentElement };
             }),
-            distinctUntilChanged(
-              (x, y) =>
-                x.parentElement === y.parentElement &&
-                x.refChild === y.refChild,
-            ),
+            distinctUntilChanged((x, y) => x.parentElement === y.parentElement && x.refChild === y.refChild),
             tap(({ parentElement, refChild }) => {
               const beforePositions = Array.prototype.filter
                 .call(parentElement.children, child => child !== source)
@@ -263,11 +262,8 @@ export class SidebarElementComponent {
                   this.translateAnimation.add({
                     element: child,
                     from: {
-                      left:
-                        beforePositions[index].left -
-                        afterPositions[index].left,
-                      top:
-                        beforePositions[index].top - afterPositions[index].top,
+                      left: beforePositions[index].left - afterPositions[index].left,
+                      top: beforePositions[index].top - afterPositions[index].top,
                     },
                   });
                 });
@@ -283,9 +279,9 @@ export class SidebarElementComponent {
               });
             }),
             takeUntil(
-              dragEnd(event).pipe(
+              dragEnd(this._document, event).pipe(
                 tap(() => {
-                  removeDragRootStyle('userSelect');
+                  removeDragRootStyle(this._document.documentElement, 'userSelect');
                   removeChild(placeholder);
                   removeChild(source);
                   removeChild(mirror);
@@ -296,25 +292,15 @@ export class SidebarElementComponent {
                   }
                   const parentID = findGtElement(dropElement)!.dataset.id!;
                   const parentNode = this.gt.getNodeById(parentID);
-                  const refNode =
-                    referenceElement &&
-                    this.gt.getNodeById(referenceElement.dataset.id!);
-                  const dropIndex = refNode
-                    ? refNode.parent!.children.indexOf(refNode)
-                    : parentNode!.children.length;
+                  const refNode = referenceElement && this.gt.getNodeById(referenceElement.dataset.id!);
+                  const dropIndex = refNode ? refNode.parent!.children.indexOf(refNode) : parentNode!.children.length;
 
                   if (element instanceof Board) {
                     const type = originalTarget!.dataset.id;
                     this.gt.addCustomNode(type!, parentNode!, dropIndex);
                   } else {
                     const type = element.type;
-                    this.gt.addNode(
-                      type,
-                      parentNode!,
-                      dropIndex,
-                      element.content,
-                      dropElement.dataset.droppable,
-                    );
+                    this.gt.addNode(type, parentNode!, dropIndex, element.content, dropElement.dataset.droppable);
                   }
 
                   dropElement = null;
@@ -328,45 +314,52 @@ export class SidebarElementComponent {
       .subscribe();
   }
 
-  addCustom() {
-    if (this.editMode) {
-      this.editMode = false;
-      this.gt.setCurrentBoard(this.gt.boards[0]);
-    } else {
-      this.editMode = true;
-      this.gt.addCustomComponent();
-    }
-  }
-
   editCustom(custom: Board) {
     this.gt.setCurrentBoard(custom);
     this.editMode = true;
   }
 
-  editCustomInfo(custom: Board, event: MouseEvent) {
+  editCustomInfo(board: Board, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    this._gtContextMenu(this.gt, 'customElement', custom, event);
-    // if (typeof this.customComponentContextmenu === 'function') {
-    //   // todo context
-    //   this._gtContextMenu(custom, event);
-    //   // this.contextMenu.create(event, this.customComponentContextmenu(custom));
-    // } else {
-    //   if (!this.customComponentContextmenu || !this.customComponentContextmenu.length) {
-    //     return;
-    //   }
-    //   this._gtContextMenu(custom, event);
-    //   // todo context
-    //   // this.contextMenu.create(event, this.customComponentContextmenu);
-    // }
-  }
 
-  deleteCustom(custom: Board) {
-    this.gt.customComponent.splice(this.gt.customComponent.indexOf(custom), 1);
+    const menus = [
+      {
+        label: $localize`:Context Menu\: Modify:修改`,
+        onclick: () => {
+          this.editType();
+        },
+      },
+      {
+        label: $localize`:Context Menu\: Remove:删除`,
+        onclick: () => {
+          this.gt.removeBoard(board);
+          this.cdr.detectChanges();
+          if (board.type === 'rcc') {
+            this.events.REMOVE_COMPONENT.emit({
+              id: board.id,
+            });
+          }
+        },
+      },
+    ];
+    if (board.type === 'rcc') {
+      menus.unshift({
+        label: $localize`:Context Menu\: Upload:上传`,
+        onclick: () => {
+          this.events.SAVE_COMPONENT.emit({
+            config: JSON.stringify(board.export()),
+            id: board.id,
+          });
+        },
+      });
+    }
+    this.contextmenu.create(event, menus);
   }
 
   editType() {
     this.editTypeMode = !this.editTypeMode;
+    this.cdr.detectChanges();
   }
 
   opened(panel: ElementList) {

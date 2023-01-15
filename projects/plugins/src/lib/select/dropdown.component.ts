@@ -12,12 +12,7 @@ import { ListboxValueChangeEvent } from '@angular/cdk/listbox';
     (cdkListboxValueChange)="onChange($event)"
   >
     <form class="p-2 mb-2 bg-light border-bottom">
-      <input
-        type="search"
-        class="form-control"
-        autocomplete="false"
-        placeholder="Type to filter..."
-      />
+      <input type="search" class="form-control" autocomplete="false" placeholder="Type to filter..." />
     </form>
     <ul class="list-unstyled mb-0">
       <ng-container *ngFor="let group of nodes; let i = index">
@@ -25,9 +20,7 @@ import { ListboxValueChangeEvent } from '@angular/cdk/listbox';
           <h6 class="dropdown-header">{{ group[0] }}</h6>
         </li>
         <li *ngFor="let option of group[1]" [cdkOption]="option">
-          <a class="dropdown-item" [class.active]="option.active">{{
-            option.label
-          }}</a>
+          <a class="dropdown-item" [class.active]="option.active">{{ option.label }}</a>
         </li>
         <li *ngIf="i !== nodes.length - 1">
           <hr class="dropdown-divider" />

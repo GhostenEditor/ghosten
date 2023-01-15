@@ -1,12 +1,8 @@
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDragSortEvent,
-  CdkDropList,
-} from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragSortEvent, CdkDropList } from '@angular/cdk/drag-drop';
 import { CdkNestedTreeNode, CdkTree, FlatTreeControl } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
   OnDestroy,
@@ -14,8 +10,8 @@ import {
   Optional,
   QueryList,
   ViewChild,
-  ViewChildren
-} from "@angular/core";
+  ViewChildren,
+} from '@angular/core';
 import { TreeFlatDataSource, TreeFlattener } from './flat-data-source';
 
 import { GtNode } from '@ghosten/common';
@@ -23,6 +19,7 @@ import { GtNode } from '@ghosten/common';
 import { Subscription, merge, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ContextMenu } from '../../modules';
 import { EventsService } from '../../services';
 import { GT_CONTEXTMENU } from '../../injectors';
 import { GtContextMenu } from '../../types';
@@ -57,9 +54,7 @@ interface FlattenNode {
           *cdkTreeNodeDef="let node"
           cdkDrag
           cdkDragLockAxis="y"
-          [cdkDragDisabled]="
-            node.source.template && !node.source.isTemplateRoot
-          "
+          [cdkDragDisabled]="node.source.template && !node.source.isTemplateRoot"
           [cdkDragData]="node.source"
           cdkDropList
           [cdkDropListEnterPredicate]="cdkDropListEnterPredicate"
@@ -76,9 +71,7 @@ interface FlattenNode {
               (contextmenu)="onContextmenu(node.source, $event)"
             >
               {{ node.type }}
-              <small *ngIf="node.source.outletID"
-                >(Outlet ID: {{ node.source.outletID }})</small
-              >
+              <small *ngIf="node.source.outletID">(Outlet ID: {{ node.source.outletID }})</small>
             </button>
           </div>
         </cdk-tree-node>
@@ -98,9 +91,7 @@ interface FlattenNode {
               type="button"
               class="btn btn-expander btn-sm"
               [attr.aria-label]="'Toggle ' + node.type"
-              [style.transform]="
-                treeControl.isExpanded(node) ? 'rotate(90deg)' : ''
-              "
+              [style.transform]="treeControl.isExpanded(node) ? 'rotate(90deg)' : ''"
               cdkTreeNodeToggle
             >
               <i class="gt-icon">chevron_right</i>
@@ -113,6 +104,7 @@ interface FlattenNode {
               (contextmenu)="onContextmenu(node.source, $event)"
             >
               {{ node.type }} ( {{ node.source.children.length }} )
+              <small *ngIf="node.source.outletID">(Outlet ID: {{ node.source.outletID }})</small>
             </button>
           </div>
         </cdk-tree-node>
@@ -128,8 +120,7 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     const flatNode =
       existingNode &&
       existingNode.source === node &&
-      existingNode.expandable ===
-        (!!node.children && node.children.length > 0) &&
+      existingNode.expandable === (!!node.children && node.children.length > 0) &&
       existingNode.level === level
         ? existingNode
         : {
@@ -156,21 +147,18 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     node => node.children,
   );
   dataSource = new TreeFlatDataSource(this.treeControl, this.treeFlattener);
-  hasChild = (
-    _: number,
-    node: { expandable: boolean; name: string; level: number },
-  ) => node.expandable;
+  hasChild = (_: number, node: { expandable: boolean; name: string; level: number }) => node.expandable;
   @ViewChild(CdkTree) tree: CdkTree<GtNode>;
-  @ViewChildren(CdkNestedTreeNode) treeNodes: QueryList<
-    CdkNestedTreeNode<GtNode>
-  >;
+  @ViewChildren(CdkNestedTreeNode) treeNodes: QueryList<CdkNestedTreeNode<GtNode>>;
   private subscription1: Subscription = Subscription.EMPTY;
   private subscription2: Subscription = Subscription.EMPTY;
 
   constructor(
     public gt: GtEdit,
     private events: EventsService,
-    @Optional() @Inject(GT_CONTEXTMENU) private _gtContextMenu: GtContextMenu,
+    private cdr: ChangeDetectorRef,
+    private contextmenu: ContextMenu,
+    @Optional() @Inject(GT_CONTEXTMENU) private gtContextMenu: GtContextMenu,
   ) {}
 
   ngOnInit() {
@@ -179,14 +167,8 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
       this.events.onEvent.pipe(
         filter(
           ({ type }) =>
-            [
-              'INSERT_NODE',
-              'REMOVE_NODE',
-              'MOVE_NODE',
-              'UNDO',
-              'REDO',
-              'CHANGE_BOARD',
-            ].indexOf(type) > -1,
+            ['INSERT_NODE', 'REMOVE_NODE', 'MOVE_NODE', 'CHANGE_SELECT', 'UNDO', 'REDO', 'CHANGE_BOARD'].indexOf(type) >
+            -1,
         ),
       ),
     )
@@ -194,7 +176,7 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
       // .pipe(debounceTime(0))
       .subscribe(event => {
         this.dataSource.data = [this.gt.currentBoard!.gt];
-        // this.cdr.detectChanges();
+        this.cdr.detectChanges();
       });
     this.subscription2 = this.events.CHANGE_SELECT.subscribe(selected => {
       selected.forEach(gtNode => {
@@ -213,15 +195,13 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
 
   onContextmenu(gtNode: GtNode, event: MouseEvent) {
     event.preventDefault();
-    if (gtNode.type === 'root') {
-      return;
+    // const targetNode = this.gt.getNodeById(gtNode.id);
+    if (!this.gt.selected.includes(gtNode!)) {
+      this.gt.changeSelect(gtNode!);
     }
-    const targetNode = this.gt.getNodeById(gtNode.id);
-    if (!this.gt.selected.includes(targetNode!)) {
-      this.gt.changeSelect(targetNode!);
-    }
-    if (this._gtContextMenu) {
-      this._gtContextMenu(this.gt, 'gtNode', targetNode, event);
+    if (this.gtContextMenu) {
+      const menus = this.gtContextMenu(this.gt, gtNode);
+      this.contextmenu.create(event, menus);
     }
   }
 
@@ -249,11 +229,7 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  cdkDropListSortPredicate(
-    index: number,
-    drag: CdkDrag<GtNode>,
-    drop: CdkDropList<GtNode>,
-  ): boolean {
+  cdkDropListSortPredicate(index: number, drag: CdkDrag<GtNode>, drop: CdkDropList<GtNode>): boolean {
     const dragNode = drag.data;
     const dropNode = (drop.getSortedItems()[index] as CdkDrag<GtNode>).data;
     return !!dropNode.parent && !dropNode.path.includes(dragNode);
@@ -261,10 +237,6 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
 
   cdkDropListDropped({ currentIndex, container, item }: CdkDragDrop<GtNode>) {
     const current = container.getSortedItems()[currentIndex] as CdkDrag<GtNode>;
-    this.gt.dropNode(
-      item.data,
-      current.data.parent!,
-      current.data.parent!.children.indexOf(current.data),
-    );
+    this.gt.moveNode(item.data, current.data.parent!, current.data.parent!.children.indexOf(current.data));
   }
 }

@@ -5,5 +5,5 @@
   "lib": {
     "flatModuleFile": "editor"
   },
-  "allowedNonPeerDependencies": ["mousetrap", "ngx-color"]
+  "allowedNonPeerDependencies": ["mousetrap"]
 }

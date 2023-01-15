@@ -1,9 +1,12 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import { Overlay } from '@angular/cdk/overlay';
-
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
+
+import { fromEvent, tap } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { GT_AUTH_CONFIG } from '../../injectors';
 import { GtAuth } from '../../types';
@@ -35,19 +38,13 @@ interface Tab {
             <button
               class="nav-link"
               type="button"
-              cdkDrag
-              cdkDragBoundary="body"
-              cdkDragPreviewContainer="global"
-              [cdkDragStartDelay]="50"
+              draggable="true"
               *ngIf="!tab.hide"
               [attr.data-id]="tab.id"
-              #cdkDrag="cdkDrag"
               [class.active]="gt.settings.rightTabIndex === tab.id"
-              [style.cursor]="
-                gt.settings.rightTabIndex === tab.id ? 'default' : 'pointer'
-              "
+              [style.cursor]="gt.settings.rightTabIndex === tab.id ? 'default' : 'pointer'"
               (click)="gt.settings.activateRightTab(tab.id)"
-              (cdkDragEnded)="dragEnd($event, $any(cdkDrag), tab)"
+              (dragstart)="dragStart(tab, $event)"
             >
               <i class="gt-icon">{{ tab.icon }}</i>
             </button>
@@ -77,6 +74,7 @@ interface Tab {
         ></gt-accordion-page>
       </div>
     </div>
+    <!--    <div class="position-fixed w-100 h-100 start-0 top-0" drop></div>-->
   `,
 })
 export class SidebarComponent {
@@ -109,6 +107,7 @@ export class SidebarComponent {
     public gt: GtEdit,
     private _overlay: Overlay,
     @Inject(GT_AUTH_CONFIG) public gtAuth: GtAuth,
+    @Inject(DOCUMENT) private _document: Document,
   ) {}
 
   dragEnd(event: CdkDragEnd, cdkDrag: CdkDrag, tab: Tab) {
@@ -118,21 +117,42 @@ export class SidebarComponent {
 
   createWindow(tab: Tab, x: number, y: number) {
     tab.hide = true;
+
+    for (const tab of this.tabs) {
+      if (!tab.hide) {
+        this.gt.settings.activateRightTab(tab.id);
+        break;
+      }
+    }
     const overlayRef = this._overlay.create({
-      positionStrategy: this._overlay
-        .position()
-        .global()
-        .top(coerceCssPixelValue(y))
-        .left(coerceCssPixelValue(x)),
+      disposeOnNavigation: true,
+      positionStrategy: this._overlay.position().global().top(coerceCssPixelValue(y)).left(coerceCssPixelValue(x)),
     });
-    const componentRef = overlayRef.attach(
-      new ComponentPortal(FloatBarComponent),
-    );
+    const componentRef = overlayRef.attach(new ComponentPortal(FloatBarComponent));
     componentRef.instance.componentPortal = new ComponentPortal(tab.component);
     componentRef.instance.icon = tab.icon;
-    componentRef.instance.windowClose.subscribe(() => {
+    componentRef.instance.windowClose.pipe(take(1)).subscribe(() => {
       tab.hide = false;
       overlayRef.dispose();
     });
+  }
+
+  dragStart(tab: Tab, event: DragEvent) {
+    // event.preventDefault();
+    event.dataTransfer!.dropEffect = 'move';
+    // event.dataTransfer!.setData('id', tab.id);
+    fromEvent(this._document, 'dragover')
+      .pipe(
+        takeUntil(
+          fromEvent<DragEvent>(this._document, 'drop').pipe(
+            tap(event => {
+              event.preventDefault();
+              this.createWindow(tab, event.clientX, event.clientY);
+            }),
+          ),
+        ),
+        tap(event => event.preventDefault()),
+      )
+      .subscribe();
   }
 }

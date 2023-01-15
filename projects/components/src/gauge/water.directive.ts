@@ -1,11 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { WaterBall, interpolate, tween } from '../plugins';
@@ -98,19 +91,11 @@ export class WaterDirective implements OnInit, OnDestroy {
 
   private updateValue() {
     this._ngZone.runOutsideAngular(() => {
-      if (
-        typeof this.max === 'number' &&
-        typeof this.min === 'number' &&
-        typeof this.value === 'number'
-      ) {
+      if (typeof this.max === 'number' && typeof this.min === 'number' && typeof this.value === 'number') {
         const value = (this.max - this.min) * this.waterBall.process + this.min;
         this.subscription.unsubscribe();
-        this.subscription = tween(
-          isNaN(value) ? 0 : value,
-          this.value,
-        ).subscribe(value => {
-          this.waterBall.process =
-            (value - this.min!) / (this.max! - this.min!);
+        this.subscription = tween(isNaN(value) ? 0 : value, this.value).subscribe(value => {
+          this.waterBall.process = (value - this.min!) / (this.max! - this.min!);
           this.waterBall.color = this.getColor(this.waterBall.process);
         });
       }
@@ -122,9 +107,6 @@ export class WaterDirective implements OnInit, OnDestroy {
   // }
 
   private getColor(value: number): number[] {
-    return interpolate<number[]>(
-      convertColorToGL(this.minColor),
-      convertColorToGL(this.maxColor),
-    )(value);
+    return interpolate<number[]>(convertColorToGL(this.minColor), convertColorToGL(this.maxColor))(value);
   }
 }

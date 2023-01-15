@@ -1,11 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MenuItem } from '@ghosten/database';
 
 @Component({
@@ -14,21 +8,13 @@ import { MenuItem } from '@ghosten/database';
     trigger('bodyExpansion', [
       state('collapsed, void', style({ height: '0px', visibility: 'hidden' })),
       state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition(
-        'expanded <=> collapsed, void => collapsed',
-        animate('225ms cubic-bezier(0.4,0.0,0.2,1)'),
-      ),
+      transition('expanded <=> collapsed, void => collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
   ],
   host: {
     class: 'overflow-hidden',
   },
-  template: ` <ul
-    class="list-unstyled"
-    [class.mt-1]="level !== 1"
-    cdkAccordion
-    [multi]="true"
-  >
+  template: ` <ul class="list-unstyled" [class.mt-1]="level !== 1" cdkAccordion [multi]="true">
     <li
       class="mb-1"
       *ngFor="let item of items"
@@ -38,7 +24,7 @@ import { MenuItem } from '@ghosten/database';
     >
       <ng-container *ngIf="item.directory">
         <div
-          class="btn btn-text d-flex btn-sm"
+          class="btn btn-text d-flex align-items-baseline btn-sm"
           routerLinkActive="active"
           [style.padding-left]="level * 0.75 + 'rem'"
           (click)="accordionItem.toggle()"
@@ -46,9 +32,7 @@ import { MenuItem } from '@ghosten/database';
           <a [routerLink]="item.url" class="d-none"></a>
           <i class="gt-icon me-2">{{ item.icon }}</i>
           <span class="flex-grow-1 text-start">{{ item.label }}</span>
-          <i class="gt-icon ms-2">{{
-            accordionItem.expanded ? 'chevron_down' : 'chevron_right'
-          }}</i>
+          <i class="gt-icon ms-2">{{ accordionItem.expanded ? 'chevron_down' : 'chevron_right' }}</i>
         </div>
         <app-navigation-item
           class="d-block"
@@ -62,7 +46,7 @@ import { MenuItem } from '@ghosten/database';
           [routerLink]="item.url"
           [style.padding-left]="level * 0.75 + 'rem'"
           routerLinkActive="active"
-          class="btn btn-text d-flex btn-sm"
+          class="btn btn-text d-flex align-items-baseline btn-sm"
           ><i class="gt-icon me-2">{{ item.icon }}</i
           >{{ item.label }}</a
         >

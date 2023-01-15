@@ -14,9 +14,9 @@ export class GtSettings {
   name: string;
   description: string;
   selected: string[] = [];
-  rightTabIndex: number;
-  configAccordionExpanded: Record<string, boolean>;
-  elementAccordionExpanded: Record<string, boolean>;
+  rightTabIndex: number = 0;
+  configAccordionExpanded: Record<string, boolean> = {};
+  elementAccordionExpanded: Record<string, boolean> = {};
   currentBoardName: string;
 
   init(settings: IGtSettings) {

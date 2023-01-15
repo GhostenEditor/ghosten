@@ -20,23 +20,15 @@ import { PageEditComponent } from './page-edit.component';
   >
     <div class="overflow-auto">
       <table class="table table-bordered table-hover table-striped">
-        <thead>
+        <thead class="position-sticky bg-body" style="top: -1rem">
           <tr>
             <th class="text-truncate" i18n="Table Column Header: Icon">图标</th>
-            <th class="text-truncate" i18n="Table Column Header: Title">
-              标题
-            </th>
-            <th class="text-truncate" i18n="Table Column Header: Description">
-              描述
-            </th>
+            <th class="text-truncate" i18n="Table Column Header: Title">标题</th>
+            <th class="text-truncate" i18n="Table Column Header: Description">描述</th>
             <th class="text-truncate" i18n="Table Column Header: Type">类型</th>
             <th class="text-truncate" i18n="Table Column Header: Url">路径</th>
-            <th class="text-truncate" i18n="Table Column Header: Parent Menu">
-              上级菜单
-            </th>
-            <th class="text-truncate" i18n="Table Column Header: Operation">
-              操作
-            </th>
+            <th class="text-truncate" i18n="Table Column Header: Parent Menu">上级菜单</th>
+            <th class="text-truncate" i18n="Table Column Header: Operation">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -50,23 +42,9 @@ import { PageEditComponent } from './page-edit.component';
             <td>{{ page.url }}</td>
             <td>{{ page.parentId }}</td>
             <td class="text-nowrap">
-              <button
-                class="btn btn-light btn-sm me-2"
-                (click)="editPage(page)"
-              >
-                修改
-              </button>
-              <button
-                class="btn btn-light btn-sm me-2"
-                (click)="deletePage(page.id)"
-              >
-                删除
-              </button>
-              <button
-                class="btn btn-light btn-sm"
-                *ngIf="page.type === 'Function'"
-                (click)="activatePage(page.id)"
-              >
+              <button class="btn btn-light btn-sm me-2" (click)="editPage(page)">修改</button>
+              <button class="btn btn-light btn-sm me-2" (click)="deletePage(page.id)">删除</button>
+              <button class="btn btn-light btn-sm" *ngIf="page.type === 'Function'" (click)="activatePage(page.id)">
                 编辑
               </button>
             </td>
@@ -75,9 +53,7 @@ import { PageEditComponent } from './page-edit.component';
       </table>
     </div>
     <div class="d-grid gap-2 mt-2">
-      <button class="btn btn-light" i18n="Button: Add" (click)="addPage()">
-        添加
-      </button>
+      <button class="btn btn-light" i18n="Button: Add" (click)="addPage()">添加</button>
     </div>
   </gt-modal>`,
 })
@@ -86,20 +62,14 @@ export class PagesComponent implements OnInit {
   mode: 'add' | 'view' | 'edit' = 'view';
   pageList: PageConfig[];
 
-  constructor(
-    private http: HttpClient,
-    private overlay: Overlay,
-    private router: Router,
-  ) {}
+  constructor(private http: HttpClient, private overlay: Overlay, private router: Router) {}
 
   ngOnInit() {
     this.loadPageList();
   }
 
   loadPageList() {
-    this.http
-      .get<any[]>('getPageList')
-      .subscribe(data => (this.pageList = data));
+    this.http.get<any[]>('getPageList').subscribe(data => (this.pageList = data));
   }
 
   addPage() {
@@ -107,9 +77,7 @@ export class PagesComponent implements OnInit {
       hasBackdrop: true,
       disposeOnNavigation: true,
     });
-    const componentRef = overlayRef.attach(
-      new ComponentPortal(PageEditComponent),
-    );
+    const componentRef = overlayRef.attach(new ComponentPortal(PageEditComponent));
     merge(
       componentRef.instance.modalConfirm.pipe(tap(() => this.loadPageList())),
       componentRef.instance.modalClose,
@@ -121,9 +89,7 @@ export class PagesComponent implements OnInit {
       hasBackdrop: true,
       disposeOnNavigation: true,
     });
-    const componentRef = overlayRef.attach(
-      new ComponentPortal(PageEditComponent),
-    );
+    const componentRef = overlayRef.attach(new ComponentPortal(PageEditComponent));
     const component = componentRef.instance;
     component.mode = 'modify';
     component.pageID.setValue(page.id);
@@ -134,10 +100,9 @@ export class PagesComponent implements OnInit {
     component.pageType.setValue(page.type);
     component.pageType.disable({ emitEvent: true });
     component.pageParentID.setValue(page.parentId);
-    merge(
-      component.modalConfirm.pipe(tap(() => this.loadPageList())),
-      component.modalClose,
-    ).subscribe(() => overlayRef.dispose());
+    merge(component.modalConfirm.pipe(tap(() => this.loadPageList())), component.modalClose).subscribe(() =>
+      overlayRef.dispose(),
+    );
   }
 
   deletePage(id: number) {
@@ -147,12 +112,6 @@ export class PagesComponent implements OnInit {
   }
 
   activatePage(id: number) {
-    // this.gt.log.next({
-    //   type: 'Manipulate Page',
-    //   subType: 'activatePage',
-    //   message: null,
-    //   data: { id },
-    // });
     this.router.navigate(['edit', id]).catch();
     this.modalClose.emit();
   }

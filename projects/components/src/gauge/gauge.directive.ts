@@ -1,10 +1,4 @@
-import {
-  Directive,
-  Input,
-  NgZone,
-  OnDestroy,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, Input, NgZone, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Platform } from '@angular/cdk/platform';
 
 import { Subscription } from 'rxjs';
@@ -44,22 +38,13 @@ export class GaugeDirective implements OnDestroy {
       this.subscription = tween(
         this.gauge.value,
         data,
-        (Math.abs(data - this.gauge.value) /
-          (this.gauge.max - this.gauge.min)) *
-          1500,
+        (Math.abs(data - this.gauge.value) / (this.gauge.max - this.gauge.min)) * 1500,
       ).subscribe(v => (this.gauge.value = v));
     });
   }
 
-  constructor(
-    private _ngZone: NgZone,
-    viewContainerRef: ViewContainerRef,
-    platform: Platform,
-  ) {
-    this.gauge = new Gauge(
-      viewContainerRef.element.nativeElement.parentElement,
-      platform.SAFARI,
-    );
+  constructor(private _ngZone: NgZone, viewContainerRef: ViewContainerRef, platform: Platform) {
+    this.gauge = new Gauge(viewContainerRef.element.nativeElement.parentElement, platform.SAFARI);
   }
 
   ngOnDestroy() {

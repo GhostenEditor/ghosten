@@ -1,10 +1,7 @@
 import { MessageEvent } from './types';
 import { resolveTransaction } from './resolve';
 
-export function deletePage(
-  db: IDBDatabase,
-  { id }: any,
-): Promise<MessageEvent> {
+export function deletePage(db: IDBDatabase, { id }: any): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');

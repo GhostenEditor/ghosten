@@ -1,15 +1,10 @@
-import {
-  ChangeDetectorRef,
-  OnDestroy,
-  Optional,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Optional, Pipe, PipeTransform } from '@angular/core';
 import { DataBinding, GtNode, executeCode } from '@ghosten/common';
 import { Observable, Subscription, isObservable } from 'rxjs';
 
 import { DirectiveContext } from './directive.context';
 import { GlobalVariableService } from './global-variable.service';
+import { GtRender } from '../classes/gt.class';
 
 @Pipe({
   name: 'dataBinding',
@@ -22,8 +17,9 @@ export class DataBindingPipe implements OnDestroy, PipeTransform {
 
   constructor(
     private _cdr: ChangeDetectorRef,
+    private gt: GtRender,
     private gtNode: GtNode,
-    @Optional() public directiveContext: DirectiveContext,
+    @Optional() public directiveContext: DirectiveContext = {},
     private globalVariable: GlobalVariableService,
   ) {}
 
@@ -45,8 +41,13 @@ export class DataBindingPipe implements OnDestroy, PipeTransform {
               acc[cur.name] = cur.value;
               return acc;
             }, {}),
+            ...this.gtNode.componentRef.instance,
+            ...this.directiveContext,
           },
-          this.globalVariable,
+          {
+            ...Object.fromEntries(this.gt.componentVariables),
+            ...this.globalVariable,
+          },
         );
         value.compiled = true;
       }
@@ -63,6 +64,8 @@ export class DataBindingPipe implements OnDestroy, PipeTransform {
           return this.transform(value);
         }
         return this._latestValue;
+      } else if (typeof result === 'function') {
+        return result();
       } else {
         return result;
       }
@@ -78,9 +81,7 @@ export class DataBindingPipe implements OnDestroy, PipeTransform {
 
   private _subscribe(obj: Observable<any>): void {
     this._obj = obj;
-    this._subscription = obj.subscribe(value =>
-      this._updateLatestValue(obj, value),
-    );
+    this._subscription = obj.subscribe(value => this._updateLatestValue(obj, value));
   }
 
   private _updateLatestValue(async: any, value: Object): void {

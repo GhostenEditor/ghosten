@@ -17,15 +17,12 @@ import { WaterProperty } from '@ghosten/components';
           [maxColor]="property.maxColor"
           [background]="property.background"
         ></canvas>
-        <span
-          class="position-absolute top-50 start-50 translate-middle text-white"
-          >{{ gtNode.property.data | dataBinding | number : '1.0-1' }}</span
-        >
+        <span class="position-absolute top-50 start-50 translate-middle text-white">{{
+          gtNode.property.data | dataBinding | number : '1.0-1'
+        }}</span>
       </div>
       <div class="text-truncate text-center p-2">{{ property.title }}</div>
     </div>
   `,
 })
-export class WaterComponent
-  extends RenderAbstractComponent<WaterProperty>
-  implements OnInit, OnDestroy {}
+export class WaterComponent extends RenderAbstractComponent<WaterProperty> implements OnInit, OnDestroy {}

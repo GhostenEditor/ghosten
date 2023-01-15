@@ -12,16 +12,9 @@ import { Component } from '@angular/core';
           [show]="showSideMenu"
           (offCanvasClose)="showSideMenu = false"
         >
-          <app-navigation
-            class="w-100"
-            [showSideMenu]="showSideMenu"
-          ></app-navigation>
+          <app-navigation class="w-100" [showSideMenu]="showSideMenu"></app-navigation>
         </app-offcanvas>
-        <div
-          *ngIf="showSideMenu"
-          class="offcanvas-backdrop fade show"
-          (click)="showSideMenu = false"
-        ></div>
+        <div *ngIf="showSideMenu" class="offcanvas-backdrop fade show" (click)="showSideMenu = false"></div>
         <div class="col-lg-10 px-4 min-vh-100">
           <router-outlet></router-outlet>
         </div>

@@ -1,11 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 import { IToast, ToastPositions } from './types';
@@ -16,24 +9,15 @@ import { IToast, ToastPositions } from './types';
     trigger('slide', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateX(10%)' }),
-        animate(
-          '250ms cubic-bezier(0.4,0.0,0.2,1)',
-          style({ opacity: 1, transform: 'translateX(0)' }),
-        ),
+        animate('250ms cubic-bezier(0.4,0.0,0.2,1)', style({ opacity: 1, transform: 'translateX(0)' })),
       ]),
       transition(':leave', [
-        animate(
-          '250ms cubic-bezier(0.4,0.0,0.2,1)',
-          style({ opacity: 0, transform: 'translateX(50%)' }),
-        ),
+        animate('250ms cubic-bezier(0.4,0.0,0.2,1)', style({ opacity: 0, transform: 'translateX(50%)' })),
       ]),
     ]),
   ],
   template: `
-    <div
-      class="toast-container position-fixed p-3"
-      [ngClass]="toastContainerClass"
-    >
+    <div class="toast-container position-fixed p-3" [ngClass]="toastContainerClass">
       <div
         class="toast show mb-2 overflow-hidden"
         [ngClass]="'text-bg-' + toast.type"
@@ -60,10 +44,7 @@ import { IToast, ToastPositions } from './types';
           <div>{{ toast.message }}</div>
           <div>{{ toast.detail }}</div>
         </div>
-        <div
-          class="toast-body d-flex justify-content-between"
-          *ngIf="!toast.title"
-        >
+        <div class="toast-body d-flex justify-content-between" *ngIf="!toast.title">
           <div>{{ toast.message }}</div>
           <button
             type="button"
@@ -73,11 +54,7 @@ import { IToast, ToastPositions } from './types';
             (click)="remove(toast)"
           ></button>
         </div>
-        <div
-          class="mt-2 p-2 border-top text-end"
-          *ngIf="toast.buttons"
-          [ngClass]="'border-' + toast.type + '-subtle'"
-        >
+        <div class="mt-2 p-2 border-top text-end" *ngIf="toast.buttons" [ngClass]="'border-' + toast.type + '-subtle'">
           <button
             type="button"
             class="btn btn-sm"
@@ -88,11 +65,7 @@ import { IToast, ToastPositions } from './types';
             {{ button }}
           </button>
         </div>
-        <div
-          class="progress"
-          *ngIf="toast.duration !== false"
-          style="height: 2px;--bs-progress-bg: transparent"
-        >
+        <div class="progress" *ngIf="toast.duration !== false" style="height: 2px;--bs-progress-bg: transparent">
           <div
             class="progress-bar w-100"
             role="progressbar"
@@ -167,10 +140,7 @@ export class ToastComponent implements OnInit, OnDestroy {
           if (toast.duration !== false && !toast.paused) {
             toast.remain -= elapsed;
             toast.remain = Math.max(0, toast.remain);
-            this.ngZone.run(
-              () =>
-                (toast.progress = +((toast.remain - 200) / 5000).toFixed(2)),
-            );
+            this.ngZone.run(() => (toast.progress = +((toast.remain - 200) / 5000).toFixed(2)));
             if (toast.remain === 0) {
               setTimeout(() => this.remove(toast));
             }

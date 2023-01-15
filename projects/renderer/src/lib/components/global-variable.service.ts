@@ -14,8 +14,5 @@ export class GlobalVariableService {
   public switchMap = switchMap;
   public tap = tap;
 
-  constructor(
-    @Optional() public directiveContext: DirectiveContext,
-    @Optional() public http: HttpClient,
-  ) {}
+  constructor(@Optional() public directiveContext: DirectiveContext, @Optional() public http: HttpClient) {}
 }

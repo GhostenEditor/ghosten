@@ -2,6 +2,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { DataBinding } from './data-binding.class';
 import { DataSourcePicker } from './data-source-picker';
+import { cloneDeep } from '../utils';
 
 export class Property {
   private _dataSourceMap$: Map<string, Observable<any>>;
@@ -25,22 +26,17 @@ export class Property {
       } else if (value instanceof DataBinding) {
         acc[key] = `[DataBinding]${value.data}`;
       } else {
-        acc[key] = value;
+        acc[key] = cloneDeep(value);
       }
       return acc;
     }, {});
   }
 
-  static create<T>(
-    property: any,
-    parent: Property = new Property(),
-  ): Property & T {
+  static create<T>(property: any, parent: Property = new Property()): Property & T {
     const newProperty = Object.create(parent);
     for (const key in property) {
       if (/^\[DataSourcePicker]:/.test(property[key])) {
-        property[key] = new DataSourcePicker(
-          property[key].replace('[DataSourcePicker]', ''),
-        );
+        property[key] = new DataSourcePicker(property[key].replace('[DataSourcePicker]', ''));
       } else if (/^\[DataBinding]/.test(property[key])) {
         property[key] = new DataBinding(property[key].slice(13));
       }
@@ -64,9 +60,7 @@ export class Property {
       if (value instanceof DataSourcePicker) {
         this[key] = null;
         const dataSource = this._dataSourceMap$.get(value.sourceID)!;
-        this._subscriptions.push(
-          dataSource.subscribe(res => (this[key] = res)),
-        );
+        this._subscriptions.push(dataSource.subscribe(res => (this[key] = res)));
       }
     });
   }

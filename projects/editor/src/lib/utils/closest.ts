@@ -1,8 +1,5 @@
 const matchFunction = Element.prototype.matches;
-export default function closest(
-  element: Element | null,
-  value: any,
-): HTMLElement | null {
+export default function closest(element: Element | null, value: any): HTMLElement | null {
   if (!element) {
     return null;
   }
@@ -14,9 +11,7 @@ export default function closest(
 
   const isSelector = Boolean(typeof value === 'string');
   const isFunction = Boolean(typeof value === 'function');
-  const isNodeList = Boolean(
-    value instanceof NodeList || value instanceof Array,
-  );
+  const isNodeList = Boolean(value instanceof NodeList || value instanceof Array);
   const isElement = Boolean(value instanceof HTMLElement);
 
   function conditionFn(currentElement: HTMLElement) {
@@ -38,17 +33,14 @@ export default function closest(
   let current: any = element;
 
   do {
-    current =
-      current.correspondingUseElement ||
-      current.correspondingElement ||
-      current;
+    current = current.correspondingUseElement || current.correspondingElement || current;
 
     if (conditionFn(current)) {
       return current;
     }
 
     current = current.parentNode;
-  } while (current && current !== document.body && current !== document);
+  } while (current /*&& current !== document.body && current !== document*/);
 
   return null;
 }

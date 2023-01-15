@@ -25,26 +25,20 @@ export class ZoomDirective implements OnInit, OnDestroy {
   private readonly _container: HTMLElement;
   private subscription = Subscription.EMPTY;
 
-  constructor(
-    _elementRef: ElementRef,
-    private _renderer: Renderer2,
-    private _ngZone: NgZone,
-  ) {
+  constructor(_elementRef: ElementRef, private _renderer: Renderer2, private _ngZone: NgZone) {
     this._container = _elementRef.nativeElement;
     this._renderer.setStyle(this._container, 'transform-origin', 'left top');
   }
 
   ngOnInit() {
     this._ngZone.runOutsideAngular(() => {
-      this.subscription = fromEvent<WheelEvent>(
-        this.zoomZone || this._container,
-        'wheel',
-        {
-          passive: true,
-          capture: true,
-        },
-      ).subscribe(event => this.zoom(event));
-      fromEvent<TouchEvent>(this.zoomZone || this._container, 'touchstart')
+      this.subscription = fromEvent<WheelEvent>(this.zoomZone || this._container, 'wheel', {
+        passive: true,
+        capture: true,
+      }).subscribe(event => this.zoom(event));
+      fromEvent<TouchEvent>(this.zoomZone || this._container, 'touchstart', {
+        passive: true,
+      })
         .pipe(filter(event => event.touches.length === 2))
         .subscribe();
     });
@@ -66,16 +60,13 @@ export class ZoomDirective implements OnInit, OnDestroy {
       return;
     }
     const domRect = this._container.getBoundingClientRect();
-    const containerRect =
-      this._container.parentElement!.getBoundingClientRect();
+    const containerRect = this._container.parentElement!.getBoundingClientRect();
     this.updateTransform.emit(
       new WebKitCSSMatrix()
         .scale(scale, scale)
         .translate(
-          (event.pageX - (event.pageX - domRect.x) * delta - containerRect.x) /
-            scale,
-          (event.pageY - (event.pageY - domRect.y) * delta - containerRect.y) /
-            scale,
+          (event.pageX - (event.pageX - domRect.x) * delta - containerRect.x) / scale,
+          (event.pageY - (event.pageY - domRect.y) * delta - containerRect.y) / scale,
         )
         .toString(),
     );

@@ -17,10 +17,7 @@ import { WaterProperty } from '@ghosten/components';
           [maxColor]="property.maxColor"
           [background]="property.background"
         ></canvas>
-        <span
-          class="position-absolute top-50 start-50 translate-middle text-white"
-          >{{ property.data }}</span
-        >
+        <span class="position-absolute top-50 start-50 translate-middle text-white">{{ property.data }}</span>
       </div>
       <div class="text-truncate text-center p-2">{{ property.title }}</div>
     </div>

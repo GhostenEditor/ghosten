@@ -10,7 +10,7 @@ export interface OptionModel extends Record<string, string> {
 export interface FormItemModel {
   type:
     | 'select'
-    | 'toggle'
+    | 'switch'
     | 'text'
     | 'textarea'
     | 'button'
@@ -29,7 +29,7 @@ export interface FormItemModel {
   className?: string;
   hide?: boolean;
   options?: OptionModel[];
-  columns?: any[];
+  columns?: { name: string; prop: string; type?: string; value?: any }[];
   tableAddType?: 'inline' | 'button';
   text?: string;
   btnText?: string;

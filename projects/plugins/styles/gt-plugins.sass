@@ -1,0 +1,64 @@
+@use 'sass:math'
+
+.border-box
+  $active-color: var(--bs-primary)
+  $border-width: 1.5rem
+  $rotate-degree: 95deg
+  $box-height: 5rem
+  $gap2: 0
+  height: $box-height
+  position: relative
+  perspective: 50px
+
+  .border-item
+    cursor: pointer
+    position: absolute
+    background: var(--bs-tertiary-color)
+
+    &.active
+      background-color: $active-color
+
+
+  .border-all
+    width: 60%
+    height: 60%
+    top: 20%
+    left: 20%
+
+
+  .border-left
+    width: $border-width
+    height: calc(100% - 1.5rem)
+    left: $gap2
+    top: 0.75rem
+    transform: rotateY($rotate-degree)
+    transform-origin: left
+
+
+  .border-right
+    width: $border-width
+    height: calc(100% - 1.5rem)
+    right: $gap2
+    top: 0.75rem
+    transform: rotateY(-$rotate-degree)
+    transform-origin: right
+
+
+  .border-top
+    width: calc(100% - 1.5rem)
+    height: $border-width
+    top: $gap2
+    left: 0.75rem
+    transform: rotateX(-$rotate-degree)
+    transform-origin: top
+
+
+  .border-bottom
+    width: calc(100% - 1.5rem)
+    height: $border-width
+    bottom: $gap2
+    left: 0.75rem
+    transform: rotateX($rotate-degree)
+    transform-origin: bottom
+
+

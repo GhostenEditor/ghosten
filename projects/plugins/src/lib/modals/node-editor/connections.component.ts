@@ -1,21 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Connection, ConnectionDrawing } from './node';
 import { ConnectionService } from './connection.service';
 
 @Component({
   selector: 'connections-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <svg
-    #svgRef
-    style="position: absolute;width: 100%; height: 100%;"
-  >
+  template: ` <svg #svgRef style="position: absolute;width: 100%; height: 100%;">
     <path
       *ngFor="let connection of connectionService.connections"
       fill="none"
@@ -37,13 +27,8 @@ export class ConnectionsComponent implements OnInit {
   drawing = false;
   drawingConnection: ConnectionDrawing | null = null;
 
-  constructor(
-    public connectionService: ConnectionService,
-    private cdr: ChangeDetectorRef,
-  ) {
-    connectionService.startDrawConnection
-      .asObservable()
-      .subscribe(() => (this.drawing = true));
+  constructor(public connectionService: ConnectionService, private cdr: ChangeDetectorRef) {
+    connectionService.startDrawConnection.asObservable().subscribe(() => (this.drawing = true));
     connectionService.endDrawConnection.asObservable().subscribe(() => {
       this.drawingConnection = null;
       this.cdr.detectChanges();
@@ -76,8 +61,8 @@ export class ConnectionsComponent implements OnInit {
 
   getDrawingD({ start, end }: ConnectionDrawing) {
     const handleLength = Math.abs(end.x - start.x) * 0.35;
-    return `M ${start.x},${start.y} C ${start.x + handleLength},${start.y} ${
-      end.x - handleLength
-    },${end.y} ${end.x},${end.y}`;
+    return `M ${start.x},${start.y} C ${start.x + handleLength},${start.y} ${end.x - handleLength},${end.y} ${end.x},${
+      end.y
+    }`;
   }
 }

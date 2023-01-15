@@ -18,12 +18,7 @@ export interface Option extends Record<string, any> {}
       <div class="text-nowrap overflow-hidden">
         <span class="badge text-bg-info me-2" *ngFor="let item of value">
           {{ item.label }}
-          <button
-            type="button"
-            class="btn-close ms-1"
-            aria-label="Close"
-            (click)="removeItem(item)"
-          ></button
+          <button type="button" class="btn-close ms-1" aria-label="Close" (click)="removeItem(item)"></button
         ></span>
       </div>
       <button
@@ -40,12 +35,7 @@ export interface Option extends Record<string, any> {}
       (click)="showDropdown(el)"
     >
       <div>{{ value?.label }}</div>
-      <button
-        type="button"
-        class="btn-close ms-1"
-        aria-label="Close"
-        (click)="$event.stopPropagation()"
-      ></button>
+      <button type="button" class="btn-close ms-1" aria-label="Close" (click)="$event.stopPropagation()"></button>
     </div>
   `,
 })
@@ -122,9 +112,7 @@ export class SelectComponent implements OnInit {
           },
         ]),
     });
-    const componentRef = overlayRef.attach(
-      new ComponentPortal(DropdownComponent),
-    );
+    const componentRef = overlayRef.attach(new ComponentPortal(DropdownComponent));
     componentRef.instance.value = this.value;
     componentRef.instance.multiple = this.multiple;
     componentRef.instance.nodes = this._nodes;

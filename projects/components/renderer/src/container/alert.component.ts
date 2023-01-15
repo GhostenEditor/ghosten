@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
+
+import { AlertProperty } from '@ghosten/components';
 import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
   selector: 'gt-alert',
   template: ` <div
     class="alert"
-    [class.alert-dismissible]="gtNode.property.dismissible"
+    [class.alert-dismissible]="property.dismissible"
     data-droppable
-    [ngClass]="'alert-' + gtNode.property.type"
+    [ngClass]="'alert-' + property.type"
     role="alert"
   >
     <ng-template gtTemplate></ng-template>
     <button
-      *ngIf="gtNode.property.dismissible"
+      *ngIf="property.dismissible"
       type="button"
       class="btn-close"
       data-bs-dismiss="alert"
@@ -21,7 +23,7 @@ import { RenderAbstractComponent } from '@ghosten/renderer';
     ></button>
   </div>`,
 })
-export class AlertComponent extends RenderAbstractComponent {
+export class AlertComponent extends RenderAbstractComponent<AlertProperty> {
   close() {
     this.gtNode.removeSelf();
   }

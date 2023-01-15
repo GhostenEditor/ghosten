@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
@@ -13,6 +14,7 @@ import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-navbar',
+  providers: [Location, { provide: LocationStrategy, useClass: PathLocationStrategy }],
   template: ` <nav class="navbar navbar-expand-lg bg-primary sticky-top" data-bs-theme="dark">
     <div class="container">
       <button
@@ -55,36 +57,41 @@ import { ToastService } from '../toast/toast.service';
       >
         <ul class="navbar-nav flex-row flex-wrap">
           <li class="nav-item col-6 col-lg-auto">
-            <button
-              type="button"
-              class="btn btn-link nav-link"
-              title="创建页面"
-              (click)="addPage()"
-            >
+            <button type="button" class="btn btn-link nav-link" title="后退" (click)="location.back()">
+              <i class="gt-icon">chevron_left</i>
+              <small class="d-lg-none ms-2">后退</small>
+            </button>
+          </li>
+          <li class="nav-item col-6 col-lg-auto">
+            <button type="button" class="btn btn-link nav-link" title="前进" (click)="location.forward()">
+              <i class="gt-icon">chevron_right</i>
+              <small class="d-lg-none ms-2">前进</small>
+            </button>
+          </li>
+          <li class="nav-item col-6 col-lg-auto">
+            <button type="button" class="btn btn-link nav-link" title="刷新" (click)="reload()">
+              <i class="gt-icon">refresh_ccw</i>
+              <small class="d-lg-none ms-2">刷新</small>
+            </button>
+          </li>
+          <li class="nav-item py-2 col-12 col-lg-auto">
+            <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+            <hr class="d-lg-none text-white-50" />
+          </li>
+          <li class="nav-item col-6 col-lg-auto">
+            <button type="button" class="btn btn-link nav-link" title="创建页面" (click)="addPage()">
               <i class="gt-icon">add</i>
               <small class="d-lg-none ms-2">创建页面</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button
-              type="button"
-              class="btn btn-link nav-link"
-              title="页面列表"
-              (click)="pageList()"
-            >
+            <button type="button" class="btn btn-link nav-link" title="页面列表" (click)="pageList()">
               <i class="gt-icon">list</i>
               <small class="d-lg-none ms-2">页面列表</small>
             </button>
           </li>
-          <!--          <li class="nav-item py-2 col-12 col-lg-auto">
-                                                                                                    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
-                                                                                                  </li>-->
           <li class="nav-item col-6 col-lg-auto">
-            <button
-              type="button"
-              class="btn btn-link nav-link position-relative overflow-hidden"
-              title="导入"
-            >
+            <button type="button" class="btn btn-link nav-link position-relative overflow-hidden" title="导入">
               <label
                 ><input
                   #file
@@ -94,18 +101,13 @@ import { ToastService } from '../toast/toast.service';
                   accept=".gt"
                   (change)="import(file)"
               /></label>
-              <i class="gt-icon">input</i>
+              <i class="gt-icon">upload</i>
               <small class="d-lg-none ms-2">导入</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button
-              type="button"
-              class="btn btn-link nav-link"
-              title="导出"
-              (click)="export()"
-            >
-              <i class="gt-icon">logout</i>
+            <button type="button" class="btn btn-link nav-link" title="导出" (click)="export()">
+              <i class="gt-icon">download</i>
               <small class="d-lg-none ms-2">导出</small>
             </button>
           </li>
@@ -114,23 +116,14 @@ import { ToastService } from '../toast/toast.service';
             <hr class="d-lg-none text-white-50" />
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button
-              type="button"
-              class="btn btn-link nav-link"
-              title="重置"
-              (click)="reset()"
-            >
+            <button type="button" class="btn btn-link nav-link" title="重置" (click)="reset()">
               <i class="gt-icon">refresh_ccw</i>
               <small class="d-lg-none ms-2">重置</small>
             </button>
           </li>
         </ul>
       </app-offcanvas>
-      <div
-        *ngIf="showRightSidebar"
-        class="offcanvas-backdrop fade show"
-        (click)="showRightSidebar = false"
-      ></div>
+      <div *ngIf="showRightSidebar" class="offcanvas-backdrop fade show" (click)="showRightSidebar = false"></div>
     </div>
   </nav>`,
 })
@@ -144,18 +137,20 @@ export class NavbarComponent {
     private toast: ToastService,
     private overlay: Overlay,
     private router: Router,
+    public location: Location,
+    private renderer: Renderer2,
   ) {}
 
   reset() {
     if (confirm('是否要清空所有数据？')) {
       this.http.post('deleteDB', null).subscribe(() => {
         this.toast.show({
-          type: 'info',
+          type: 'primary',
           title: '信息',
           message: '所有数据已清空',
           detail: '5秒后页面将自动刷新',
         });
-        setTimeout(() => location.reload(), 5000);
+        setTimeout(() => this.reload(), 5000);
       });
     }
   }
@@ -164,48 +159,19 @@ export class NavbarComponent {
     if (target.files && target.files[0]) {
       this.http.post('importDB', target.files[0]).subscribe(() => {
         this.toast.show({
-          type: 'info',
+          type: 'primary',
           title: '信息',
           message: '数据导入成功',
           detail: '5秒后页面将自动刷新',
         });
-        setTimeout(() => location.reload(), 5000);
+        setTimeout(() => this.reload(), 5000);
       });
     }
   }
 
   export() {
-    let blobSliceStart = 0;
     this.http.get<File>('exportDB').subscribe(data => {
-      // console.log(data);
-      // data.arrayBuffer().then(res => {
-      //   console.log(res);
-      //   console.log(JSON.parse(pako.inflate(res, { to: 'string' })));
-      // });
-      // data
-      //   .slice(0, (blobSliceStart += 6))
-      //   .text()
-      //   .then(text => parseInt(text, 16))
-      //   .then(length =>
-      //     data.slice(blobSliceStart, (blobSliceStart += length)).arrayBuffer(),
-      //   )
-      //   .then(data => pako.inflate(data, { to: 'string' }))
-      //   .then(data => JSON.parse(data))
-      //   .then(({ history }) => {
-      //     history.forEach(({ size }: any) => {
-      //       data
-      //         .slice(blobSliceStart, (blobSliceStart += size))
-      //         .arrayBuffer()
-      //         // .then(console.log)
-      //         .then(data => pako.inflate(data, { to: 'string' }))
-      //         // .then(data => JSON.parse(data))
-      //         .then(console.log)
-      //         .catch(error => {
-      //           console.log(error);
-      //         });
-      //     });
-      //   });
-      const a = document.createElement('a');
+      const a = this.renderer.createComment('a');
       a.download = data.name;
       a.href = URL.createObjectURL(data);
       a.click();
@@ -218,9 +184,7 @@ export class NavbarComponent {
       disposeOnNavigation: true,
     });
     const componentRef = overlayRef.attach(new ComponentPortal(PagesComponent));
-    componentRef.instance.modalClose
-      .pipe(take(1))
-      .subscribe(() => overlayRef.dispose());
+    componentRef.instance.modalClose.pipe(take(1)).subscribe(() => overlayRef.dispose());
   }
 
   addPage() {
@@ -228,9 +192,7 @@ export class NavbarComponent {
       hasBackdrop: true,
       disposeOnNavigation: true,
     });
-    const componentRef = overlayRef.attach(
-      new ComponentPortal(PageEditComponent),
-    );
+    const componentRef = overlayRef.attach(new ComponentPortal(PageEditComponent));
     merge(
       componentRef.instance.modalConfirm.pipe(
         tap(config => {
@@ -243,5 +205,9 @@ export class NavbarComponent {
     )
       .pipe(take(1))
       .subscribe(() => overlayRef.dispose());
+  }
+
+  reload() {
+    location.reload();
   }
 }

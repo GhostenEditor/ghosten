@@ -1,16 +1,13 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
 import { DataBinding, GtNode, IGtNode } from '@ghosten/common';
-import { OpenDialogEvent } from './types';
+
+import { Subscription, fromEvent } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+import { EditExpressionEndEvent, EditExpressionStartEvent } from '../../classes';
+import { EventsService } from '../../services';
 import { PanelFormItem } from './form.component';
 
 @Component({
@@ -18,12 +15,7 @@ import { PanelFormItem } from './form.component';
   template: ` <div class="card">
     <div class="card-header">
       <div class="card-title" i18n="Component Variable Name">组件变量名</div>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="variableName"
-        (ngModelChange)="variableNameChange()"
-      />
+      <input type="text" class="form-control" [(ngModel)]="variableName" (ngModelChange)="variableNameChange()" />
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item" *ngFor="let variable of variables">
@@ -40,20 +32,10 @@ import { PanelFormItem } from './form.component';
             <label class="form-label" i18n="Value">变量值</label>
             <div class="form-control">{{ variable.value }}</div>
           </div>
-          <button
-            type="button"
-            class="btn btn-link"
-            i18n="Button: Edit"
-            (click)="editingVariable = variable"
-          >
+          <button type="button" class="btn btn-link" i18n="Button: Edit" (click)="editingVariable = variable">
             修改
           </button>
-          <button
-            type="button"
-            class="btn btn-link"
-            i18n="Button: Remove"
-            (click)="removeVariable(variable)"
-          >
+          <button type="button" class="btn btn-link" i18n="Button: Remove" (click)="removeVariable(variable)">
             删除
           </button>
         </div>
@@ -75,30 +57,16 @@ import { PanelFormItem } from './form.component';
         </div>
       </li>
       <li class="list-group-item bg-secondary-subtle">
-        <gt-panel-form
-          [formList]="formList"
-          #form
-          (expressionClick)="editExpression($event)"
-        ></gt-panel-form>
-        <button
-          type="button"
-          class="btn btn-link"
-          i18n="Button: Add"
-          (click)="addVariable(form.formGroup)"
-        >
+        <gt-panel-form [formList]="formList" #form (expressionClick)="editExpression($event)"></gt-panel-form>
+        <button type="button" class="btn btn-link" i18n="Button: Add" (click)="addVariable(form.formGroup)">
           增加
         </button>
       </li>
     </ul>
   </div>`,
 })
-export class VariableComponent {
-  public _gtNode: GtNode;
-  public variables: IGtNode.Variable[];
-  public variableName: string | null;
-  public editingVariable: IGtNode.Variable | null = null;
+export class VariableComponent implements OnDestroy {
   @ViewChild('editTemplate', { static: true }) editTemplate: TemplateRef<any>;
-  @Output() openDialog = new EventEmitter<OpenDialogEvent>();
 
   @Input() set gtNode(gtNode: GtNode) {
     this._gtNode = gtNode;
@@ -110,7 +78,13 @@ export class VariableComponent {
     return this._gtNode;
   }
 
-  formList: PanelFormItem[] = [
+  private _gtNode: GtNode;
+  private subscription = Subscription.EMPTY;
+  public variables: IGtNode.Variable[];
+  public variableName: string | null;
+  public editingVariable: IGtNode.Variable | null = null;
+
+  public formList: PanelFormItem[] = [
     {
       label: '变量名',
       name: 'name',
@@ -138,7 +112,11 @@ export class VariableComponent {
     },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private events: EventsService) {}
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   variableNameChange() {
     this.gtNode.variableName = this.variableName;
@@ -196,12 +174,7 @@ export class VariableComponent {
     }
     const newVariable = this.normalizeVariable(form.value);
     if (newVariable) {
-      if (
-        this.gtNode.variable.find(
-          _variable =>
-            _variable !== variable && _variable.name === newVariable.name,
-        )
-      ) {
+      if (this.gtNode.variable.find(_variable => _variable !== variable && _variable.name === newVariable.name)) {
         form.get('name')?.setErrors({ text: '变量名冲突' });
         return;
       }
@@ -212,18 +185,14 @@ export class VariableComponent {
   }
 
   editExpression(formItem: PanelFormItem) {
-    const expressionValue =
-      formItem.control!.value instanceof DataBinding
-        ? formItem.control!.value.data
-        : undefined;
-
-    this.openDialog.emit({
-      type: 'expression',
-      args: [expressionValue],
-      cb: expression => {
-        formItem.control!.setValue(new DataBinding(expression));
+    const expressionValue = formItem.control!.value instanceof DataBinding ? formItem.control!.value.data : '';
+    this.events.target.dispatchEvent(new EditExpressionStartEvent(expressionValue));
+    this.subscription.unsubscribe();
+    this.subscription = fromEvent<EditExpressionEndEvent>(this.events.target, 'editexpressionend')
+      .pipe(take(1))
+      .subscribe(event => {
+        formItem.control!.setValue(new DataBinding(event.expression));
         this.cdr.markForCheck();
-      },
-    });
+      });
   }
 }

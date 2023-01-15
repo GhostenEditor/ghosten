@@ -1,7 +1,7 @@
 import { IGtNode } from './gtNode';
 
 export interface BoardData {
-  type: string;
+  type: 'main' | 'modal' | 'cc' | 'rcc';
   name: string;
   gt: string;
   id: string;

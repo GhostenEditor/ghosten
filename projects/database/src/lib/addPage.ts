@@ -1,18 +1,13 @@
 import { resolveRequest, resolveTransaction } from './resolve';
 import { MessageEvent } from './types';
 
-export function addPage(
-  db: IDBDatabase,
-  pageConfig: any,
-): Promise<MessageEvent> {
+export function addPage(db: IDBDatabase, pageConfig: any): Promise<MessageEvent> {
   const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
   const configObjectStore = transaction.objectStore('CONFIG');
   if (pageConfig.parentId === null) pageConfig.parentId = 'null';
 
   return resolveRequest(
-    configObjectStore
-      .index('url_parentId')
-      .get(IDBKeyRange.only([pageConfig.url, pageConfig.parentId])),
+    configObjectStore.index('url_parentId').get(IDBKeyRange.only([pageConfig.url, pageConfig.parentId])),
   ).then(request => {
     if (request.result) {
       throw {

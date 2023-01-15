@@ -3,10 +3,11 @@ import { Provider } from '@angular/core';
 
 import { GtEdit, TOP_BAR_BUTTONS } from '@ghosten/editor';
 import { ComponentPortal } from '@angular/cdk/portal';
+
+import { take, tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
 
-import { SettingsComponent } from '../modals';
-import { take } from 'rxjs/operators';
+import { HistoryComponent, SettingsComponent } from '../modals';
 
 export const topBarButtons: Provider = {
   provide: TOP_BAR_BUTTONS,
@@ -50,10 +51,11 @@ export const topBarButtons: Provider = {
       title: $localize`:Top Bar Button\: Preview:预览`,
       icon: 'preview',
       onclick: () => {
-        gt.log.next({
-          type: 'preview',
-          message: `正在预览 data 为 %o 的页面`,
-          data: gt.export(),
+        gt.events.TOP_BUTTON_CLICK.emit({
+          button: {
+            name: 'preview',
+          },
+          data: gt.exportString(),
         });
       },
     },
@@ -61,17 +63,43 @@ export const topBarButtons: Provider = {
       title: $localize`:Top Bar Button\: Save:保存`,
       icon: 'save',
       onclick: () => {
-        gt.log.next({
-          type: 'save',
-          message: '保存',
-          data: { config: gt.exportString(), settings: gt.exportSettings() },
+        gt.events.SAVE.emit({
+          config: gt.exportString(),
+          settings: gt.exportSettings(),
         });
       },
     },
     {
       title: $localize`:Top Bar Button\: History:历史`,
       icon: 'history',
-      onclick: () => {},
+      onclick: () => {
+        const overlayRef = overlay.create({
+          hasBackdrop: true,
+          disposeOnNavigation: true,
+        });
+        const component = overlayRef.attach(new ComponentPortal(HistoryComponent)).instance;
+        merge(
+          component.confirm.pipe(
+            tap(data =>
+              gt.events.CUSTOM.emit({
+                type: 'rollback',
+                callback(data: any) {
+                  gt.init(data.config);
+                  gt.initSettings({
+                    name: data.title,
+                    description: data.description,
+                    ...data.settings,
+                  });
+                },
+                data,
+              }),
+            ),
+          ),
+          component.cancel,
+        )
+          .pipe(take(1))
+          .subscribe(() => overlayRef.dispose());
+      },
     },
     {
       title: $localize`:Top Bar Button\: Setting:设置`,
@@ -81,9 +109,7 @@ export const topBarButtons: Provider = {
           hasBackdrop: true,
           disposeOnNavigation: true,
         });
-        const component = overlayRef.attach(
-          new ComponentPortal(SettingsComponent),
-        ).instance;
+        const component = overlayRef.attach(new ComponentPortal(SettingsComponent)).instance;
         merge(component.confirm, component.cancel)
           .pipe(take(1))
           .subscribe(() => overlayRef.dispose());

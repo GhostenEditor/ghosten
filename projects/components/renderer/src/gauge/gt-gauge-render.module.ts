@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import {
-  GT_NODE_DEFAULT_CONFIG,
-  GT_RENDER_COMPONENT_MAP,
-  GtRenderCoreModule,
-} from '@ghosten/renderer';
+import { GT_NODE_DEFAULT_CONFIG, GT_RENDER_COMPONENT_MAP, GtRenderCoreModule } from '@ghosten/renderer';
 import { GaugeModule, gtGaugeConfigMap } from '@ghosten/components';
 
 import { BatteryComponent } from './battery.component';

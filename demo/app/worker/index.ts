@@ -19,14 +19,15 @@ type RequestType =
   | 'save'
   | 'deleteDB'
   | 'importDB'
-  | 'exportDB';
+  | 'exportDB'
+  | 'getHistoryByID'
+  | 'saveComponent'
+  | 'removeComponent';
 
 export class WorkerConnector {
   static workerConnector: WorkerConnector | null = null;
   private readonly worker: Worker | null = null;
-  public message: Observable<
-    MessageEvent<{ type: string; subType: string; data: any; message?: string }>
-  > = EMPTY;
+  public message: Observable<MessageEvent<{ type: string; subType: string; data: any; message?: string }>> = EMPTY;
   public error: Observable<any> = EMPTY;
 
   constructor() {
@@ -46,10 +47,7 @@ export class WorkerConnector {
     }
   }
 
-  postMessage(
-    message: WorkerMessage,
-    options?: Transferable[] | StructuredSerializeOptions,
-  ) {
+  postMessage(message: WorkerMessage, options?: Transferable[] | StructuredSerializeOptions) {
     if (this.worker) {
       this.worker.postMessage(message, options as any);
     }

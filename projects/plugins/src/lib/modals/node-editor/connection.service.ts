@@ -77,12 +77,7 @@ export class ConnectionService {
         )
         .subscribe();
       this.endDrawConnection.asObservable().subscribe(({ socket }) => {
-        if (
-          socket &&
-          this.lastSocket &&
-          socket!.node !== this.lastSocket!.node &&
-          socket !== this.lastSocket
-        ) {
+        if (socket && this.lastSocket && socket!.node !== this.lastSocket!.node && socket !== this.lastSocket) {
           this.addConnection.next(getInputAndOutput(socket, this.lastSocket));
         }
         this.lastSocket = null;
@@ -97,14 +92,9 @@ export class ConnectionService {
   }
 }
 
-function getInputAndOutput(
-  socket1: Socket,
-  socket2: Socket,
-): { input: Socket; output: Socket } {
+function getInputAndOutput(socket1: Socket, socket2: Socket): { input: Socket; output: Socket } {
   if (socket1.type === socket2.type) {
     throw new Error();
   }
-  return socket1.type === 'input'
-    ? { input: socket1, output: socket2 }
-    : { input: socket2, output: socket1 };
+  return socket1.type === 'input' ? { input: socket1, output: socket2 } : { input: socket2, output: socket1 };
 }

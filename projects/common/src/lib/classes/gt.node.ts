@@ -9,12 +9,7 @@ import { Style } from './style.class';
 /**
  * @Description: GtNode的生成类
  */
-export class GtNode<
-  T = {},
-  C = any,
-  ComponentRef = any,
-  ComponentPortal = any,
-> {
+export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> {
   /**
    * @Description: 唯一标识，自动生成
    */
@@ -32,7 +27,7 @@ export class GtNode<
   template: GtNode | null = null;
   templateRoot: GtNode | null = null;
   isTemplateRoot: boolean;
-  inheritList: GtNode[];
+  inheritList: GtNode[] = [];
   slot: { [id: string]: IGtNode.Config[] };
   overwrite: Overwrite;
   core: Core;
@@ -56,7 +51,7 @@ export class GtNode<
    */
   action: Record<string, IGtNode.Action[]>;
 
-  component: C;
+  // component: C;
   componentRef: ComponentRef | null = null;
   componentPortal: ComponentPortal;
   /**
@@ -67,6 +62,7 @@ export class GtNode<
    * @Description: 当前GtNode的childNode组成的数组
    */
   children: GtNode[] = [];
+  dynamicChildren: (() => GtNode[]) | null = null;
   /**
    * @Description: 当前GtNode的路径，一直追溯到根GtNode
    */
@@ -76,7 +72,7 @@ export class GtNode<
   constructor(
     private readonly _rawData: IGtNode.Config,
     private inheritedNode: IGtNode.DefaultConfig | GtNode,
-    component: T,
+    public boardId: string,
   ) {
     if (inheritedNode instanceof GtNode) {
       this.template = inheritedNode;
@@ -105,26 +101,19 @@ export class GtNode<
     this.core = Core.create({}, inheritedNode.core);
     this.style = Style.create(style || {}, inheritedNode.style);
     this.property = Property.create<T>(property || {}, inheritedNode.property);
-    this.action = Object.assign(
-      Object.create(cloneDeep(inheritedNode.action)),
-      nodeConfig.action,
-    );
+    this.action = Object.assign(Object.create(cloneDeep(inheritedNode.action)), nodeConfig.action);
     this.dataSource = DataSource.create(dataSource, inheritedNode.dataSource);
     this.rights =
-      inheritedNode.rights &&
-      Object.assign(
-        Object.create(cloneDeep(inheritedNode.rights)),
-        nodeConfig.rights,
-      );
+      inheritedNode.rights && Object.assign(Object.create(cloneDeep(inheritedNode.rights)), nodeConfig.rights);
     this.validator = validator || inheritedNode.validator || [];
     this.directive = directive || inheritedNode.directive || [];
     this.variable = variable || inheritedNode.variable || [];
     // validator || (inheritedNode.validator && Object.assign(Object.create(null), inheritedNode.validator, validator));
-    Object.defineProperty(this, 'component', {
-      enumerable: false,
-      configurable: false,
-      value: component,
-    });
+    // Object.defineProperty(this, 'component', {
+    //   enumerable: false,
+    //   configurable: false,
+    //   value: component,
+    // });
   }
 
   findClosest(type: string): GtNode | null {
@@ -132,40 +121,24 @@ export class GtNode<
   }
 
   reset() {
-    const { id, type, validator, style, property, ...nodeConfig } = cloneDeep(
-      this._rawData,
-    );
+    const { id, type, validator, style, property, ...nodeConfig } = cloneDeep(this._rawData);
     this.core = Core.create({}, this.inheritedNode.core);
     this.style = Style.create(style || {}, this.inheritedNode.style);
     // this.property = Property.create(property || {}, this.inheritedNode.property, this.globalService);
-    this.action = Object.assign(
-      Object.create(cloneDeep(this.inheritedNode.action)),
-      nodeConfig.action,
-    );
+    this.action = Object.assign(Object.create(cloneDeep(this.inheritedNode.action)), nodeConfig.action);
     this.rights =
       this.inheritedNode.rights &&
-      Object.assign(
-        Object.create(cloneDeep(this.inheritedNode.rights)),
-        nodeConfig.rights,
-      );
+      Object.assign(Object.create(cloneDeep(this.inheritedNode.rights)), nodeConfig.rights);
     this.validator =
       validator ||
-      (this.inheritedNode.validator &&
-        Object.assign(
-          Object.create(null),
-          this.inheritedNode.validator,
-          validator,
-        ));
+      (this.inheritedNode.validator && Object.assign(Object.create(null), this.inheritedNode.validator, validator));
   }
 
   addSelf() {
     if (this.parent && this.parent.componentRef) {
       // @ts-ignore
       this.property.show = true;
-      this.parent.componentRef.instance.insert(
-        this,
-        this.parent.children.indexOf(this),
-      );
+      this.parent.componentRef.instance.insert(this, this.parent.children.indexOf(this));
     }
   }
 
@@ -173,9 +146,7 @@ export class GtNode<
     if (this.parent && this.parent.componentRef) {
       // @ts-ignore
       this.property.show = false;
-      this.parent.componentRef.instance.remove(
-        this.parent!.children.indexOf(this),
-      );
+      this.parent.componentRef.instance.remove(this.parent!.children.indexOf(this));
     }
   }
 
@@ -224,9 +195,7 @@ export class GtNode<
       [IGtNode.PropertyEnum.type]: this.type,
       [IGtNode.PropertyEnum.id]: this.id,
       [IGtNode.PropertyEnum.parent]: this.parent ? this.parent.id : undefined,
-      [IGtNode.PropertyEnum.childIndex]: this.parent
-        ? this.parent.children.indexOf(this)
-        : undefined,
+      [IGtNode.PropertyEnum.childIndex]: this.parent ? this.parent.children.indexOf(this) : undefined,
       [IGtNode.PropertyEnum.dataSource]: this.dataSource.export(),
       [IGtNode.PropertyEnum.style]: this.style.export(),
       [IGtNode.PropertyEnum.property]: this.property.export(),
@@ -234,20 +203,14 @@ export class GtNode<
       [IGtNode.PropertyEnum.validator]: this.validator,
       [IGtNode.PropertyEnum.directive]: this.directive,
       [IGtNode.PropertyEnum.action]: this.action,
-      [IGtNode.PropertyEnum.template]: this.template
-        ? this.template.id
-        : undefined,
+      [IGtNode.PropertyEnum.template]: this.template ? this.template.id : undefined,
       [IGtNode.PropertyEnum.outletID]: this.outletID,
-      [IGtNode.PropertyEnum.overwrite]: this.isTemplateRoot
-        ? this.overwrite.export()
-        : null,
+      [IGtNode.PropertyEnum.overwrite]: this.isTemplateRoot ? this.overwrite.export() : null,
       [IGtNode.PropertyEnum.variableName]: this.variableName || undefined,
       [IGtNode.PropertyEnum.variable]: this.variable,
       [IGtNode.PropertyEnum.slot]: this.isTemplateRoot
         ? this.getNodesByType('slot').reduce<any>((acc, gtNode) => {
-            acc[gtNode.template!.id] = gtNode
-              .getSubNodes()
-              .map(childNode => childNode.export());
+            acc[gtNode.template!.id] = gtNode.getSubNodes().map(childNode => childNode.export());
             return acc;
           }, {})
         : null,
@@ -256,52 +219,65 @@ export class GtNode<
 
   setParent(parentNode: GtNode | null, index?: number, outletID?: string) {
     if (parentNode) {
-      if (
-        parentNode === this.parent &&
-        this.parent &&
-        this.parent.componentRef &&
-        this.outletID === outletID
-      ) {
-        if (index === undefined || index === null) {
-          index = this.parent.children.length - 1;
-        }
-        const oldIndex = this.parent.children.indexOf(this);
-        this.parent.children.splice(oldIndex, 1);
-        this.parent.children.splice(index!, 0, this);
-        this.parent.componentRef.instance.move(this, index!);
-      } else {
-        if (this.parent && this.parent.componentRef) {
-          const oldIndex = this.parent!.children.indexOf(this);
-          this.parent.componentRef.instance.remove(this);
-          this.parent.children.splice(oldIndex, 1);
-        }
-        this.outletID = outletID;
-        this.parent = parentNode;
-        this.path = [...parentNode.path, this];
-        if (typeof index === 'number' && index >= 0) {
-          parentNode.children.splice(index, 0, this);
-        } else {
-          parentNode.children.push(this);
-        }
-        if (parentNode.componentRef) {
-          if (parentNode.core.dynamicTemplate) {
-            parentNode.componentRef.instance.insert(
-              this,
-              parentNode.children
-                .filter(({ outletID }) => outletID === this.outletID)
-                .indexOf(this),
-            );
+      if (index === undefined || index === null) {
+        index = parentNode.children.length;
+      }
+      if (this.parent) {
+        const oldIndex = this.parent!.children.indexOf(this);
+        if (parentNode === this.parent) {
+          if (index === oldIndex) {
+            if (this.outletID !== outletID) {
+              this.outletID = outletID;
+              if (this.parent.componentRef) {
+                this.parent.componentRef.instance.move(this, index > oldIndex ? index - 1 : index);
+              }
+            }
           } else {
-            parentNode.componentRef.instance.insert(
-              this,
-              parentNode.children.indexOf(this),
-            );
+            if (this.parent.componentRef) {
+              this.outletID = outletID;
+              this.parent.componentRef.instance.move(this, index > oldIndex ? index - 1 : index);
+            }
+            this.parent.children.splice(oldIndex, 1);
+            this.parent.children.splice(index, 0, this);
           }
+        } else {
+          if (this.parent) {
+            if (this.parent.componentRef) {
+              this.parent.componentRef.instance.remove(this);
+            }
+            this.parent.children.splice(oldIndex, 1);
+          }
+          parentNode.children.splice(index, 0, this);
+          this.parent = parentNode;
+          this.path = [...parentNode.path, this];
+          this.outletID = outletID;
+          if (this.parent.componentRef) {
+            parentNode.componentRef.instance.insert(this, index);
+          }
+        }
+      } else {
+        this.parent = parentNode;
+        this.parent.children.splice(index, 0, this);
+        this.path = [...parentNode.path, this];
+        this.outletID = outletID;
+        if (this.parent.componentRef) {
+          parentNode.componentRef.instance.insert(this, index);
         }
       }
     } else {
       this.parent = null;
       this.path = [this];
     }
+  }
+
+  remove() {
+    if (this.parent) {
+      const index = this.parent.children.indexOf(this);
+      if (this.parent.componentRef && this.componentRef) {
+        this.parent.componentRef.instance.remove(this);
+      }
+      this.parent.children.splice(index, 1);
+    }
+    this.componentRef = null;
   }
 }

@@ -1,6 +1,4 @@
-export function resolveTransaction(
-  transaction: IDBTransaction,
-): Promise<Event> {
+export function resolveTransaction(transaction: IDBTransaction): Promise<Event> {
   return new Promise((resolve, reject) => {
     transaction.addEventListener('complete', event => resolve(event), {
       once: true,

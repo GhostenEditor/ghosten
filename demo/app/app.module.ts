@@ -20,13 +20,11 @@ import { providers } from './providers';
     RouterModule.forRoot([
       {
         path: '',
-        loadChildren: () =>
-          import('./modules/main/main.module').then(m => m.MainModule),
+        loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule),
       },
       {
         path: 'edit',
-        loadChildren: () =>
-          import('./modules/gt/gt.module').then(m => m.GtModule),
+        loadChildren: () => import('./modules/gt/gt.module').then(m => m.GtModule),
       },
       { path: '**', redirectTo: '404', pathMatch: 'full' },
     ]),

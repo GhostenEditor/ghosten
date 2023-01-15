@@ -1,37 +1,39 @@
-import pako from 'pako';
-
 import { resolveRequest, resolveTransaction } from './resolve';
 import { MessageEvent } from './types';
+import { decode } from './pako';
 
-export function getLatestConfigByID(
-  db: IDBDatabase,
-  { id }: any,
-): Promise<MessageEvent> {
-  const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readonly');
+export function getLatestConfigByID(db: IDBDatabase, { id, timestamp }: any): Promise<MessageEvent> {
+  const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY', 'COMPONENT'], 'readonly');
   const configObjectStore = transaction.objectStore('CONFIG');
   const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');
+  const componentObjectStore = transaction.objectStore('COMPONENT');
   resolveTransaction(transaction).then();
 
   return Promise.all([
-    resolveRequest<any>(configObjectStore.get(+id)).then(
-      request => request.result,
-    ),
+    resolveRequest<any>(configObjectStore.get(+id)).then(request => request.result),
     resolveRequest<IDBCursorWithValue>(
-      configHistoryObjectStore
-        .index('id')
-        .openCursor(IDBKeyRange.only(+id), 'prev'),
+      !isNaN(+timestamp)
+        ? configHistoryObjectStore.index('id_timestamp').openCursor(IDBKeyRange.only([+id, +timestamp]), 'prev')
+        : configHistoryObjectStore.index('id').openCursor(IDBKeyRange.only(+id), 'prev'),
     ).then<any>(request => request.result && request.result.value),
+    resolveRequest<any[]>(componentObjectStore.getAll()),
   ]).then(
-    ([res1, res2]) => {
-      const data = { ...res1, ...res2 };
+    async ([res1, res2, res3]) => {
+      if (!res1) {
+        return {
+          type: 'log',
+          subType: 'getLatestConfigByID',
+          data: null,
+        };
+      }
+      const data = {
+        ...res1,
+        ...res2,
+        components: res3.result.map(item => decode(item.config)),
+      };
       if (data.parentId === 'null') data.parentId = null;
       if (data.config) {
-        data.config = pako.inflate(
-          data.config.match(/\w{2}/g).map((str: string) => parseInt(str, 16)),
-          {
-            to: 'string',
-          },
-        );
+        data.config = decode(data.config);
       }
       return {
         type: 'log',

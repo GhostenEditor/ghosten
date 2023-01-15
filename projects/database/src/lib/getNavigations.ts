@@ -8,14 +8,20 @@ export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
   return resolveTransaction(transaction).then(() => {
     const data = request.result;
     const menuMap = new Map();
-    const items: MenuItem[] = data.map(menu => {
-      const item: MenuItem = {
+    const items: (MenuItem & {
+      parentId?: number;
+      parent?: MenuItem;
+    })[] = data.map(menu => {
+      const item: MenuItem & {
+        parentId?: number;
+        parent?: MenuItem;
+      } = {
         id: menu.id,
         label: menu.title,
         path: menu.url,
         icon: menu.icon,
         directory: menu.type === 'Directory',
-        parentId: menu.parentId === 'null' ? null : +menu.parentId,
+        parentId: menu.parentId === 'null' ? undefined : +menu.parentId,
         children: [],
       };
       menuMap.set(item.id, item);
@@ -32,7 +38,7 @@ export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
     });
     items.forEach(item => {
       const paths = [];
-      let loopItem: MenuItem | undefined = item;
+      let loopItem: typeof item | undefined = item;
       while (loopItem) {
         paths.unshift(loopItem.path);
         loopItem = loopItem.parent;
@@ -40,7 +46,9 @@ export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
       item.url = paths.join('/');
     });
     // mainService.menus = items.filter(v => !v.parentId);
-
+    items.forEach(item => {
+      delete item.parent;
+    });
     return {
       type: 'log',
       subType: 'getNavigations',

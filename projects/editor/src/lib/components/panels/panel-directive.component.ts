@@ -1,19 +1,15 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
 import { DataBinding, GtNode } from '@ghosten/common';
 
-import { DropdownItem } from '../../directives/dropdown/dropdown.component';
-import { OpenDialogEvent } from './types';
+import { Subscription, fromEvent } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+import { EditExpressionEndEvent, EditExpressionStartEvent } from '../../classes';
+import { DropdownItem } from '../../modules';
+import { EventsService } from '../../services';
 import { PanelCard } from './card.component';
 import { PanelFormItem } from './form.component';
 
@@ -34,12 +30,7 @@ interface DirectiveItem extends PanelCard {
   selector: 'gt-panel-directive',
   template: `
     <div cdkDropList (cdkDropListDropped)="dropped($event)">
-      <div
-        class="card mb-3 transform"
-        *ngFor="let directive of directives"
-        cdkDrag
-        cdkDragLockAxis="y"
-      >
+      <div class="card mb-3 transform" *ngFor="let directive of directives" cdkDrag cdkDragLockAxis="y">
         <div class="card-header">
           <div class="d-flex justify-content-between">
             {{ directive.title }}
@@ -47,10 +38,7 @@ interface DirectiveItem extends PanelCard {
               <button class="btn btn-light btn-sm" cdkDragHandle>
                 <i class="gt-icon">list</i>
               </button>
-              <button
-                class="btn btn-light btn-sm"
-                (click)="removeValidator(directive)"
-              >
+              <button class="btn btn-light btn-sm" (click)="removeValidator(directive)">
                 <i class="gt-icon">close</i>
               </button>
             </div>
@@ -81,20 +69,20 @@ interface DirectiveItem extends PanelCard {
         (removeItem)="removeValidator(directive)"
       >
         <div class="card-title">Input</div>
-        <gt-properties-form
+        <gt-config-form
           [formList]="directive.form.input"
           (formChange)="formChange(directive, 'input', $event)"
-        ></gt-properties-form>
+        ></gt-config-form>
         <div class="card-title">Output</div>
-        <gt-properties-form
+        <gt-config-form
           [formList]="directive.form.output"
           (formChange)="formChange(directive, 'output', $event)"
-        ></gt-properties-form>
+        ></gt-config-form>
         <div class="card-title">Export</div>
-        <gt-properties-form
+        <gt-config-form
           [formList]="directive.form.export"
           (formChange)="formChange(directive, 'export', $event)"
-        ></gt-properties-form>
+        ></gt-config-form>
       </gt-panel-card>-->
     </div>
     <div class="d-grid gap-2 mt-2">
@@ -111,13 +99,12 @@ interface DirectiveItem extends PanelCard {
     </div>
   `,
 })
-export class PanelDirectiveComponent {
-  public _gtNode: GtNode;
+export class PanelDirectiveComponent implements OnDestroy {
+  private _gtNode: GtNode;
+  private subscription = Subscription.EMPTY;
 
   @Input() set gtNode(gtNode: GtNode) {
-    this.directives = gtNode.directive!.map(({ type, value }) =>
-      this.getDirective(type, value),
-    );
+    this.directives = gtNode.directive!.map(({ type, value }) => this.getDirective(type, value));
     this._gtNode = gtNode;
   }
 
@@ -125,19 +112,17 @@ export class PanelDirectiveComponent {
     return this._gtNode;
   }
 
-  @Output() openDialog = new EventEmitter<OpenDialogEvent>();
-
   @ViewChild('dropdown', { static: true }) dropdown: TemplateRef<HTMLElement>;
   directives: DirectiveItem[] = [];
   directiveTypes = directiveTypes;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private events: EventsService) {}
 
-  formChange(
-    formGroup: FormGroup,
-    directive: DirectiveItem,
-    type: 'input' | 'output',
-  ) {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  formChange(formGroup: FormGroup, directive: DirectiveItem, type: 'input' | 'output') {
     if (formGroup.valid) {
       directive.value[type] = formGroup.value;
       this.updateGtNodeValidator();
@@ -215,18 +200,15 @@ export class PanelDirectiveComponent {
   }
 
   editExpression(formItem: PanelFormItem) {
-    const expressionValue =
-      formItem.control!.value instanceof DataBinding
-        ? formItem.control!.value.data
-        : undefined;
-    this.openDialog.emit({
-      type: 'expression',
-      args: [expressionValue],
-      cb: expression => {
-        formItem.control!.setValue(new DataBinding(expression));
+    const expressionValue = formItem.control!.value instanceof DataBinding ? formItem.control!.value.data : '';
+    this.events.target.dispatchEvent(new EditExpressionStartEvent(expressionValue));
+    this.subscription.unsubscribe();
+    this.subscription = fromEvent<EditExpressionEndEvent>(this.events.target, 'editexpressionend')
+      .pipe(take(1))
+      .subscribe(event => {
+        formItem.control!.setValue(new DataBinding(event.expression));
         this.cdr.markForCheck();
-      },
-    });
+      });
   }
 
   dropped(event: CdkDragDrop<void>) {

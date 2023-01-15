@@ -1,12 +1,4 @@
-import {
-  ContentChild,
-  Directive,
-  ElementRef,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { ContentChild, Directive, ElementRef, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 
 import { Subscription, animationFrames, merge } from 'rxjs';
@@ -76,13 +68,14 @@ export class PageStructureDirective implements OnInit, OnDestroy {
           }
         });
         this.gt.selected.forEach(gtNode => {
-          const element = gtNode.componentRef.location
-            .nativeElement as HTMLElement;
-          activeNodes.push({
-            element,
-            text1: gtNode.type.toUpperCase(),
-            text2: gtNode.directive.map(directive => directive.type).join(','),
-          });
+          if (gtNode.componentRef) {
+            const element = gtNode.componentRef.location.nativeElement as HTMLElement;
+            activeNodes.push({
+              element,
+              text1: gtNode.type.toUpperCase(),
+              text2: gtNode.directive.map(directive => directive.type).join(','),
+            });
+          }
         });
         drawLayout(ctx, container, gtPage, nodes, activeNodes, {
           drawAll: this.gt.mode === 'edit' && this.gt.showReferenceLine,

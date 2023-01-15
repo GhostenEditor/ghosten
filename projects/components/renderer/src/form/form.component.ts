@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
-  selector: 'form[gt-form]',
+  selector: 'config-form[gt-config-form]',
   template: '<ng-template gtTemplate></ng-template>',
 })
 export class FormComponent extends RenderAbstractComponent {
@@ -11,8 +11,6 @@ export class FormComponent extends RenderAbstractComponent {
   }
 
   public validate() {
-    Object.values(this.formGroup.controls).forEach(control =>
-      control.markAsTouched(),
-    );
+    Object.values(this.formGroup.controls).forEach(control => control.markAsTouched());
   }
 }

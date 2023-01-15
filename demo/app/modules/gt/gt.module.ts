@@ -1,5 +1,5 @@
+import { Router, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { GT_EDITOR_BRAND, GtEditCoreModule } from '@ghosten/editor';
 import { GtComponentsEditorModule } from '@ghosten/components/editor';
@@ -8,7 +8,8 @@ import { GtPluginModule } from '@ghosten/plugins';
 import { GtRenderCoreModule } from '@ghosten/renderer';
 
 import { EditComponent } from './edit.component';
-import { EditResovle } from './edit.resovle';
+import { EditResolve } from './edit.resolve';
+import { ModalModule } from '../modal/modal.module';
 import { RenderComponent } from './render.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { RenderComponent } from './render.component';
     GtComponentsEditorModule,
     GtComponentsRendererModule,
     GtPluginModule,
+    ModalModule,
     RouterModule.forChild([
       {
         path: '',
@@ -27,24 +29,25 @@ import { RenderComponent } from './render.component';
       {
         path: ':id',
         component: EditComponent,
-        resolve: { data: EditResovle },
+        resolve: { data: EditResolve },
       },
     ]),
   ],
   declarations: [EditComponent, RenderComponent],
   providers: [
-    EditResovle,
+    EditResolve,
     {
       provide: GT_EDITOR_BRAND,
-      useValue: {
+      useFactory: (router: Router) => ({
         title: 'GHOSTEN',
         href: '/',
         src: 'assets/icons/128.png',
         alt: 'Ghosten Logo',
         click() {
-          location.replace(document.querySelector('base')!.href);
+          router.navigateByUrl('/').then();
         },
-      },
+      }),
+      deps: [Router],
     },
   ],
 })

@@ -6,11 +6,6 @@ import { GtFormRenderModule } from './form/gt-form-render.module';
 import { GtGaugeRenderModule } from './gauge/gt-gauge-render.module';
 
 @NgModule({
-  exports: [
-    GtBaseRenderModule,
-    GtGaugeRenderModule,
-    GtFormRenderModule,
-    GtContainerRenderModule,
-  ],
+  exports: [GtContainerRenderModule, GtBaseRenderModule, GtGaugeRenderModule, GtFormRenderModule],
 })
 export class GtComponentsRendererModule {}

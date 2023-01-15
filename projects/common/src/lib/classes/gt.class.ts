@@ -48,7 +48,7 @@ export interface Global {
 export abstract class Gt {
   public abstract globalService?: Map<string, Subject<any>>;
   public defaultConfigMap: IGtNode.DefaultConfigMap;
-  public componentMap: Record<string, any>;
+  // public componentMap: Record<string, any>;
   log: Subject<LogEvent> = new Subject<LogEvent>();
   /**
    * @Description: ghost的元数据
@@ -68,9 +68,11 @@ export abstract class Gt {
   /**
    * @Description: 此功能展示不开放
    */
+  pages: Board[] = [];
   boards: Board[] = [];
   currentBoard: Board | null = null;
   customComponent: Board[] = [];
+  remoteCustomComponent: Board[] = [];
 
   /**
    * @Description: 通过id获取到GtNode
@@ -81,34 +83,61 @@ export abstract class Gt {
     return this.nodeList.get(id) || null;
   }
 
+  public getBoardById(id: string): Board | null {
+    return this.boards.find(board => board.id === id) || null;
+  }
+
   public getNodeByName(name: string): GtNode {
-    return Array.from(this.nodeList.values()).filter(
-      ({ property }) => property.name === name,
-    )[0];
+    return Array.from(this.nodeList.values()).filter(({ property }) => property.name === name)[0];
   }
 
   public getNodeByType(_type: string): GtNode[] {
-    return Array.from(this.nodeList.values()).filter(
-      ({ type }) => _type === type,
-    );
+    return Array.from(this.nodeList.values()).filter(({ type }) => _type === type);
   }
 
-  removeNode?(gtNode: GtNode): void;
-
-  public init(data?: string | null | GtData) {
-    const {
-      global,
-      metadata = {},
-      boards = [],
-      template = [],
-    } = this._parseGtData(data);
+  public init(data?: string | null | GtData, remoteComponents?: any[]) {
+    const { global, metadata = {}, boards = [], template = [] } = this._parseGtData(data);
     this.global = Object.assign(this.global, global);
     this.metadata.setProperties(metadata);
-    this.customComponent = template.map(data =>
-      this._generateBoardFromBoardData(data),
-    );
-    this.boards = boards.map(data => this._generateBoardFromBoardData(data));
-    this.setCurrentBoard(this.boards[0]);
+    template.forEach(data => this._generateBoardFromBoardData(data));
+    if (remoteComponents) {
+      remoteComponents.forEach(comp =>
+        this._generateBoardFromBoardData({
+          ...JSON.parse(comp, (k, v) => {
+            if (typeof v === 'string') {
+              if (/^\/.+\/$/.test(v)) {
+                return new RegExp(v.slice(1, -1));
+              } else if (/^\[DataBinding]/.test(v)) {
+                return new DataBinding(v.slice(13));
+              }
+            }
+            return v;
+          }),
+          type: 'rcc',
+        }),
+      );
+    }
+    boards.forEach(data => this._generateBoardFromBoardData(data));
+    this.boards.forEach(board => {
+      switch (board.type) {
+        // @ts-ignore
+        case 'custom':
+        case 'cc':
+          this.customComponent.push(board);
+          break;
+        case 'rcc':
+          this.remoteCustomComponent.push(board);
+          break;
+        default:
+          this.pages.push(board);
+      }
+    });
+    this.setCurrentBoard(this.pages[0]);
+    this.log.next({
+      type: 'info',
+      message: 'Application Initialization',
+      data: this,
+    });
   }
 
   private _parseGtData(data: string | null | undefined | GtData): GtData {
@@ -132,13 +161,17 @@ export abstract class Gt {
 
   private _generateBoardFromBoardData(data: BoardData): Board {
     const board = new Board(data);
+    this.boards.push(board);
     data.nodeList
-      .map((data: IGtNode.Config) =>
-        this.createGtNode(data, undefined, undefined, undefined, board),
-      )
+      .map((data: IGtNode.Config) => this.createGtNode(data, undefined, undefined, undefined, board.id))
       .filter((v): v is GtNode => !!v);
     board.gt = this.getNodeById(data.gt)!;
+    /**@deprecated*/
+    // @ts-ignore
     if (board.type === 'custom') {
+      board.type = 'cc';
+    }
+    if (board.type === 'cc' || board.type === 'rcc') {
       board.gt.isTemplate = true;
     }
     return board;
@@ -155,7 +188,7 @@ export abstract class Gt {
     parent: GtNode | null = this.getNodeById(data.parent!),
     inheritedNode?: GtNode,
     index?: number,
-    board: Board = this.currentBoard!,
+    boardId: string = parent!.boardId,
   ): GtNode | null {
     if (typeof data.template === 'string') {
       const templateNode = this.getNodeById(data.template);
@@ -167,18 +200,23 @@ export abstract class Gt {
           },
           parent,
           templateNode,
+          index,
           data.overwrite,
-          board,
+          boardId,
         );
         node.isTemplateRoot = true;
         return node;
       } else {
+        this.log.next({
+          type: 'error',
+          message: `ID 为 ${data.template} 的模版未找到`,
+          data,
+        });
         return null;
       }
     } else {
-      const _inheritedNode =
-        inheritedNode || this.defaultConfigMap.get(data.type)!;
-      const component = this.componentMap[data.type];
+      const _inheritedNode = inheritedNode || this.defaultConfigMap.get(data.type)!;
+      // const component = this.componentMap[data.type];
       if (!_inheritedNode) {
         this.log.next({
           type: 'error',
@@ -187,18 +225,19 @@ export abstract class Gt {
         });
         return null;
       }
-      if (!component) {
-        this.log.next({
-          type: 'error',
-          message: `类型为${data.type}的组件不存在，无法生成`,
-          data,
-        });
-        return null;
-      }
-      const node = new GtNode(data, _inheritedNode, component);
+      // if (!component) {
+      //   this.log.next({
+      //     type: 'error',
+      //     message: `类型为${data.type}的组件不存在，无法生成`,
+      //     data,
+      //   });
+      //   return null;
+      // }
+      const node = new GtNode(data, _inheritedNode, boardId);
       if (!node) {
         return null;
       }
+      const board = this.getBoardById(boardId)!;
       board.nodeList.set(node.id, node);
       this.nodeList.set(node.id, node);
       node.setParent(parent, index, node.outletID);
@@ -216,13 +255,14 @@ export abstract class Gt {
     data: IGtNode.Config,
     parent: GtNode,
     templateNode: GtNode,
+    index?: number,
     overwrite: Record<string, any> = {},
-    board: Board = this.currentBoard!,
+    boardId: string = this.currentBoard!.id,
   ) {
-    const component = this.componentMap[data.type];
-    const node = new GtNode(data, templateNode, component);
+    const node = new GtNode(data, templateNode, boardId);
     node.templateRoot = parent.templateRoot || node;
     node.template = templateNode;
+    templateNode.inheritList.push(node);
     if (node.templateRoot !== node) {
       node.templateRoot.overwrite[node.template.id] = {
         property: node.property,
@@ -238,24 +278,24 @@ export abstract class Gt {
       node.overwrite = new Overwrite();
       node.slot = data.slot!;
     }
-    node.setParent(parent);
+    node.setParent(parent, index);
+    const board = this.getBoardById(boardId)!;
     board.nodeList.set(node.id, node);
     this.nodeList.set(node.id, node);
     if (node.type === 'slot') {
       node.core.canPaste = true;
-      ((node.templateRoot.slot || {})[node.template.id] || []).forEach(
-        (d: any) => {
-          this.createGtNode(d, node, undefined, undefined, board);
-        },
-      );
+      ((node.templateRoot.slot || {})[node.template.id] || []).forEach((d: any) => {
+        this.createGtNode(d, node, undefined, undefined, boardId);
+      });
     } else {
-      templateNode.children.forEach(childNode => {
+      templateNode.children.forEach((childNode, i) => {
         this.createTemplateGtNode(
           { type: childNode.type, ...((overwrite || {})[childNode.id] || {}) },
           node,
           childNode,
+          i,
           overwrite,
-          board,
+          boardId,
         );
       });
     }
@@ -271,8 +311,8 @@ export abstract class Gt {
     return {
       metadata: this.metadata.export(),
       global: this.global,
-      template: this.customComponent.map(board => board.export()),
-      boards: this.boards.map(board => board.export()),
+      template: this.boards.filter(board => board.type === 'cc').map(board => board.export()),
+      boards: this.boards.filter(board => board.type !== 'cc' && board.type !== 'rcc').map(board => board.export()),
     };
   }
 
@@ -288,19 +328,13 @@ export abstract class Gt {
         return `[DataBinding]${value.data}`;
       } else if (Array.isArray(value) && value.length === 0) {
         return undefined;
-      } else if (
-        Object.prototype.toString.call(value) === '[object Object]' &&
-        Object.keys(value).length === 0
-      ) {
+      } else if (Object.prototype.toString.call(value) === '[object Object]' && Object.keys(value).length === 0) {
         return undefined;
       } else {
         return value;
       }
     };
-    return JSON.stringify(
-      JSON.parse(JSON.stringify(this.export(), replacer)),
-      replacer,
-    );
+    return JSON.stringify(JSON.parse(JSON.stringify(this.export(), replacer)), replacer);
   }
 
   public destroy() {
@@ -311,7 +345,9 @@ export abstract class Gt {
     this.gt = null;
     this.nodeList.clear();
     this.boards = [];
-    this.currentBoard = null;
+    this.pages = [];
+    this.remoteCustomComponent = [];
     this.customComponent = [];
+    this.currentBoard = null;
   }
 }

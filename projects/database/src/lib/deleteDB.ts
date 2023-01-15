@@ -1,10 +1,7 @@
 import { MessageEvent } from './types';
 import { resolveRequest } from './resolve';
 
-export function deleteDB(
-  db: IDBDatabase,
-  DBName: string,
-): Promise<MessageEvent> {
+export function deleteDB(db: IDBDatabase, DBName: string): Promise<MessageEvent> {
   db.close();
   const request = indexedDB.deleteDatabase(DBName);
 

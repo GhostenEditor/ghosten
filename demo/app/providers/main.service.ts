@@ -7,25 +7,21 @@ export class MainService {
 
   generateRoutes(component: Type<any>, resolve: ResolveData): Route[] {
     const menuMap = new Map();
-    const items: (Route & { id: number; parentId: number | null })[] =
-      this.rawMenus.map(menu => {
-        const item: Route & { id: number; parentId: number | null } = {
+    const items: (Route & { id: number; parentId: number | null })[] = this.rawMenus.map(menu => {
+      const item: Route & { id: number; parentId: number | null } = {
+        id: menu.id,
+        path: menu.url,
+        parentId: typeof menu.parentId === 'undefined' || menu.parentID === null ? null : +menu.parentId,
+        component,
+        data: {
           id: menu.id,
-          path: menu.url,
-          parentId:
-            typeof menu.parentId === 'undefined' || menu.parentID === null
-              ? null
-              : +menu.parentId,
-          component,
-          data: {
-            id: menu.id,
-          },
-          children: [],
-          resolve: { data: resolve },
-        };
-        menuMap.set(item.id, item);
-        return item;
-      });
+        },
+        children: [],
+        resolve: { data: resolve },
+      };
+      menuMap.set(item.id, item);
+      return item;
+    });
     items.forEach(menu => {
       if (menu.parentId) {
         const parentMenu = menuMap.get(menu.parentId);

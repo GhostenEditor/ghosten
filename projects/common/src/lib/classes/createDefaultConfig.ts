@@ -2,7 +2,6 @@ import { FormItemModel, IGtNode } from '../types';
 
 const commonCore = {
   canHasChild: false,
-  acceptedChildType: [] as string[],
   canPaste: true,
   canCopy: true,
   canDelete: true,
@@ -11,9 +10,7 @@ const commonCore = {
   canPasteStyle: true,
   dynamicTemplate: false,
 };
-const commonProperty: FormItemModel[] = [
-  { name: 'show', label: '显示', type: 'toggle', value: true },
-];
+const commonProperty: FormItemModel[] = [{ name: 'show', label: '显示', type: 'switch', value: true }];
 const commonStyle: FormItemModel[] = [
   {
     label: '宽度',
@@ -103,6 +100,32 @@ const commonStyle: FormItemModel[] = [
     name: 'zIndex',
     type: 'number',
   },
+  {
+    name: 'color',
+    type: 'color',
+  },
+  {
+    name: 'background',
+    type: 'color',
+  },
+  {
+    name: 'flexDirection',
+    type: 'select',
+    options: [
+      { label: 'row', value: 'row' },
+      { label: 'column', value: 'column' },
+      { label: 'row-reverse', value: 'row-reverse' },
+      { label: 'column-reverse', value: 'column-reverse' },
+    ],
+  },
+  {
+    name: 'flexGrow',
+    type: 'number',
+  },
+  {
+    name: 'flexShrink',
+    type: 'number',
+  },
 ];
 
 const commonAction: Record<string, IGtNode.Action[]> = {
@@ -119,30 +142,12 @@ export interface DefaultConfig {
   validator?: any[] | boolean;
 }
 
-export function createDefaultConfig(
-  defaultConfig: DefaultConfig,
-): Map<string, any> {
-  const {
-    core = {},
-    property = [],
-    style = [],
-    action = [],
-    rights = false,
-    validator = false,
-  } = defaultConfig;
+export function createDefaultConfig(defaultConfig: DefaultConfig): Map<string, any> {
+  const { core = {}, property = [], style = [], action = [], rights = false, validator = false } = defaultConfig;
   const configMap = new Map<string, any>();
   configMap.set('core', { ...commonCore, ...core });
-  configMap.set(
-    'property',
-    mergeSameItem([
-      ...commonProperty,
-      ...(Array.isArray(property) ? property : []),
-    ]),
-  );
-  configMap.set(
-    'style',
-    mergeSameItem([...commonStyle, ...(Array.isArray(style) ? style : [])]),
-  );
+  configMap.set('property', mergeSameItem([...commonProperty, ...(Array.isArray(property) ? property : [])]));
+  configMap.set('style', mergeSameItem([...commonStyle, ...(Array.isArray(style) ? style : [])]));
   configMap.set('action', { ...commonAction, ...action });
   configMap.set('rights', rights);
   configMap.set('validator', validator);

@@ -13,12 +13,10 @@ import { GtNode } from '@ghosten/common';
 import { Subscription } from 'rxjs';
 
 import { GtEdit } from '../../classes';
-import { TemplateDirective } from '../../directives';
+import { TemplateDirective } from '../../modules';
 
 @Component({ template: '' })
-export class EditAbstractComponent<T = any>
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class EditAbstractComponent<T = any> implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
 
@@ -49,10 +47,7 @@ export class EditAbstractComponent<T = any>
   }
 
   @HostBinding('attr.data-draggable') get draggable() {
-    return this.gtNode.type !== 'root' &&
-      (!this.gtNode.template || this.gtNode.isTemplateRoot)
-      ? ''
-      : null;
+    return this.gtNode.type !== 'root' && (!this.gtNode.template || this.gtNode.isTemplateRoot) ? '' : null;
   }
 
   @HostBinding('attr.data-can-has-child') get canHasChild() {
@@ -60,9 +55,7 @@ export class EditAbstractComponent<T = any>
   }
 
   @HostBinding('attr.data-droppable') get droppable() {
-    const res =
-      (!this.gtNode.template || this.gtNode.type === 'slot') &&
-      this.gtNode.core.canHasChild;
+    const res = (!this.gtNode.template || this.gtNode.type === 'slot') && this.gtNode.core.canHasChild;
     return res ? '' : null;
   }
 
@@ -214,6 +207,7 @@ export class EditAbstractComponent<T = any>
   }
 
   ngOnDestroy() {
+    this.gtNode.componentRef = null;
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -240,11 +234,15 @@ export class EditAbstractComponent<T = any>
 
   insert(gtNode: GtNode, index?: number) {
     if (this.gtNode.core.dynamicTemplate) {
-      const template = this.templates.find(
-        te => te.templateID === gtNode.outletID,
-      );
+      const template = this.templates.find(te => te.templateID === gtNode.outletID);
       if (template) {
-        return template.insert(gtNode, index);
+        let outletIndex = 0;
+        for (let i = 0; i < index!; i++) {
+          if (this.gtNode.children[i].outletID === template.templateID) {
+            outletIndex++;
+          }
+        }
+        return template.insert(gtNode, outletIndex);
       } else {
         throw new Error();
       }
@@ -254,19 +252,13 @@ export class EditAbstractComponent<T = any>
   }
 
   remove(gtNode: GtNode | number) {
-    if (typeof gtNode === 'number') {
+    if (typeof gtNode === 'number' || gtNode === undefined) {
       this.template.remove(gtNode);
     } else {
       if (this.gtNode.core.dynamicTemplate) {
-        const template = this.templates.find(
-          te => te.templateID === gtNode.outletID,
-        );
+        const template = this.templates.find(te => te.templateID === gtNode.outletID);
         if (template) {
-          return template.remove(
-            gtNode
-              .parent!.children.filter(p => p.outletID === gtNode.outletID)
-              .indexOf(gtNode),
-          );
+          return template.remove(gtNode.parent!.children.filter(p => p.outletID === gtNode.outletID).indexOf(gtNode));
         } else {
           console.warn('该组件未在页面显示：%O', gtNode);
         }
@@ -277,6 +269,15 @@ export class EditAbstractComponent<T = any>
   }
 
   move(gtNode: GtNode, index: number) {
-    return this.template.move(gtNode, index);
+    if (this.gtNode.core.dynamicTemplate) {
+      const template = this.templates.find(te => te.templateID === gtNode.outletID);
+      if (template) {
+        template.move(gtNode, gtNode.parent!.children.filter(p => p.outletID === gtNode.outletID).indexOf(gtNode));
+      } else {
+        console.warn('该组件未在页面显示：%O', gtNode);
+      }
+    } else {
+      this.template.move(gtNode, index);
+    }
   }
 }

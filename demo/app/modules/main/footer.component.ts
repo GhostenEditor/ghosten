@@ -6,10 +6,7 @@ import { Component } from '@angular/core';
     <div class="container py-4 px-4">
       <div class="row">
         <div class="col-lg-6 col-md-auto mb-3 d-flex">
-          <a
-            href="/"
-            class="navbar-brand d-flex flex-column align-items-center"
-          >
+          <a href="/" class="navbar-brand d-flex flex-column align-items-center">
             <img
               src="assets/icons/128.png"
               alt="Ghosten Logo"
@@ -21,8 +18,7 @@ import { Component } from '@angular/core';
             <span class="fw-bold my-2">GHOSTEN</span>
           </a>
           <div class="ms-3">
-            A Low-Code Web Editor. If you like it, give me a star please! Code
-            licensed MIT, Currently v0.1.0-alpha9.
+            A Low-Code Web Editor. If you like it, give me a star please! Code licensed MIT, Currently v0.1.0-alpha9.
           </div>
         </div>
         <div class="col-6 col-lg-3 mb-3">
@@ -43,9 +39,7 @@ import { Component } from '@angular/core';
           <h5>LINKS</h5>
           <ul class="list-unstyled">
             <li class="mb-2">
-              <a target="_blank" href="https://github.com/GhostenEditor/ghosten"
-                >GITHUB</a
-              >
+              <a target="_blank" href="https://github.com/GhostenEditor/ghosten">GITHUB</a>
             </li>
           </ul>
         </div>

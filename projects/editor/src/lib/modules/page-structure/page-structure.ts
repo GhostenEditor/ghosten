@@ -48,55 +48,18 @@ export function drawLayout(
         const rect = element.getBoundingClientRect();
         const { left, top, width, height } = rect;
         const { padding, margin } = getComputedStyle(element);
-        const { marginRect, paddingRect, contentRect } = getLayout(
-          left,
-          top,
-          width,
-          height,
-          padding,
-          margin,
-        );
+        const { marginRect, paddingRect, contentRect } = getLayout(left, top, width, height, padding, margin);
         ctx.fillStyle = marginColor;
-        ctx.fillRect(
-          marginRect[0],
-          marginRect[1],
-          marginRect[2],
-          marginRect[3],
-        );
-        ctx.clearRect(
-          paddingRect[0],
-          paddingRect[1],
-          paddingRect[2],
-          paddingRect[3],
-        );
+        ctx.fillRect(marginRect[0], marginRect[1], marginRect[2], marginRect[3]);
+        ctx.clearRect(paddingRect[0], paddingRect[1], paddingRect[2], paddingRect[3]);
         ctx.fillStyle = paddingColor;
-        ctx.fillRect(
-          paddingRect[0],
-          paddingRect[1],
-          paddingRect[2],
-          paddingRect[3],
-        );
-        ctx.clearRect(
-          contentRect[0],
-          contentRect[1],
-          contentRect[2],
-          contentRect[3],
-        );
+        ctx.fillRect(paddingRect[0], paddingRect[1], paddingRect[2], paddingRect[3]);
+        ctx.clearRect(contentRect[0], contentRect[1], contentRect[2], contentRect[3]);
         ctx.fillStyle = contentColor;
-        ctx.fillRect(
-          contentRect[0],
-          contentRect[1],
-          contentRect[2],
-          contentRect[3],
-        );
+        ctx.fillRect(contentRect[0], contentRect[1], contentRect[2], contentRect[3]);
         ctx.strokeStyle = '#06366f';
         ctx.setLineDash([12 / devicePixelRatio, 4 / devicePixelRatio]);
-        ctx.strokeRect(
-          marginRect[0],
-          marginRect[1],
-          marginRect[2],
-          marginRect[3],
-        );
+        ctx.strokeRect(marginRect[0], marginRect[1], marginRect[2], marginRect[3]);
         ctx.setLineDash([]);
         labels.push({ rect, text1, text2 });
       });
@@ -108,9 +71,7 @@ export function drawLayout(
           const rect = element.getBoundingClientRect();
           ctx.strokeRect(rect.left, rect.top, rect.width, rect.height);
           if (type === 'slot') {
-            ctx.strokeStyle = options.darkMode
-              ? 'rgba(255, 255, 255, 0.4)'
-              : 'rgba(0, 0, 0, 0.4)';
+            ctx.strokeStyle = options.darkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)';
             ctx.lineWidth = 6 / devicePixelRatio;
             ctx.setLineDash([16 / devicePixelRatio, 4 / devicePixelRatio]);
             ctx.strokeRect(
@@ -134,12 +95,7 @@ export function drawLayout(
 
       if (options.direction === 'rtl') {
         ctx.beginPath();
-        ctx.rect(
-          right - (textMetrics1.width + 8),
-          top - 16,
-          textMetrics1.width + 8,
-          16,
-        );
+        ctx.rect(right - (textMetrics1.width + 8), top - 16, textMetrics1.width + 8, 16);
         ctx.closePath();
         ctx.strokeStyle = '#8cb7ff';
         ctx.stroke();
@@ -147,12 +103,7 @@ export function drawLayout(
         ctx.fill();
         if (text2) {
           ctx.beginPath();
-          ctx.rect(
-            right - (textMetrics2.width + 8),
-            bottom,
-            textMetrics2.width + 8,
-            16,
-          );
+          ctx.rect(right - (textMetrics2.width + 8), bottom, textMetrics2.width + 8, 16);
           ctx.closePath();
           ctx.strokeStyle = '#ff8cfd';
           ctx.stroke();
@@ -189,9 +140,7 @@ export function drawLayout(
   }
 
   {
-    const gtPageMatrix = new WebKitCSSMatrix(
-      gtPage.style.getPropertyValue('transform'),
-    );
+    const gtPageMatrix = new WebKitCSSMatrix(gtPage.style.getPropertyValue('transform'));
     ctx.font = 'normal 8px system-ui,-apple-system,Arial,sans-serif';
     if (options.darkMode) {
       ctx.strokeStyle = '#999';
@@ -212,14 +161,7 @@ export function drawLayout(
   }
 }
 
-export function getLayout(
-  left: number,
-  top: number,
-  width: number,
-  height: number,
-  padding: string,
-  margin: string,
-) {
+export function getLayout(left: number, top: number, width: number, height: number, padding: string, margin: string) {
   const paddings = padding ? padding.split(' ').map(p => parseInt(p, 10)) : [0];
   const margins = margin ? margin.split(' ').map(m => parseInt(m, 10)) : [0];
   let paddingTop: number;
@@ -291,12 +233,7 @@ export function getLayout(
   return { marginRect, paddingRect, contentRect };
 }
 
-export function drawMarkLine(
-  ctx: CanvasRenderingContext2D,
-  type: 'long' | 'medium' | 'short',
-  mark: number,
-  sign = 1,
-) {
+export function drawMarkLine(ctx: CanvasRenderingContext2D, type: 'long' | 'medium' | 'short', mark: number, sign = 1) {
   ctx.beginPath();
   switch (type) {
     case 'long':
@@ -318,13 +255,7 @@ export function drawMarkLine(
   ctx.stroke();
 }
 
-export function drawAxis(
-  ctx: CanvasRenderingContext2D,
-  size: number,
-  translate: number,
-  scale: number,
-  sign = 1,
-) {
+export function drawAxis(ctx: CanvasRenderingContext2D, size: number, translate: number, scale: number, sign = 1) {
   const markGap = Math.ceil(5 / scale);
   const markRange = [
     Math.floor(-translate / markGap / scale) * markGap,

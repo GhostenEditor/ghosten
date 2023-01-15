@@ -33,12 +33,8 @@ import { getUsedStyle } from '../utils';
   selector: 'gt-abstract',
   template: '',
 })
-export class RenderAbstractComponent<T = any>
-implements OnInit, AfterViewInit, OnDestroy {
-  private dataBindingValueMap = new Map<
-    DataBinding,
-    { source: Observable<any>; latestValue: any }
-  >();
+export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, OnDestroy {
+  private dataBindingValueMap = new Map<DataBinding, { source: Observable<any>; latestValue: any }>();
   public subscriptions: Subscription[] = [];
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
@@ -75,46 +71,88 @@ implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.initStyle();
-    if (!this.gtNode.core.dynamicTemplate) {
-      if (this.gtNode.core.canHasChild) {
-        this.refresh();
-      }
-      if (this.gtNode.action) {
-        this.onEvent('onInit');
-      }
-    }
+    // if (!this.gtNode.core.dynamicTemplate) {
+    //   if (this.gtNode.core.canHasChild) {
+    //     this.refresh();
+    //   }
+    //   if (this.gtNode.action) {
+    //     this.onEvent('onInit');
+    //   }
+    // }
 
     if (this.gtNode.variableName) {
-      this.gt.componentVariables.set(this.gtNode.variableName!, {
-        ...this,
-        ...this.gtNode.property,
-        ...this.gtNode.variable.reduce<any>((acc, cur) => {
-          if (cur.value instanceof DataBinding) {
-            cur.value = cur.value.compile({}, this.globalVariable);
-          }
-          acc[cur.name] = cur.value;
-          return acc;
-        }, {}),
-        ...this.directiveContext,
+      const variable: any = {};
+      for (const property in this) {
+        const that = this;
+        if (typeof that[property] === 'function') {
+          variable[property] = that[property];
+        } else {
+          Object.defineProperty(variable, property, {
+            configurable: true,
+            get(): any {
+              return that[property];
+            },
+            set(v: any) {
+              that[property] = v;
+            },
+          });
+        }
+      }
+      for (const property in this.property) {
+        const that = this.property;
+        if (typeof that[property] === 'function') {
+          variable[property] = that[property];
+        } else {
+          Object.defineProperty(variable, property, {
+            configurable: false,
+            get(): any {
+              return that[property];
+            },
+            set(v: any) {
+              that[property] = v;
+            },
+          });
+        }
+      }
+      this.gtNode.variable.forEach(_variable => {
+        if (_variable.value instanceof DataBinding) {
+          _variable.value = _variable.value.compile({}, this.globalVariable);
+        }
+        Object.defineProperty(variable, _variable.name, {
+          configurable: true,
+          get(): any {
+            return _variable.value;
+          },
+          set(v: any) {
+            v.value = v;
+          },
+        });
       });
+      for (const property in this.directiveContext) {
+        const that = this.directiveContext;
+        if (typeof that[property] === 'function') {
+          variable[property] = that[property];
+        } else {
+          Object.defineProperty(variable, property, {
+            configurable: false,
+            get(): any {
+              return that[property];
+            },
+          });
+        }
+      }
+      this.gt.componentVariables.set(this.gtNode.variableName!, variable);
     }
   }
 
   ngAfterViewInit() {
-    if (this.gtNode.core.dynamicTemplate) {
-      this.refresh();
-      this.onEvent('onInit');
-    }
+    // if (this.gtNode.core.dynamicTemplate) {
+    //   this.refresh();
+    this.onEvent('onInit');
+    // }
   }
 
   ngOnDestroy() {
-    if (
-      this.control &&
-      this.formGroup &&
-      this.formGroup.contains(this.gtNode.property.name)
-    ) {
-      this.formGroup.removeControl(this.gtNode.property.name);
-    }
     if (this.gtNode.action) {
       this.onEvent('onDestroy');
     }
@@ -137,40 +175,30 @@ implements OnInit, AfterViewInit, OnDestroy {
         });
         this.gtNode.children.forEach(gtNode => {
           const template = templatesMap.get(gtNode.outletID!);
-          if (template) template.insert(gtNode, this.getGtNodeInjector(gtNode));
+          if (template) template.insert(gtNode);
         });
       } else {
         this.gtNode.children.forEach(gtNode => {
-          this.template.insert(gtNode, this.getGtNodeInjector(gtNode));
+          this.template.insert(gtNode);
         });
       }
     }
   }
 
   insert(gtNode: GtNode, index?: number): ComponentRef<any> | null {
-    if (!gtNode.component || !gtNode.property.show) {
+    if (!gtNode.property.show) {
       return null;
     }
     let componentRef: ComponentRef<any>;
     if (this.gtNode.core.dynamicTemplate) {
-      const template = this.templates.find(
-        te => te.templateID === gtNode.outletID,
-      );
+      const template = this.templates.find(te => te.templateID === gtNode.outletID);
       if (template) {
-        componentRef = template.insert(
-          gtNode,
-          this.getGtNodeInjector(gtNode),
-          index,
-        );
+        componentRef = template.insert(gtNode, undefined, index);
       } else {
         throw new Error();
       }
     } else {
-      componentRef = this.template.insert(
-        gtNode,
-        this.getGtNodeInjector(gtNode),
-        index,
-      );
+      componentRef = this.template.insert(gtNode, undefined, index);
     }
     return componentRef;
   }
@@ -194,13 +222,7 @@ implements OnInit, AfterViewInit, OnDestroy {
           ...Object.fromEntries(this.gt.componentVariables),
         };
         try {
-          const result = Function(
-            'window',
-            'document',
-            'event',
-            ...Object.keys(globalVariables),
-            action.script,
-          ).call(
+          const result = Function('window', 'document', 'event', ...Object.keys(globalVariables), action.script).call(
             this,
             undefined,
             undefined,
@@ -220,24 +242,12 @@ implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe();
   }
 
-  getGtNodeInjector(gtNode: GtNode) {
-    return Injector.create({
-      providers: [
-        { provide: GtNode, useValue: gtNode },
-        { provide: FormGroup, useValue: this.formGroup },
-        { provide: DirectiveContext, useValue: this.directiveContext },
-      ],
-      parent: this.injector,
-    });
-  }
-
   resolveDataBinding(data: DataBinding | any): any {
     if (data instanceof DataBinding) {
       const result = data.compile(
         {},
         {
-          getComponentByName: (name: string) =>
-            this.gt.componentVariables.get(name)!.componentRef.instance,
+          getComponentByName: (name: string) => this.gt.componentVariables.get(name)!.componentRef.instance,
         },
       );
       if (isObservable(result)) {

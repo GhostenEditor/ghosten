@@ -1,16 +1,14 @@
 type StyleProperty = 'userSelect' | 'cursor';
-const userSelect = getComputedStyle(document.documentElement).hasOwnProperty(
-  'user-select',
-)
-  ? 'user-select'
-  : '-webkit-user-select';
+const userSelect = 'user-select'; // getComputedStyle(document.documentElement).hasOwnProperty('user-select')
+// ? 'user-select'
+// : '-webkit-user-select';
 
-export function setDragRootStyle(property: StyleProperty, value: string) {
-  document.documentElement.style.setProperty(fixedProperty(property), value);
+export function setDragRootStyle(root: HTMLElement, property: StyleProperty, value: string) {
+  root.style.setProperty(fixedProperty(property), value);
 }
 
-export function removeDragRootStyle(property: StyleProperty) {
-  document.documentElement.style.removeProperty(fixedProperty(property));
+export function removeDragRootStyle(root: HTMLElement, property: StyleProperty) {
+  root.style.removeProperty(fixedProperty(property));
 }
 
 function fixedProperty(property: StyleProperty): string {

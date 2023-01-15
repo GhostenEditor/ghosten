@@ -1,12 +1,4 @@
-import {
-  Directive,
-  EventEmitter,
-  Injector,
-  Input,
-  IterableDiffers,
-  Output,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, IterableDiffers, Output, ViewContainerRef } from '@angular/core';
 
 import { ConnectionsComponent } from './connections.component';
 import { Node } from './node';
@@ -41,17 +33,15 @@ export class NodeEditorCanvasDirective {
   private change() {
     const change = this.diff.diff(this.nodes);
     if (change) {
-      change.forEachOperation(
-        ({ previousIndex, item }, adjustedPreviousIndex, currentIndex) => {
-          if (previousIndex === null) {
-            this.insert(item, currentIndex!);
-          } else if (currentIndex === null) {
-            this.remove(adjustedPreviousIndex!);
-          } else if (adjustedPreviousIndex !== null) {
-            this.move(adjustedPreviousIndex, currentIndex);
-          }
-        },
-      );
+      change.forEachOperation(({ previousIndex, item }, adjustedPreviousIndex, currentIndex) => {
+        if (previousIndex === null) {
+          this.insert(item, currentIndex!);
+        } else if (currentIndex === null) {
+          this.remove(adjustedPreviousIndex!);
+        } else if (adjustedPreviousIndex !== null) {
+          this.move(adjustedPreviousIndex, currentIndex);
+        }
+      });
     }
   }
 
@@ -68,16 +58,11 @@ export class NodeEditorCanvasDirective {
         ],
       }),
     });
-    componentRef.instance.contextmenuEvent.subscribe(event =>
-      this.contextmenuEvent.emit(event),
-    );
+    componentRef.instance.contextmenuEvent.subscribe(event => this.contextmenuEvent.emit(event));
   }
 
   private move(lastIndex: number, currentIndex: number) {
-    this.viewContainerRef.move(
-      this.viewContainerRef.get(lastIndex)!,
-      currentIndex,
-    );
+    this.viewContainerRef.move(this.viewContainerRef.get(lastIndex)!, currentIndex);
   }
 
   private remove(index: number) {

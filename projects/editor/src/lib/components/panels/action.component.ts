@@ -1,9 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, Inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { GtNode, IGtNode } from '@ghosten/common';
-import { DropdownItem } from '../../directives/dropdown/dropdown.component';
+
+import { Subscription, fromEvent } from 'rxjs';
+
+import { ChangeActionEndEvent } from '../../classes';
+import { DropdownItem } from '../../modules';
+import { EventsService } from '../../services';
 import { GT_NODE_INTERNAL_CONFIG_LIST_MAP } from '../../injectors-internal';
-import { PROPERTY_EDIT_EVENT } from '../../injectors';
 
 @Component({
   selector: 'gt-panel-action',
@@ -13,12 +17,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
       (cdkDropListDropped)="dropped($event, actionGroup.actions)"
     >
       <p>{{ actionGroup.type }}</p>
-      <div
-        class="card mb-3 transform"
-        cdkDrag
-        cdkDragLockAxis="y"
-        *ngFor="let action of actionGroup.actions"
-      >
+      <div class="card mb-3 transform" cdkDrag cdkDragLockAxis="y" *ngFor="let action of actionGroup.actions">
         <div class="card-header">
           <div class="d-flex justify-content-between">
             {{ action.type }}
@@ -29,10 +28,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
               <button class="btn btn-light btn-sm" (click)="editAction(action)">
                 <i class="gt-icon">edit</i>
               </button>
-              <button
-                class="btn btn-light btn-sm"
-                (click)="removeAction(action)"
-              >
+              <button class="btn btn-light btn-sm" (click)="removeAction(action)">
                 <i class="gt-icon">close</i>
               </button>
             </div>
@@ -58,7 +54,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
       </button>
     </div>`,
 })
-export class ActionComponent {
+export class ActionComponent implements OnInit, OnDestroy {
   public _gtNode: GtNode;
   public actionTypes: DropdownItem[];
   public actions: { type: string; actions: IGtNode.Action[] }[];
@@ -71,12 +67,48 @@ export class ActionComponent {
     return this._gtNode;
   }
 
+  private subscription = Subscription.EMPTY;
+
   constructor(
     @Inject(GT_NODE_INTERNAL_CONFIG_LIST_MAP)
     private configMap: Map<string, Map<string, any>>,
-    @Inject(PROPERTY_EDIT_EVENT) public editEvent: any,
     private cdr: ChangeDetectorRef,
+    private events: EventsService,
   ) {}
+
+  ngOnInit() {
+    this.subscription = fromEvent<ChangeActionEndEvent>(this.events.target, 'changeactionend').subscribe(event => {
+      const { action, script } = event;
+      const previousAction = { ...action };
+      action.script = script;
+      if (!this.gtNode.action.hasOwnProperty(action.type)) {
+        this.gtNode.action[action.type] = [action];
+        this.events.CHANGE_ACTION.next({
+          gtNode: this.gtNode,
+          type: 'add',
+          action,
+          previousAction: null,
+        });
+      } else if (this.gtNode.action[action.type].indexOf(action) === -1) {
+        this.gtNode.action[action.type].push(action);
+        this.events.CHANGE_ACTION.next({
+          gtNode: this.gtNode,
+          type: 'add',
+          action,
+          previousAction: null,
+        });
+      } else {
+        this.events.CHANGE_ACTION.next({
+          gtNode: this.gtNode,
+          type: 'update',
+          action,
+          previousAction,
+        });
+      }
+
+      this.updateGtNode(this.gtNode);
+    });
+  }
 
   updateGtNode(gtNode: GtNode) {
     const defaultConfig = this.configMap.get(gtNode.type);
@@ -93,52 +125,35 @@ export class ActionComponent {
       this.actionTypes = [];
     }
     this._gtNode = gtNode;
-    this.actions = Object.entries(this.gtNode.action).map(
-      ([actionType, actions]) => ({
-        type: actionType,
-        actions,
-      }),
-    );
+    this.actions = Object.entries(this.gtNode.action).map(([actionType, actions]) => ({
+      type: actionType,
+      actions,
+    }));
     this.cdr.detectChanges();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   addAction(action: DropdownItem) {
-    this.editEvent.forEach((func: any) => {
-      if (func) {
-        func({
-          gtNode: this.gtNode,
-          type: 'action',
-          args: [],
-          cb: (script: string) => {
-            if (!this.gtNode.action.hasOwnProperty(action.text)) {
-              this.gtNode.action[action.text] = [];
-            }
-            this.gtNode.action[action.text].push({
-              type: action.text,
-              desc: null,
-              script,
-              scopes: [],
-            });
-            this.updateGtNode(this.gtNode);
-          },
-        });
-      }
-    });
+    if (
+      this.events.changeActionStart({
+        desc: null,
+        script: '',
+        scopes: [],
+        type: action.text,
+        editable: true,
+      })
+    ) {
+      // this.events.changeActionEnd();
+    }
   }
 
   editAction(action: IGtNode.Action) {
-    this.editEvent.forEach((func: any) => {
-      if (func) {
-        func({
-          gtNode: this.gtNode,
-          type: 'action',
-          args: [action.script],
-          cb: (script: string) => {
-            action.script = script;
-          },
-        });
-      }
-    });
+    if (this.events.changeActionStart(action)) {
+      // this.events.changeActionEnd();
+    }
   }
 
   removeAction(action: IGtNode.Action) {
@@ -146,6 +161,12 @@ export class ActionComponent {
     const index = actions.indexOf(action);
     actions.splice(index, 1);
     this.updateGtNode(this.gtNode);
+    this.events.CHANGE_ACTION.next({
+      gtNode: this.gtNode,
+      type: 'remove',
+      action,
+      previousAction: null,
+    });
   }
 
   dropped(event: CdkDragDrop<void>, actions: IGtNode.Action[]) {

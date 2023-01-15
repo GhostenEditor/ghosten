@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GaugeProperty } from '@ghosten/components';
-import { RenderAbstractComponent } from "@ghosten/renderer";
+import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
   selector: 'gt-gauge',

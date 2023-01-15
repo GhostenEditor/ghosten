@@ -10,15 +10,7 @@ export type ToastPositions =
   | 'bottom_right';
 
 export interface IToast {
-  type:
-    | 'info'
-    | 'primary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'light'
-    | 'dark'
-    | 'secondary';
+  type: 'info' | 'primary' | 'success' | 'warning' | 'danger' | 'light' | 'dark' | 'secondary';
   title?: string;
   message?: string;
   detail?: string;

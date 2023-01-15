@@ -4,8 +4,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { PortalModule } from '@angular/cdk/portal';
 
-import { DropdownModule } from '../../directives/dropdown/dropdown.module';
-import { PropertiesFormModule } from '../properties-form/properties-form.module';
+import { ConfigFormModule, DropdownModule } from '../../modules';
 
 import { ActionComponent } from './action.component';
 import { CardComponent } from './card.component';
@@ -33,7 +32,7 @@ const components = [
   imports: [
     CommonModule,
     FormsModule,
-    PropertiesFormModule,
+    ConfigFormModule,
     DragDropModule,
     DropdownModule,
     ReactiveFormsModule,

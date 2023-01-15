@@ -14,16 +14,11 @@ import { ToggleProperty } from '@ghosten/components';
             role="switch"
             [class.is-valid]="control.touched && control.valid"
             [class.is-invalid]="control.touched && control.invalid"
-            [id]="'form-node-' + gtNode.id"
+            [id]="'config-form-node-' + gtNode.id"
             [formControlName]="property.name"
           />
-          <label class="form-check-label" [for]="'form-node-' + gtNode.id">{{
-            property.labelText
-          }}</label>
-          <div
-            [class.valid-feedback]="control.valid"
-            [class.invalid-feedback]="control.invalid"
-          >
+          <label class="form-check-label" [for]="'config-form-node-' + gtNode.id">{{ property.labelText }}</label>
+          <div [class.valid-feedback]="control.valid" [class.invalid-feedback]="control.invalid">
             {{ errorText(control.errors) }}
           </div>
         </ng-container>
@@ -34,19 +29,13 @@ import { ToggleProperty } from '@ghosten/components';
             role="switch"
             #ngModel="ngModel"
             [class.is-valid]="ngModel.control.touched && ngModel.control.valid"
-            [class.is-invalid]="
-              ngModel.control.touched && ngModel.control.invalid
-            "
-            [id]="'form-node-' + gtNode.id"
+            [class.is-invalid]="ngModel.control.touched && ngModel.control.invalid"
+            [id]="'config-form-node-' + gtNode.id"
+            [disabled]="property.disabled"
             [(ngModel)]="property.value"
           />
-          <label class="form-check-label" [for]="'form-node-' + gtNode.id">{{
-            property.labelText
-          }}</label>
-          <div
-            [class.valid-feedback]="ngModel.control.valid"
-            [class.invalid-feedback]="ngModel.control.invalid"
-          >
+          <label class="form-check-label" [for]="'config-form-node-' + gtNode.id">{{ property.labelText }}</label>
+          <div [class.valid-feedback]="ngModel.control.valid" [class.invalid-feedback]="ngModel.control.invalid">
             {{ errorText(ngModel.control.errors) }}
           </div>
         </ng-container>

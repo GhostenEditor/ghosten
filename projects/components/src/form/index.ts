@@ -43,6 +43,7 @@ export interface TextareaProperty {
 export interface ToggleProperty {
   name: string;
   labelText: string;
+  disabled: boolean;
   value: boolean;
 }
 
@@ -57,9 +58,10 @@ export interface RadioProperty {
   name: string;
   layout: string;
   showLabel: boolean;
+  labelText: string;
   value: string;
   inputType: 'radio' | 'checkbox';
-  options: any[];
+  options: { label: string; value: string }[];
 }
 
 export function gtFormConfigMap() {
@@ -73,21 +75,26 @@ export function gtFormConfigMap() {
       {
         label: '显示label',
         name: 'showLabel',
-        type: 'toggle',
-        value: true,
+        type: 'switch',
+      },
+      {
+        label: 'labelText',
+        name: 'labelText',
+        type: 'text',
       },
       {
         name: 'layout',
         type: 'select',
         options: [
           { label: 'Default', value: '' },
-          { label: 'Inline', value: 'form-check-inline' },
-          { label: 'Reverse', value: 'form-check-reverse' },
+          { label: 'Inline', value: 'config-form-check-inline' },
+          { label: 'Reverse', value: 'config-form-check-reverse' },
         ],
       },
       {
         name: 'value',
         type: 'text',
+        canBind: true,
       },
       {
         name: 'options',
@@ -96,6 +103,7 @@ export function gtFormConfigMap() {
           { prop: 'label', name: 'label', value: null },
           { prop: 'value', name: 'value', value: null },
         ],
+        canBind: true,
         value: [],
       },
     ],
@@ -110,21 +118,26 @@ export function gtFormConfigMap() {
       {
         label: '显示label',
         name: 'showLabel',
-        type: 'toggle',
-        value: true,
+        type: 'switch',
+      },
+      {
+        label: 'labelText',
+        name: 'labelText',
+        type: 'text',
       },
       {
         name: 'layout',
         type: 'select',
         options: [
           { label: 'Default', value: '' },
-          { label: 'Inline', value: 'form-check-inline' },
-          { label: 'Reverse', value: 'form-check-reverse' },
+          { label: 'Inline', value: 'config-form-check-inline' },
+          { label: 'Reverse', value: 'config-form-check-reverse' },
         ],
       },
       {
         name: 'value',
         type: 'text',
+        canBind: true,
       },
       {
         name: 'options',
@@ -134,6 +147,7 @@ export function gtFormConfigMap() {
           { prop: 'value', name: 'value', value: null },
         ],
         value: [],
+        canBind: true,
       },
     ],
   });
@@ -148,6 +162,16 @@ export function gtFormConfigMap() {
         label: 'labelText',
         name: 'labelText',
         type: 'text',
+      },
+      {
+        label: 'disabled',
+        name: 'disabled',
+        type: 'switch',
+      },
+      {
+        label: 'value',
+        name: 'value',
+        type: 'switch',
       },
     ],
   });
@@ -198,13 +222,13 @@ export function gtFormConfigMap() {
       {
         label: '禁用',
         name: 'disabled',
-        type: 'toggle',
+        type: 'switch',
         canBind: true,
       },
       {
         label: 'Active',
         name: 'active',
-        type: 'toggle',
+        type: 'switch',
         canBind: true,
       },
     ],
@@ -222,7 +246,7 @@ export function gtFormConfigMap() {
       {
         label: '显示label',
         name: 'showLabel',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
@@ -255,14 +279,14 @@ export function gtFormConfigMap() {
       {
         label: '禁用',
         name: 'disabled',
-        type: 'toggle',
+        type: 'switch',
         value: false,
         canBind: true,
       },
       {
         label: '只读',
         name: 'readonly',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
@@ -284,7 +308,7 @@ export function gtFormConfigMap() {
       {
         label: '显示label',
         name: 'showLabel',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
@@ -317,13 +341,13 @@ export function gtFormConfigMap() {
       {
         label: '禁用',
         name: 'disabled',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
         label: '多选',
         name: 'multiple',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
@@ -360,7 +384,7 @@ export function gtFormConfigMap() {
       {
         label: '显示label',
         name: 'showLabel',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {
@@ -386,7 +410,7 @@ export function gtFormConfigMap() {
       {
         label: '禁用',
         name: 'disabled',
-        type: 'toggle',
+        type: 'switch',
         value: false,
       },
       {

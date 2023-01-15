@@ -15,7 +15,7 @@ export class Style {
 
   clone() {}
 
-  export() {
+  export(): Record<string, any> {
     return JSON.parse(JSON.stringify(this));
   }
 

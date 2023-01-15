@@ -1,8 +1,5 @@
 export interface LogEvent {
-  type: string;
-  subType?: string;
+  type: 'info' | 'warning' | 'error';
   message: string | null;
   data?: any;
-
-  callback?(...rest: any[]): void;
 }

@@ -14,9 +14,7 @@ import { PageConfig } from './types';
     (confirm)="confirm()"
     (cancel)="modalClose.emit()"
   >
-    <div class="alert alert-primary" role="alert">
-      <i class="gt-icon">bell</i> 系统刷新后才能看到菜单栏的更新
-    </div>
+    <div class="alert alert-primary" role="alert"><i class="gt-icon">bell</i> 系统刷新后才能看到菜单栏的更新</div>
     <div class="mb-3">
       <label class="form-label" i18n="Table Column Header: Title">标题</label>
       <input
@@ -58,28 +56,21 @@ import { PageConfig } from './types';
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label class="form-label" i18n="Table Column Header: Parent Menu"
-          >菜单类型</label
-        >
+        <label class="form-label" i18n="Table Column Header: Parent Menu">菜单类型</label>
         <select class="form-select" formControlName="type">
           <option value="Function">功能</option>
           <option value="Directory">目录</option>
         </select>
       </div>
       <div class="col-md-6 mb-3">
-        <label class="form-label" i18n="Table Column Header: Parent Menu"
-          >上级菜单</label
-        >
+        <label class="form-label" i18n="Table Column Header: Parent Menu">上级菜单</label>
         <select
           class="form-select"
           formControlName="parentId"
           [class.is-invalid]="pageParentID.touched && pageParentID.invalid"
         >
           <option [ngValue]="null"></option>
-          <option
-            *ngFor="let option of parentList | async"
-            [ngValue]="option.id"
-          >
+          <option *ngFor="let option of parentList | async" [ngValue]="option.id">
             {{ option.title }}
           </option>
         </select>
@@ -89,18 +80,14 @@ import { PageConfig } from './types';
       </div>
     </div>
     <div class="mb-3">
-      <label class="form-label" i18n="Table Column Header: Description"
-        >描述</label
-      >
+      <label class="form-label" i18n="Table Column Header: Description">描述</label>
       <textarea
         rows="5"
         class="form-control"
         [class.is-invalid]="pageDescription.touched && pageDescription.invalid"
         formControlName="description"
       ></textarea>
-      <div class="invalid-feedback" *ngIf="pageDescription.touched">
-        此项为必填项
-      </div>
+      <div class="invalid-feedback" *ngIf="pageDescription.touched">此项为必填项</div>
     </div>
   </gt-modal>`,
 })
@@ -112,10 +99,7 @@ export class PageEditComponent implements OnInit {
     id: new FormControl(null),
     title: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required),
-    url: new FormControl(null, [
-      Validators.required,
-      Validators.pattern(/^[\w\-]+$/),
-    ]),
+    url: new FormControl(null, [Validators.required, Validators.pattern(/^[\w\-]+$/)]),
     type: new FormControl('Function', Validators.required),
     icon: new FormControl(null),
     parentId: new FormControl(),
@@ -201,6 +185,7 @@ export class PageEditComponent implements OnInit {
     { label: '', value: 'slider' },
     { label: '', value: 'tools' },
     { label: '', value: 'pen' },
+    { label: '', value: 'tab' },
   ];
 
   constructor(private http: HttpClient) {}
@@ -218,22 +203,20 @@ export class PageEditComponent implements OnInit {
       this.modalPending = true;
       const body = { ...this.form.value };
       if (this.mode === 'add') delete body.id;
-      this.http
-        .post(this.mode === 'add' ? 'addPage' : 'editPage', body)
-        .subscribe({
-          next: res => {
-            this.modalPending = false;
-            this.modalConfirm.emit(res);
-          },
-          error: error => {
-            this.modalPending = false;
-            const control = this.form.get(error.name);
-            if (control) {
-              control.setErrors({ text: error.message });
-              control.markAsTouched();
-            }
-          },
-        });
+      this.http.post(this.mode === 'add' ? 'addPage' : 'editPage', body).subscribe({
+        next: res => {
+          this.modalPending = false;
+          this.modalConfirm.emit(res);
+        },
+        error: error => {
+          this.modalPending = false;
+          const control = this.form.get(error.name);
+          if (control) {
+            control.setErrors({ text: error.message });
+            control.markAsTouched();
+          }
+        },
+      });
     } else {
       this.form.markAllAsTouched();
     }

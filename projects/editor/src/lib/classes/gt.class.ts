@@ -1,4 +1,4 @@
-import { EventEmitter, Inject, Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import { Board, Gt, GtNode, IGtNode, randomizer } from '@ghosten/common';
 
@@ -7,7 +7,6 @@ import { merge } from 'rxjs';
 
 import { GtSettings, IGtSettings } from './gt-settings';
 import { EventsService } from '../services';
-import { GT_EDIT_COMPONENT_MAP } from '../injectors';
 import { GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP } from '../injectors-internal';
 import { GtHistory } from './gt-history';
 import { RemoveNodeData } from '../types';
@@ -25,15 +24,11 @@ export class GtEdit extends Gt {
   /**
    * @Description: 储存复制的样式
    */
-  copiedStyle: any;
+  copiedStyle: Record<string, any>;
   /**
    * @Description: 储存复制的GtNode节点，类型为GtNode Id的数组
    */
   copiedNode: string[] = [];
-  /**
-   * @Description: 此功能展示不开放
-   */
-  remoteCustomComponent: Record<string, Board> = {};
   /**
    * @Description: 储存选中的GtNode，通常是最后点击的一个
    */
@@ -42,19 +37,18 @@ export class GtEdit extends Gt {
    */
   selected: GtNode[] = []; // 选中的所有节点
 
-  onEvents: EventEmitter<any> = new EventEmitter<any>();
   history: GtHistory = new GtHistory();
   undoHistory: GtHistory = new GtHistory();
   settings = new GtSettings();
 
   constructor(
-    private events: EventsService,
-    @Inject(GT_EDIT_COMPONENT_MAP) componentMap: any[],
+    public events: EventsService,
+    // @Inject(GT_EDIT_COMPONENT_MAP) componentMap: any[],
     @Inject(GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP)
     public override defaultConfigMap: IGtNode.DefaultConfigMap,
   ) {
     super();
-    this.componentMap = Object.assign({}, ...componentMap);
+    // this.componentMap = Object.assign({}, ...componentMap);
     this.events.onEvent.subscribe(data => {
       switch (data.type) {
         case 'CHANGE_PROPERTY':
@@ -83,12 +77,10 @@ export class GtEdit extends Gt {
       .subscribe(data =>
         this.events.AUTO_SAVE.next({
           config: this.exportString(),
-          setting: this.settings.export(),
+          settings: this.settings.export(),
         }),
       );
-    this.events.CHANGE_SELECT.subscribe(
-      selected => (this.settings.selected = selected.map(({ id }) => id)),
-    );
+    this.events.CHANGE_SELECT.subscribe(selected => (this.settings.selected = selected.map(({ id }) => id)));
     this.events.UPDATE_TEMPLATE.subscribe(({ template, list }) => {
       // list.forEach((node: any) => {
       //   node.children = template.children.map((data: GtNode) => this._createCustomNode(data, node, node, node.overwrite));
@@ -106,36 +98,6 @@ export class GtEdit extends Gt {
     });
   }
 
-  // _generateTemplateNode() {
-  //   this.nodeList.forEach(node => {
-  //     const data = node._rawData;
-  //     if (typeof data.template === 'string') {
-  //       const templateNode = this.getNodeById(data.template);
-  //       if (templateNode) {
-  //         node.template = templateNode;
-  //         node.templateRoot = true;
-  //         if (templateNode.inheritList) {
-  //           templateNode.inheritList.push(node);
-  //         } else {
-  //           templateNode.inheritList = [node];
-  //         }
-  //         node.overwrite = data.overwrite || {};
-  //         node.slot = data.slot;
-  //         node.children = templateNode.children.map(childNode => this._createCustomNode(childNode, node, node, node.overwrite)!);
-  //         // todo
-  //         // node._style.setParentStyle(templateNode._style);
-  //         // node._property.setParentProperty(templateNode._property);
-  //         // node.style = templateNode.style && Object.assign(Object.create(templateNode.style), data.style || Object.create(null));
-  //         // node.property = templateNode.property && Object.assign(Object.create(templateNode.property), data.property || Object.create(null));
-  //         // node.datasource = templateNode.datasource && Object.assign(Object.create(templateNode.datasource), data.datasource || Object.create(null));
-  //       }
-  //
-  //     } else if (data.children && data.children.length) {
-  //       // node.children = data.children.map(child => this._createGtNode(child, node));
-  //     }
-  //   });
-  // }
-
   undo() {
     const history = this.history.get();
     if (history.length) {
@@ -150,7 +112,7 @@ export class GtEdit extends Gt {
         this.events.UNDO.next(data);
       }
       if (data.type === 'INSERT_NODE') {
-        const { gtNode, parent, index } = data.data;
+        const { gtNode, parent, index = parent.children.length - 1 } = data.data;
         parent.children.splice(index, 1);
         parent.componentRef.instance.remove(index);
         this._removeGtNode(gtNode);
@@ -269,6 +231,8 @@ export class GtEdit extends Gt {
       description: '',
       noFooter: true,
     });
+    this.boards.push(board);
+    this.pages.push(board);
     board.gt = this.createGtNode(
       {
         type: 'root',
@@ -276,17 +240,16 @@ export class GtEdit extends Gt {
       undefined,
       undefined,
       undefined,
-      board,
+      board.id,
     )!;
-    this.boards.push(board);
     this.setCurrentBoard(board);
     this.events.CHANGE_BOARD.next(board);
     return board;
   }
 
-  addCustomComponent(type: string = 'custom') {
+  addCustomComponent() {
     const newCustomComponent: Board = new Board({
-      type,
+      type: 'cc',
       id: randomizer(),
       name: '自定义组件',
       events: null,
@@ -295,6 +258,8 @@ export class GtEdit extends Gt {
       size: null,
       url: '',
     });
+    this.customComponent.push(newCustomComponent);
+    this.boards.push(newCustomComponent);
     newCustomComponent.gt = this.createGtNode(
       {
         type: 'template',
@@ -302,34 +267,36 @@ export class GtEdit extends Gt {
       undefined,
       undefined,
       undefined,
-      newCustomComponent,
+      newCustomComponent.id,
     )!;
     newCustomComponent.gt.isTemplate = true;
-    this.customComponent.push(newCustomComponent);
     this.setCurrentBoard(newCustomComponent);
   }
 
-  addRemoteCustomComponent(
-    remoteId: string,
-    name: string,
-    description: string,
-    { type = 'custom', id = randomizer(), gt }: any,
-  ) {
-    const newCustomComponent = {
-      type,
-      id,
-      gt: this.createGtNode(gt),
-      name,
-      description,
-    };
-    newCustomComponent.gt!.isTemplate = true;
-    Object.defineProperty(this.remoteCustomComponent, remoteId, {
-      value: newCustomComponent,
-      enumerable: true,
+  addRemoteCustomComponent() {
+    const newCustomComponent = new Board({
+      type: 'rcc',
+      id: randomizer(),
+      name: '自定义组件',
+      events: null,
+      description: '',
+      noFooter: true,
+      size: null,
+      url: '',
     });
-    // @ts-ignore
-    this.customComponent.push(newCustomComponent);
-    // setTimeout(() => this.currentBoard = newCustomComponent, 100);
+    this.remoteCustomComponent.push(newCustomComponent);
+    this.boards.push(newCustomComponent);
+    newCustomComponent.gt = this.createGtNode(
+      {
+        type: 'template',
+      },
+      undefined,
+      undefined,
+      undefined,
+      newCustomComponent.id,
+    )!;
+    newCustomComponent.gt.isTemplate = true;
+    this.setCurrentBoard(newCustomComponent);
   }
 
   /**
@@ -339,11 +306,46 @@ export class GtEdit extends Gt {
   removeBoard(board: Board) {
     const index = this.boards.indexOf(board);
     const currentIndex = this.boards.indexOf(this.currentBoard!);
+
+    this._removeGtNode(board.gt);
     this.boards.splice(index, 1);
+    switch (board.type) {
+      case 'main':
+      case 'modal':
+        this.pages.splice(this.pages.indexOf(board), 1);
+        break;
+      case 'cc':
+        this.customComponent.splice(this.customComponent.indexOf(board), 1);
+        break;
+      case 'rcc':
+        this.remoteCustomComponent.splice(this.remoteCustomComponent.indexOf(board), 1);
+        break;
+    }
     if (index === currentIndex) {
       this.setCurrentBoard(this.boards[index - 1] || this.boards[0]);
     }
-    this._removeGtNode(board.gt);
+  }
+
+  /**
+   * @Description: 用于添加GtNode，此方法会把添加的GtNode设为selectedNode,并触发selectedChange和change事件
+   * @Params type: string 新增GtNode的类型
+   * @Params drop: GtNode 放置的GtNode
+   * @Params index?: number 放置GtNode中的序号
+   * @Params opt?: any 新增GtNode的配置属性
+   * @Return: GtNode  返回新增的GtNode
+   */
+  addNode(type: string, parent: GtNode, index = -1, opt: any = {}, outletID?: string): GtNode | null {
+    const gtNode = this.createGtNode({ type, outletID, ...opt }, parent, undefined, index);
+    if (!gtNode) {
+      return null;
+    }
+    parent.inheritList.forEach(node => {
+      this.createGtNode({ type: gtNode.type, template: gtNode.id }, node, undefined, index);
+    });
+    this.selected = [gtNode];
+    this.events.INSERT_NODE.next({ gtNode, parent, index });
+    this.events.CHANGE_SELECT.next(this.selected);
+    return gtNode;
   }
 
   /**
@@ -353,12 +355,12 @@ export class GtEdit extends Gt {
    * @Params index?: number 放置GtNode中的序号
    * @Return: void
    */
-  dropNode(drag: GtNode, drop: GtNode, index?: number, outletID?: string) {
+  moveNode(drag: GtNode, drop: GtNode, index?: number, outletID?: string) {
     if (
       drag.parent === drop &&
+      drag.outletID === outletID &&
       (index === undefined
-        ? drag.parent!.children.indexOf(drag) ===
-          drag.parent!.children.length - 1
+        ? drag.parent!.children.indexOf(drag) === drag.parent!.children.length - 1
         : drag.parent!.children.indexOf(drag) === index)
     ) {
       return;
@@ -366,6 +368,10 @@ export class GtEdit extends Gt {
     const previousParent = drag.parent!;
     const previousIndex = previousParent.children.indexOf(drag);
     drag.setParent(drop, index, outletID);
+
+    drag.inheritList.forEach((node, i) => {
+      node.setParent(drop.inheritList[i], index, outletID);
+    });
     this.events.MOVE_NODE.next({
       gtNode: drag,
       parent: drop,
@@ -377,99 +383,52 @@ export class GtEdit extends Gt {
   }
 
   /**
-   * @Description: 用于添加GtNode，此方法会把添加的GtNode设为selectedNode,并触发selectedChange和change事件
-   * @Params type: string 新增GtNode的类型
-   * @Params drop: GtNode 放置的GtNode
-   * @Params index?: number 放置GtNode中的序号
-   * @Params opt?: any 新增GtNode的配置属性
-   * @Return: GtNode  返回新增的GtNode
-   */
-  addNode(
-    type: string,
-    parent: GtNode,
-    index = -1,
-    opt: any = {},
-    outletID?: string,
-  ): GtNode | null {
-    const gtNode = this.createGtNode(
-      { type, outletID, ...opt },
-      parent,
-      undefined,
-      index,
-    );
-    if (!gtNode) {
-      return null;
-    }
-    this.selected = [gtNode];
-    this.events.INSERT_NODE.next({ gtNode, parent, index });
-    this.events.CHANGE_SELECT.next(this.selected);
-    return gtNode;
-  }
-
-  addCustomNode(type: string, parent: GtNode, index = -1) {
-    const templateNode = this.customComponent.filter(c => c.id === type)[0].gt;
-    return this.createGtNode(
-      { type: 'template', template: templateNode.id },
-      parent,
-    );
-    // if (!gtNode) {
-    //   return;
-    // }
-    // gtNode.overwrite = {};
-    // gtNode.children = inheritNode.children.map((data: any) => this._createCustomNode(data, gtNode, gtNode, gtNode.overwrite)!);
-    // if (inheritNode.inheritList) {
-    //   inheritNode.inheritList.push(gtNode);
-    // } else {
-    //   inheritNode.inheritList = [gtNode];
-    // }
-    // gtNode.template = inheritNode;
-    // gtNode.idTemplateRoot = true;
-
-    // this._attachTreeStructure(gtNode, parent, index);
-    // parent.componentRef!.instance.insert(gtNode, index);
-    // return gtNode;
-  }
-
-  /**
    * @Description: 用于删除GtNodeNode，会删除所有选中的GtNode和childNode，此方法会触发selectedChange和change事件
    * @Return: void
    */
-  override removeNode(): void {
+  removeNode(): void {
     const deleteList: RemoveNodeData = [];
-    if (
-      !this.selected ||
-      this.selected.some(gtNode => gtNode.type === 'root')
-    ) {
+    if (!this.selected || this.selected.some(gtNode => gtNode.type === 'root')) {
       return this.log.next({
         type: 'error',
         message: '无法删除',
         data: null,
       });
     }
-    this.selected.forEach((node: GtNode) => {
-      if (node.template && !node.isTemplateRoot) {
+    this.selected.forEach((gtNode: GtNode) => {
+      if (gtNode.template && !gtNode.isTemplateRoot) {
+        this.log.next({
+          type: 'warning',
+          message: '该节点由模板生成，无法删除',
+        });
         // return this.notice.noticeWarning('无法删除', '该节点由模板生成，无法删除');
       }
-      if (node.template && node.isTemplateRoot && node.template.inheritList) {
-        node.template.inheritList.splice(
-          node.template.inheritList.indexOf(node),
-          1,
-        );
+      if (gtNode.template && gtNode.isTemplateRoot && gtNode.template.inheritList) {
+        gtNode.template.inheritList.splice(gtNode.template.inheritList.indexOf(gtNode), 1);
       }
-      if (node.isTemplate) {
-        if (node.inheritList.length) {
-          // return this.notice.noticeWarning('无法删除', '该模板绑定了其他组件');
-        }
-      }
-      this._removeGtNode(node);
-      const index = node.parent!.children.indexOf(node);
-      node.parent!.componentRef!.instance.remove(node);
-      node.parent!.children.splice(index, 1);
-      deleteList.push({ gtNode: node, parent: node.parent!, index });
+      const index = gtNode.parent!.children.indexOf(gtNode);
+      this._removeGtNode(gtNode);
+      // gtNode.parent!.componentRef!.instance.remove(gtNode);
+      // gtNode.parent!.children.splice(index, 1);
+      // this.nodeList.delete(gtNode.id);
+      // this.currentBoard!.nodeList.delete(gtNode.id);
+      deleteList.push({ gtNode: gtNode, parent: gtNode.parent!, index });
     });
     this.selected = [];
     this.events.REMOVE_NODE.next(deleteList);
     this.events.CHANGE_SELECT.next(this.selected);
+  }
+
+  addCustomNode(type: string, parent: GtNode, index = -1) {
+    const templateNode = this.boards.filter(c => c.id === type)[0].gt;
+
+    const gtNode = this.createGtNode({ type: 'template', template: templateNode.id }, parent);
+    if (!gtNode) {
+      return;
+    }
+    this.events.INSERT_NODE.next({ gtNode, parent, index });
+    this.events.CHANGE_SELECT.next(this.selected);
+    return gtNode;
   }
 
   override setCurrentBoard(board: Board) {
@@ -500,9 +459,7 @@ export class GtEdit extends Gt {
    */
   pasteStyle() {
     const copiedStyle = this.copiedStyle;
-    this.selected.forEach(
-      ({ core, style }) => core.canPasteStyle && style.setStyles(copiedStyle),
-    );
+    this.selected.forEach(({ core, style }) => core.canPasteStyle && style.setStyles(copiedStyle));
     this.events.PASTE_STYLE.next({
       pastedNodes: this.selected,
       pastedStyle: this.copiedStyle,
@@ -525,14 +482,10 @@ export class GtEdit extends Gt {
     const getGtNodeConfig = (gtNode: GtNode): IGtNode.Config => {
       const config = gtNode.export();
       if (!gtNode.isTemplateRoot) {
-        config.children = gtNode.children.map(childNode =>
-          getGtNodeConfig(childNode),
-        );
+        config.children = gtNode.children.map(childNode => getGtNodeConfig(childNode));
       } else {
         for (const key in config.slot) {
-          config.slot[key].forEach(
-            childNodeConfig => delete childNodeConfig.id,
-          );
+          config.slot[key].forEach(childNodeConfig => delete childNodeConfig.id);
         }
       }
       delete config.id;
@@ -544,9 +497,9 @@ export class GtEdit extends Gt {
       parentNode = targetNode;
     } else {
       while (targetNode.parent) {
-        if (targetNode.parent.core.canHasChild) {
+        if (targetNode.parent.core.canHasChild && !targetNode.parent.template) {
           parentNode = targetNode.parent;
-          index = targetNode.parent.children.indexOf(targetNode) + 1;
+          index = targetNode.parent.children.indexOf(targetNode);
           break;
         } else {
           targetNode = targetNode.parent!;
@@ -561,7 +514,7 @@ export class GtEdit extends Gt {
         getGtNodeConfig(this.getNodeById(id)!),
         parentNode,
         undefined,
-        typeof index === 'undefined' ? index : index++,
+        typeof index === 'undefined' ? index : ++index,
       );
       this.events.INSERT_NODE.next({
         parent: parentNode!,
@@ -593,9 +546,15 @@ export class GtEdit extends Gt {
    * @Return: void
    */
   private _removeGtNode(node: GtNode): void {
-    this.currentBoard!.nodeList.delete(node.id);
+    const board = this.getBoardById(node.boardId)!;
+    [...node.inheritList].forEach(node => this._removeGtNode(node));
+    if (node.template) {
+      node.template.inheritList.splice(node.template.inheritList.indexOf(node), 1);
+    }
+    node.remove();
+    board.nodeList.delete(node.id);
     this.nodeList.delete(node.id);
-    node.children.forEach(child => this._removeGtNode(child));
+    [...node.children].forEach(child => this._removeGtNode(child));
   }
 
   exportSettings(): any {

@@ -5,9 +5,7 @@ export function getPageList(db: IDBDatabase, data: any): Promise<MessageEvent> {
   const transaction = db.transaction('CONFIG', 'readonly');
   const objectStore = transaction.objectStore('CONFIG');
   if (data && data.type) {
-    const request = objectStore
-      .index('type')
-      .getAll(IDBKeyRange.only(data.type));
+    const request = objectStore.index('type').getAll(IDBKeyRange.only(data.type));
     return resolveTransaction(transaction).then(() => ({
       type: 'log',
       subType: 'getPageList',

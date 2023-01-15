@@ -8,9 +8,7 @@ export class GtHistory {
 
   push(history: any) {
     if (this.history.length >= this.historyMaxLength) {
-      this.history = this.history.slice(
-        this.history.length - this.historyMaxLength - 1,
-      );
+      this.history = this.history.slice(this.history.length - this.historyMaxLength - 1);
     }
     this.history.push(history);
   }

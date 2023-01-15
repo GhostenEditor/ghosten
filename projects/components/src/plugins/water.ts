@@ -14,30 +14,12 @@ export class WaterBall {
   private program = createProgram(this.gl, vertex, fragment)!;
   private positionBuffer = this.gl.createBuffer();
 
-  private positionAttributeLocation = this.gl.getAttribLocation(
-    this.program,
-    'position',
-  );
-  private resolutionUniformLocation = this.gl.getUniformLocation(
-    this.program,
-    'resolution',
-  );
-  private timeUniformLocation = this.gl.getUniformLocation(
-    this.program,
-    'time',
-  );
-  private processUniformLocation = this.gl.getUniformLocation(
-    this.program,
-    'process',
-  );
-  private colorUniformLocation = this.gl.getUniformLocation(
-    this.program,
-    'color',
-  );
-  private backgroundUniformLocation = this.gl.getUniformLocation(
-    this.program,
-    'background',
-  );
+  private positionAttributeLocation = this.gl.getAttribLocation(this.program, 'position');
+  private resolutionUniformLocation = this.gl.getUniformLocation(this.program, 'resolution');
+  private timeUniformLocation = this.gl.getUniformLocation(this.program, 'time');
+  private processUniformLocation = this.gl.getUniformLocation(this.program, 'process');
+  private colorUniformLocation = this.gl.getUniformLocation(this.program, 'color');
+  private backgroundUniformLocation = this.gl.getUniformLocation(this.program, 'background');
 
   public color: number[] = [0, 0, 0];
   public background: number[] = [0, 0, 0];
@@ -70,34 +52,13 @@ export class WaterBall {
     gl.useProgram(this.program);
     gl.enableVertexAttribArray(this.positionAttributeLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    gl.vertexAttribPointer(
-      this.positionAttributeLocation,
-      2,
-      gl.FLOAT,
-      false,
-      0,
-      0,
-    );
+    gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
-    gl.uniform2f(
-      this.resolutionUniformLocation,
-      gl.canvas.width,
-      gl.canvas.height,
-    );
+    gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
     gl.uniform1f(this.timeUniformLocation, this.time);
     gl.uniform1f(this.processUniformLocation, this.process);
-    gl.uniform3f(
-      this.colorUniformLocation,
-      this.color[0],
-      this.color[1],
-      this.color[2],
-    );
-    gl.uniform3f(
-      this.backgroundUniformLocation,
-      this.background[0],
-      this.background[1],
-      this.background[2],
-    );
+    gl.uniform3f(this.colorUniformLocation, this.color[0], this.color[1], this.color[2]);
+    gl.uniform3f(this.backgroundUniformLocation, this.background[0], this.background[1], this.background[2]);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     // gl.clearColor(1, 1, 1, 1);
@@ -111,13 +72,7 @@ export class WaterBall {
 }
 
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
-  const size = Math.max(
-    Math.min(
-      canvas.parentElement!.clientWidth,
-      canvas.parentElement!.clientHeight,
-    ),
-    100,
-  );
+  const size = Math.max(Math.min(canvas.parentElement!.clientWidth, canvas.parentElement!.clientHeight), 100);
   if (canvas.width !== size) {
     canvas.width = canvas.height = size * devicePixelRatio;
     canvas.style.width = size + 'px';
@@ -126,11 +81,7 @@ export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
   return false;
 }
 
-function createShader(
-  gl: WebGLRenderingContext,
-  type: GLenum,
-  source: string,
-): WebGLShader | null {
+function createShader(gl: WebGLRenderingContext, type: GLenum, source: string): WebGLShader | null {
   const shader = gl.createShader(type)!;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
@@ -148,11 +99,7 @@ function createProgram(
   fragmentShaderSource: string,
 ): WebGLProgram | null {
   const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)!;
-  const fragmentShader = createShader(
-    gl,
-    gl.FRAGMENT_SHADER,
-    fragmentShaderSource,
-  )!;
+  const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)!;
   const program = gl.createProgram()!;
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);

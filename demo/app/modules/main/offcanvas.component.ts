@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, Renderer2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-offcanvas',
@@ -11,20 +12,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   },
   template: `
     <div class="offcanvas-header pb-0">
-      <img
-        src="assets/icons/128.png"
-        alt="Ghosten Logo"
-        class="rounded"
-        style="width: 2rem;"
-      />
+      <img src="assets/icons/128.png" alt="Ghosten Logo" class="rounded" style="width: 2rem;" />
       <h5 class="offcanvas-title">
         {{ offCanvasTitle }}
       </h5>
-      <button
-        type="button"
-        class="btn btn-close"
-        (click)="offCanvasClose.emit()"
-      ></button>
+      <button type="button" class="btn btn-close" (click)="offCanvasClose.emit()"></button>
     </div>
     <div class="offcanvas-body pt-0">
       <hr class="d-lg-none text-body-50" />
@@ -41,14 +33,14 @@ export class OffcanvasComponent {
 
   set show(show: boolean) {
     this._show = show;
+    const body = this._document.body;
     if (show) {
-      const scrollbarWidth =
-        window.innerWidth - document.documentElement.scrollWidth;
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = scrollbarWidth + 'px';
+      const scrollbarWidth = window.innerWidth - this._document.documentElement.scrollWidth;
+      this.renderer.setStyle(body, 'overflow', 'hidden');
+      this.renderer.setStyle(body, 'paddingRight', scrollbarWidth + 'px');
     } else {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      this.renderer.removeStyle(body, 'overflow');
+      this.renderer.removeStyle(body, 'paddingRight');
     }
   }
 
@@ -56,4 +48,6 @@ export class OffcanvasComponent {
   @Input() theme: string;
   @Input() offCanvasTitle: string;
   @Output() offCanvasClose = new EventEmitter();
+
+  constructor(@Inject(DOCUMENT) private _document: Document, private renderer: Renderer2) {}
 }

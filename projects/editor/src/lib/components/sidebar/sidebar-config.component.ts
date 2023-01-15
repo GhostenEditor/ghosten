@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnDestroy,
   QueryList,
   ViewChildren,
@@ -12,10 +11,9 @@ import { GtNode } from '@ghosten/common';
 import { Subscription, combineLatest, merge, of } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { AccordionItemComponent } from '../../modules/accordion';
+import { AccordionItemComponent } from '../../modules';
 import { EventsService } from '../../services';
 import { GtEdit } from '../../classes';
-import { PROPERTY_EDIT_EVENT } from '../../injectors';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,10 +35,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         (opened)="opened('variable')"
         (closed)="closed('variable')"
       >
-        <gt-panel-variable
-          [gtNode]="gtNode"
-          (openDialog)="onOpenDialog($event)"
-        ></gt-panel-variable>
+        <gt-panel-variable [gtNode]="gtNode"></gt-panel-variable>
       </gt-accordion-item>
       <gt-accordion-item
         *ngIf="gtNode.property"
@@ -50,11 +45,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         (opened)="opened('property')"
         (closed)="closed('property')"
       >
-        <gt-panel-config
-          [type]="'property'"
-          [gtNode]="gtNode"
-          (openDialog)="onOpenDialog($event)"
-        ></gt-panel-config>
+        <gt-panel-config [type]="'property'" [gtNode]="gtNode"></gt-panel-config>
       </gt-accordion-item>
       <gt-accordion-item
         *ngIf="gtNode.style"
@@ -64,11 +55,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         (opened)="opened('style')"
         (closed)="closed('style')"
       >
-        <gt-panel-config
-          [type]="'style'"
-          [gtNode]="gtNode"
-          (openDialog)="onOpenDialog($event)"
-        ></gt-panel-config>
+        <gt-panel-config [type]="'style'" [gtNode]="gtNode"></gt-panel-config>
       </gt-accordion-item>
       <gt-accordion-item
         *ngIf="gtNode.rights"
@@ -78,11 +65,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         (opened)="opened('rights')"
         (closed)="closed('rights')"
       >
-        <gt-panel-config
-          [type]="'rights'"
-          [gtNode]="gtNode"
-          (openDialog)="onOpenDialog($event)"
-        ></gt-panel-config>
+        <gt-panel-config [type]="'rights'" [gtNode]="gtNode"></gt-panel-config>
       </gt-accordion-item>
       <!--      <gt-accordion-item
               *ngIf="gtNode.dataSource"
@@ -108,10 +91,7 @@ import { PROPERTY_EDIT_EVENT } from '../../injectors';
         (opened)="opened('directive')"
         (closed)="closed('directive')"
       >
-        <gt-panel-directive
-          [gtNode]="gtNode"
-          (openDialog)="onOpenDialog($event)"
-        ></gt-panel-directive>
+        <gt-panel-directive [gtNode]="gtNode"></gt-panel-directive>
       </gt-accordion-item>
       <gt-accordion-item
         *ngIf="gtNode.validator"
@@ -142,12 +122,7 @@ export class SidebarConfigComponent implements OnDestroy {
   @ViewChildren(AccordionItemComponent)
   accordionList: QueryList<AccordionItemComponent>;
 
-  constructor(
-    @Inject(PROPERTY_EDIT_EVENT) public editEvent: any,
-    public gt: GtEdit,
-    cdr: ChangeDetectorRef,
-    events: EventsService,
-  ) {
+  constructor(public gt: GtEdit, cdr: ChangeDetectorRef, events: EventsService) {
     this.subscription = combineLatest([
       merge(of(gt.selected), events.CHANGE_SELECT),
       merge(of(null), events.REDO, events.UNDO, events.PASTE_STYLE),
@@ -170,10 +145,6 @@ export class SidebarConfigComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  onOpenDialog(event: any) {
-    this.editEvent.forEach((func: any) => func(event));
   }
 
   opened(type: string) {

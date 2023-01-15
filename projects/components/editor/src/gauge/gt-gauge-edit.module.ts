@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import {
   GT_EDIT_COMPONENT_MAP,
+  GT_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
   GT_TEMPLATE_MAP,
   GtEditCoreModule,
@@ -16,6 +17,35 @@ import { WaterComponent } from './water.component';
   imports: [GtEditCoreModule, GaugeModule],
   declarations: [GaugeComponent, WaterComponent, BatteryComponent],
   providers: [
+    {
+      provide: GT_ELEMENT_LISTS,
+      useValue: {
+        title: $localize`:Element Group Title\: Component:组件`,
+        elements: [
+          {
+            label: $localize`:Element Label\: Gauge:仪表盘`,
+            type: 'gauge',
+            icon: 'gauge',
+          },
+          {
+            label: $localize`:Element Label\: Water:水位图`,
+            type: 'water',
+            icon: 'water',
+          },
+          {
+            label: $localize`:Element Label\: Slot:占位符`,
+            type: 'slot',
+            icon: 'slot',
+          },
+          {
+            label: $localize`:Element Label\: Battery:电池`,
+            type: 'battery',
+            icon: 'battery',
+          },
+        ],
+      },
+      multi: true,
+    },
     {
       provide: GT_EDIT_COMPONENT_MAP,
       useValue: {

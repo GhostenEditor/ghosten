@@ -12,14 +12,11 @@ import { AppServerModule } from './main.server';
 export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), 'dist/demo/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
-    ? 'index.original.html'
-    : 'index';
+  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
   server.engine(
     'html',
-    // @ts-ignore
     ngExpressEngine({
       bootstrap: AppServerModule,
     }),
@@ -37,6 +34,11 @@ export function app(): express.Express {
       maxAge: '1y',
     }),
   );
+
+  server.get('getRoutes', (req, res) => {
+    console.log('getRoutes');
+    res.json([]);
+  });
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {

@@ -1,13 +1,7 @@
 import { Provider } from '@angular/core';
 
+import { eventsListener } from './eventsListener';
 import { gtContextmenu } from './contextmenu';
-import { gtElementsList } from './gtElementsList';
-import { propertyEditEvent } from './propertyEditEvent';
 import { topBarButtons } from './topBarButtons';
 
-export const providers: Provider[] = [
-  gtElementsList,
-  propertyEditEvent,
-  topBarButtons,
-  gtContextmenu,
-];
+export const providers: Provider[] = [topBarButtons, gtContextmenu, eventsListener];

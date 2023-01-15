@@ -82,8 +82,7 @@ export class Gauge {
     this.max = max;
     this.ctx = this.canvas.getContext('2d')!;
     this.arcLength = 2 * Math.PI * 0.65;
-    this.startRadian =
-      -Math.PI - Math.PI / 2 + (2 * Math.PI - this.arcLength) / 2;
+    this.startRadian = -Math.PI - Math.PI / 2 + (2 * Math.PI - this.arcLength) / 2;
     this.endRadian = Math.PI / 2 - (2 * Math.PI - this.arcLength) / 2;
     this.background = background || '#121224';
     this.foreground = foreground || '#40e87b';
@@ -103,50 +102,24 @@ export class Gauge {
     ctx.beginPath();
     ctx.arc(0, 0, radius, this.startRadian, this.endRadian);
     ctx.stroke();
-    const gradient = ctx.createConicGradient(
-      this.isSafari ? Math.PI : Math.PI / 2,
-      0,
-      0,
-    );
+    const gradient = ctx.createConicGradient(this.isSafari ? Math.PI : Math.PI / 2, 0, 0);
     gradient.addColorStop(0.2, this.color1);
     gradient.addColorStop(0.8, this.color2);
     ctx.strokeStyle = gradient;
     ctx.beginPath();
-    ctx.arc(
-      0,
-      0,
-      radius,
-      this.startRadian,
-      this.startRadian + this.percent * this.arcLength,
-    );
+    ctx.arc(0, 0, radius, this.startRadian, this.startRadian + this.percent * this.arcLength);
     ctx.stroke();
-    ctx.font = `bold ${Math.round(
-      (this.size / 200) * 32,
-    )}px -apple-system, Microsoft Yahei`;
+    ctx.font = `bold ${Math.round((this.size / 200) * 32)}px -apple-system, Microsoft Yahei`;
     ctx.fillStyle = this.fontColor1;
     ctx.textBaseline = 'top';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      `${(+this.value).toFixed(1)} `,
-      0,
-      radius * Math.sin(this.endRadian) * 1.75,
-    );
-    ctx.font = `${Math.round(
-      (this.size / 200) * 12,
-    )}px -apple-system, Microsoft Yahei`;
+    ctx.fillText(`${(+this.value).toFixed(1)} `, 0, radius * Math.sin(this.endRadian) * 1.75);
+    ctx.font = `${Math.round((this.size / 200) * 12)}px -apple-system, Microsoft Yahei`;
     ctx.fillStyle = this.axisFontColor;
     ctx.textBaseline = 'alphabetic';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      this.min + '',
-      -radius * Math.cos(this.endRadian),
-      1.5 * radius * Math.sin(this.endRadian),
-    );
-    ctx.fillText(
-      this.max + '',
-      radius * Math.cos(this.endRadian),
-      1.5 * radius * Math.sin(this.endRadian),
-    );
+    ctx.fillText(this.min + '', -radius * Math.cos(this.endRadian), 1.5 * radius * Math.sin(this.endRadian));
+    ctx.fillText(this.max + '', radius * Math.cos(this.endRadian), 1.5 * radius * Math.sin(this.endRadian));
     ctx.restore();
   }
 
@@ -204,13 +177,7 @@ export class Gauge {
   }
 
   private resize() {
-    const size = Math.max(
-      Math.min(
-        this.container.clientWidth,
-        this.container.clientHeight / 0.76 - 30,
-      ),
-      100,
-    );
+    const size = Math.max(Math.min(this.container.clientWidth, this.container.clientHeight / 0.76 - 30), 100);
     if (this.size !== size) {
       this.size = size;
       this.width = size;

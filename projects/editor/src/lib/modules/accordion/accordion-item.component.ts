@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { bodyExpansion } from '../../animations';
 

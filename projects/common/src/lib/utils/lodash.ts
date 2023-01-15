@@ -8,8 +8,6 @@ export const clamp = (number: number, boundOne: number, boundTwo?: number) => {
   }
 };
 export const isEmpty = (obj: any) =>
-  [Object, Array].includes((obj || {}).constructor) &&
-  !Object.entries(obj || {}).length;
-export const upperFirst = (string: string): string =>
-  string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
-export const cloneDeep = (value: any) => value;
+  [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+export const upperFirst = (string: string): string => (string ? string.charAt(0).toUpperCase() + string.slice(1) : '');
+export const cloneDeep = (value: any) => JSON.parse(JSON.stringify(value));

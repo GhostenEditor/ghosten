@@ -47,22 +47,15 @@ export class DataSource {
     this._dataSource.forEach(callbackFn, thisArg);
   }
 
-  public setDataSource(
-    callbackFn: (dataSource: IDataSource) => Observable<any>,
-  ) {
-    this.forEach(dataSource =>
-      this._dataSource$.set(dataSource.id, callbackFn(dataSource)),
-    );
+  public setDataSource(callbackFn: (dataSource: IDataSource) => Observable<any>) {
+    this.forEach(dataSource => this._dataSource$.set(dataSource.id, callbackFn(dataSource)));
   }
 
   public export(): IDataSource[] {
     return Array.from(this.values());
   }
 
-  static create(
-    dataSource: IDataSource[] = [],
-    parent: DataSource = new DataSource(),
-  ): DataSource {
+  static create(dataSource: IDataSource[] = [], parent: DataSource = new DataSource()): DataSource {
     const newDataSource = new DataSource();
     dataSource.forEach(dataSource => newDataSource.add(dataSource));
     // const newDataSource = Object.create(parent || DataSource.prototype);

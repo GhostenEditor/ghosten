@@ -6,9 +6,8 @@ import { NgModule } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 
-import { AccordionModule } from '../../modules/accordion';
+import { AccordionModule, ResizeModule } from '../../modules';
 import { PanelModule } from '../panels/panel.module';
-import { ResizeModule } from '../../modules/resize';
 
 import { FloatBarComponent } from './float-bar.component';
 import { SidebarComponent } from './sidebar.component';

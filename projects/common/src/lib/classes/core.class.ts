@@ -5,7 +5,6 @@ export class Core {
   canCut: boolean = false;
   canHasChild: boolean = false;
   dynamicTemplate = false;
-  acceptedChildType: string[] = [];
 
   [property: string]: any;
 

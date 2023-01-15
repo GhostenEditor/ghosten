@@ -8,17 +8,9 @@ import { InputProperty } from '@ghosten/components';
     class: 'd-block',
   },
   template: `
-    <label class="form-label" *ngIf="gtNode.property.showLabel">{{
-      gtNode.property.labelText
-    }}</label>
+    <label class="form-label" *ngIf="gtNode.property.showLabel">{{ gtNode.property.labelText }}</label>
     <div class="input-group has-validation" [ngClass]="property.inputSize">
-      <button
-        *ngIf="property.inputType === 'number'"
-        type="button"
-        class="btn btn-outline-secondary"
-      >
-        -
-      </button>
+      <button *ngIf="property.inputType === 'number'" type="button" class="btn btn-outline-secondary">-</button>
       <input
         [type]="property.inputType"
         class="form-control"
@@ -28,15 +20,8 @@ import { InputProperty } from '@ghosten/components';
         [disabled]="gtNode.property.disabled"
         [readonly]="gtNode.property.readonly"
       />
-      <button
-        *ngIf="property.inputType === 'number'"
-        type="button"
-        class="btn btn-outline-secondary"
-      >
-        +
-      </button>
+      <button *ngIf="property.inputType === 'number'" type="button" class="btn btn-outline-secondary">+</button>
     </div>
   `,
 })
-export class InputComponent extends EditAbstractComponent<InputProperty> {
-}
+export class InputComponent extends EditAbstractComponent<InputProperty> {}

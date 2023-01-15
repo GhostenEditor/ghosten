@@ -9,13 +9,7 @@ import { NavigationItemComponent } from './navigation-item.component';
 import { PageManagementModule } from '../page-management/page-management.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    OverlayModule,
-    CdkAccordionModule,
-    PageManagementModule,
-  ],
+  imports: [CommonModule, RouterModule, OverlayModule, CdkAccordionModule, PageManagementModule],
   exports: [NavigationComponent],
   declarations: [NavigationComponent, NavigationItemComponent],
 })

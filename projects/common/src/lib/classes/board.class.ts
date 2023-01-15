@@ -3,7 +3,7 @@ import { GtNode } from './gt.node';
 
 export class Board {
   name: string;
-  type: string;
+  type: 'main' | 'modal' | 'cc' | 'rcc';
   url: string;
   description: string;
   gt: GtNode;
@@ -12,10 +12,7 @@ export class Board {
   noFooter: boolean;
   nodeList: Map<string, GtNode> = new Map<string, GtNode>();
   inheritedList: GtNode[];
-  events: Record<
-    'confirm' | 'cancel' | 'onInit' | 'onDestroy',
-    IGtNode.Action | null
-  >;
+  events: Record<'confirm' | 'cancel' | 'onInit' | 'onDestroy', IGtNode.Action | null>;
 
   constructor(config: Omit<BoardData, 'gt' | 'nodeList'>) {
     this.name = config.name || 'main';

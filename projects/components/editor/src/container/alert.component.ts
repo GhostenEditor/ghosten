@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+
+import { AlertProperty } from '@ghosten/components';
 import { EditAbstractComponent } from '@ghosten/editor';
 
 @Component({
@@ -6,16 +8,14 @@ import { EditAbstractComponent } from '@ghosten/editor';
   template: ` <div
     class="alert "
     data-droppable
-    [class.alert-dismissible]="gtNode.property.dismissible"
-    [ngClass]="'alert-' + gtNode.property.type"
+    [class.alert-dismissible]="property.dismissible"
+    [ngClass]="'alert-' + property.type"
     role="alert"
   >
-    <ng-container *ngIf="!gtNode.children.length"
-      >默认文本，渲染模式不会展示！
-    </ng-container>
+    <ng-container *ngIf="!gtNode.children.length">默认文本，渲染模式不会展示！</ng-container>
     <ng-template gtTemplate></ng-template>
     <button
-      *ngIf="gtNode.property.dismissible"
+      *ngIf="property.dismissible"
       type="button"
       class="btn-close"
       data-bs-dismiss="alert"
@@ -23,4 +23,4 @@ import { EditAbstractComponent } from '@ghosten/editor';
     ></button>
   </div>`,
 })
-export class AlertComponent extends EditAbstractComponent {}
+export class AlertComponent extends EditAbstractComponent<AlertProperty> {}

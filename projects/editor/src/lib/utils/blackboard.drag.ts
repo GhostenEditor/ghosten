@@ -2,26 +2,9 @@ import { Point } from '@angular/cdk/drag-drop';
 
 import { EMPTY, Observable, Subject, of } from 'rxjs';
 
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  skipWhile,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, skipWhile, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
-import {
-  calculateOffset,
-  cloneElement,
-  dragEnd,
-  dragMove,
-  dragStart,
-  isTouchEvent,
-  removeChild,
-} from './drag';
+import { calculateOffset, cloneElement, dragEnd, dragMove, dragStart, isTouchEvent, removeChild } from './drag';
 import { removeDragRootStyle, setDragRootStyle } from './toggleDragRootStyle';
 import { closest } from './index';
 import { isDescendant } from './isDescendant';
@@ -47,7 +30,7 @@ export class Drag<T> {
   dragEnd = this._dragEnd$.asObservable();
   public disabled: boolean;
 
-  constructor(public readonly el: HTMLElement) {
+  constructor(public readonly el: HTMLElement, private _document: Document) {
     this._dragStart(this.el)
       .pipe(switchMap(event => this._dragEnd(this._dragMove(event), event)))
       .subscribe();
@@ -57,21 +40,18 @@ export class Drag<T> {
     return dragStart(el).pipe(
       switchMap(event => {
         this._target = closest(event.target as HTMLElement, '[data-draggable]');
-        if (
-          !(!isTouchEvent(event) && event.button !== 0) &&
-          !this.disabled &&
-          this._target
-        ) {
-          return dragMove(event).pipe(
+        if (!(!isTouchEvent(event) && event.button !== 0) && !this.disabled && this._target) {
+          return dragMove(this._document, event).pipe(
             skipWhile(e => {
               const { x, y } = calculateOffset(event, e);
               return Math.abs(x) + Math.abs(y) < 30;
             }),
-            takeUntil(dragEnd(event)),
+            takeUntil(dragEnd(this._document, event)),
             take(1),
             switchMap(() => {
               const target = this._target!;
               const dragClientRect = target.getBoundingClientRect();
+              const _document = this._document;
 
               function createMirror(target: HTMLElement) {
                 const node: HTMLElement = cloneElement(target);
@@ -80,7 +60,7 @@ export class Drag<T> {
                 }
                 node.style.width = dragClientRect.width + 'px';
                 node.style.height = dragClientRect.height + 'px';
-                const container = document.createElement('div');
+                const container = _document.createElement('div');
                 container.classList.add('draggable-mirror');
                 container.appendChild(node);
                 return container;
@@ -101,10 +81,10 @@ export class Drag<T> {
               this._placeholder = createPlaceholder(target);
               this._placeholder.style.transform = `translate(${dragClientRect.left}px,${dragClientRect.top}px)`;
               target.classList.add('draggable-source');
-              setDragRootStyle('userSelect', 'none');
-              setDragRootStyle('cursor', 'grab');
-              document.body.appendChild(this._mirror);
-              document.body.appendChild(this._placeholder);
+              setDragRootStyle(this._document.documentElement, 'userSelect', 'none');
+              setDragRootStyle(this._document.documentElement, 'cursor', 'grab');
+              this._document.body.appendChild(this._mirror);
+              this._document.body.appendChild(this._placeholder);
               return of(event);
             }),
           );
@@ -116,13 +96,13 @@ export class Drag<T> {
   }
 
   private _dragMove(startEvent: MouseEvent | TouchEvent) {
-    return dragMove(startEvent).pipe(
+    return dragMove(this._document, startEvent).pipe(
       tap(event => {
         const { x, y } = calculateOffset(startEvent, event);
         this._mirror!.style.transform = `translate(${x}px,${y}px)`;
       }),
       // debounceTime(10),
-      map(event => getDropAndRefElementByTarget(event, this._target!)),
+      map(event => getDropAndRefElementByTarget(event, this._target!, this._document)),
       // tap(console.log),
       filter(
         (
@@ -136,10 +116,7 @@ export class Drag<T> {
         this._parentElement = parentElement;
         this._refChild = refChild;
       }),
-      distinctUntilChanged(
-        (x, y) =>
-          x.parentElement === y.parentElement && x.refChild === y.refChild,
-      ),
+      distinctUntilChanged((x, y) => x.parentElement === y.parentElement && x.refChild === y.refChild),
       tap(event =>
         this._drop.next({
           ...event,
@@ -159,7 +136,7 @@ export class Drag<T> {
   ): Observable<{ parentElement: HTMLElement; refChild: HTMLElement | null }> {
     return source.pipe(
       takeUntil(
-        dragEnd(event).pipe(
+        dragEnd(this._document, event).pipe(
           tap(() => {
             if (this._parentElement) {
               this._dragEnd$.next({
@@ -168,8 +145,8 @@ export class Drag<T> {
                 target: this._target!,
               });
             }
-            removeDragRootStyle('userSelect');
-            removeDragRootStyle('cursor');
+            removeDragRootStyle(this._document.documentElement, 'userSelect');
+            removeDragRootStyle(this._document.documentElement, 'cursor');
             removeChild(this._placeholder);
             removeChild(this._mirror);
             if (this._target) {
@@ -195,24 +172,21 @@ export function getEventPoint(event: TouchEvent | MouseEvent): Point {
   }
 }
 
-export function getMoveEventTarget(
-  event: TouchEvent | MouseEvent,
-): HTMLElement {
+export function getMoveEventTarget(event: TouchEvent | MouseEvent, _document: Document): HTMLElement {
   if (isTouchEvent(event)) {
-    return document.elementFromPoint(
-      event.touches[0].pageX,
-      event.touches[0].pageY,
-    ) as HTMLElement;
+    return _document.elementFromPoint(event.touches[0].pageX, event.touches[0].pageY) as HTMLElement;
   } else {
     return event.target as HTMLElement;
   }
 }
 
+// todo: 类型限制
 export function getDropAndRefElementByTarget(
   event: MouseEvent | TouchEvent,
   source: HTMLElement,
+  _document: Document,
 ): { parentElement: HTMLElement; refChild: HTMLElement | null } | null {
-  const target = getMoveEventTarget(event);
+  const target = getMoveEventTarget(event, _document);
   const { x, y } = getEventPoint(event);
   let gtElement: HTMLElement | null = null;
   let droppableElement: HTMLElement | null = null;
@@ -226,9 +200,7 @@ export function getDropAndRefElementByTarget(
       switch (relativePosition) {
         case 'left':
         case 'top':
-          refChild = Array.from(parentElement.children).find(
-            child => child !== source,
-          ) as HTMLElement;
+          refChild = Array.from(parentElement.children).find(child => child !== source) as HTMLElement;
           break;
         default:
           refChild = null;
@@ -242,9 +214,7 @@ export function getDropAndRefElementByTarget(
       switch (relativePosition) {
         case 'left':
         case 'top':
-          refChild = Array.from(parentElement.children).find(
-            child => child !== source,
-          ) as HTMLElement;
+          refChild = Array.from(parentElement.children).find(child => child !== source) as HTMLElement;
           break;
         default:
           refChild = null;
@@ -269,7 +239,7 @@ export function getDropAndRefElementByTarget(
     }
     cachedDom = cachedDom.parentElement;
   }
-  const gtPageDom = document.querySelector('.gt-page');
+  const gtPageDom = _document.querySelector('.gt-page');
   if (!gtPageDom) {
     throw new Error('');
   }
@@ -278,11 +248,7 @@ export function getDropAndRefElementByTarget(
   }
 
   if (droppableElement === null) {
-    const relativePosition = getRelativePosition(
-      { x, y },
-      gtElement,
-      gtElement.dataset.canHasChild === 'true',
-    );
+    const relativePosition = getRelativePosition({ x, y }, gtElement, gtElement.dataset.canHasChild === 'true');
     switch (relativePosition) {
       case 'left':
       case 'top':
@@ -327,8 +293,7 @@ export function getDropAndRefElementByTarget(
     }
   }
   if (
-    (refChild !== null &&
-      (refChild === source.nextElementSibling || refChild === source)) ||
+    (refChild !== null && (refChild === source.nextElementSibling || refChild === source)) ||
     isDescendant(gtElement, source)
   ) {
     return null;
@@ -343,8 +308,7 @@ function getRelativePosition(
 ): 'top' | 'bottom' | 'left' | 'right' | 'center' {
   const edgeRate = canHasChild ? 0.08 : 0.5;
   const max = canHasChild ? 10 : Infinity;
-  const { top, bottom, left, right, width, height } =
-    element.getBoundingClientRect();
+  const { top, bottom, left, right, width, height } = element.getBoundingClientRect();
   if (y - top < Math.min(height * edgeRate, max)) {
     return 'top';
   } else if (bottom - y < Math.min(height * edgeRate, max)) {

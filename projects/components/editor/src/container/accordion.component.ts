@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { AccordionProperty } from '@ghosten/components';
 import { EditAbstractComponent } from '@ghosten/editor';
-
-interface AccordionType {
-  accordionItems: {
-    id: string;
-    title: string;
-  }[];
-}
 
 @Component({
   selector: 'gt-accordion',
-  template: ` <div class="accordion" id="accordionExample">
-    <ng-container *ngIf="!gtNode.property.accordionItems?.length">
+  template: ` <div class="accordion">
+    <ng-container *ngIf="!property.accordionItems.length">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button
@@ -30,17 +24,9 @@ interface AccordionType {
         </div>
       </div>
     </ng-container>
-    <div
-      class="accordion-item"
-      *ngFor="let item of gtNode.property.accordionItems"
-    >
+    <div class="accordion-item" *ngFor="let item of property.accordionItems">
       <h2 class="accordion-header">
-        <button
-          class="accordion-button"
-          type="button"
-          data-bs-toggle="collapse"
-          aria-expanded="true"
-        >
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true">
           {{ item.title }}
         </button>
       </h2>
@@ -52,6 +38,4 @@ interface AccordionType {
     </div>
   </div>`,
 })
-export class AccordionComponent
-  extends EditAbstractComponent<AccordionType>
-  implements OnInit {}
+export class AccordionComponent extends EditAbstractComponent<AccordionProperty> implements OnInit {}

@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GtEdit } from '@ghosten/editor';
 
 import { AAA } from './components';
-import { ContextMenu } from '../../contextmenu/contextMenu';
 
 interface NodeType {
   name: string;
@@ -26,16 +25,8 @@ interface NodeGroup {
     (cancel)="cancel.emit()"
   >
     <div class="d-flex h-100">
-      <gt-accordion
-        class="flex-shrink-0 overflow-auto"
-        style="width: 16rem;"
-        [multi]="true"
-      >
-        <gt-accordion-item
-          *ngFor="let accordion of nodeGroups"
-          [cardTitle]="accordion.title"
-          [expanded]="true"
-        >
+      <gt-accordion class="flex-shrink-0 overflow-auto" style="width: 16rem;" [multi]="true">
+        <gt-accordion-item *ngFor="let accordion of nodeGroups" [cardTitle]="accordion.title" [expanded]="true">
           <ul class="list-group list-group-flush">
             <li
               class="list-group-item"
@@ -56,17 +47,8 @@ interface NodeGroup {
         (dragover)="dragOver($event)"
         (drop)="drop($event)"
       >
-        <div
-          class="h-100 position-relative"
-          #target
-          gtZoom
-          [zoomZone]="container"
-        >
-          <ng-template
-            nodeEditorCanvas
-            [nodes]="nodes"
-            (contextmenuEvent)="contextmenuEvent($event)"
-          ></ng-template>
+        <div class="h-100 position-relative" #target gtZoom [zoomZone]="container">
+          <ng-template nodeEditorCanvas [nodes]="nodes" (contextmenuEvent)="contextmenuEvent($event)"></ng-template>
         </div>
       </div>
     </div>
@@ -79,7 +61,7 @@ export class NodeEditorComponent {
   nodeGroups: NodeGroup[];
   nodes: any[] = [];
 
-  constructor(private contextmenu: ContextMenu, private gt: GtEdit) {
+  constructor(private gt: GtEdit) {
     const hasVariableNameGtNode: NodeType[] = [];
     this.gt.nodeList.forEach(gtNode => {
       if (gtNode.variableName) {
@@ -109,12 +91,7 @@ export class NodeEditorComponent {
       },
       {
         title: '基本数据类型',
-        nodes: [
-          { name: 'string' },
-          { name: 'number' },
-          { name: 'boolean' },
-          { name: 'null' },
-        ],
+        nodes: [{ name: 'string' }, { name: 'number' }, { name: 'boolean' }, { name: 'null' }],
       },
       {
         title: 'Rxjs',
@@ -122,12 +99,7 @@ export class NodeEditorComponent {
       },
       {
         title: '工具方法',
-        nodes: [
-          { name: 'filter' },
-          { name: 'distinctUntilChanged' },
-          { name: 'tap' },
-          { name: 'switchMap' },
-        ],
+        nodes: [{ name: 'filter' }, { name: 'distinctUntilChanged' }, { name: 'tap' }, { name: 'switchMap' }],
       },
     ];
   }
@@ -142,6 +114,7 @@ export class NodeEditorComponent {
 
   dragOver(event: DragEvent) {
     event.preventDefault();
+    event.dataTransfer!.setData('1', '1');
   }
 
   async drop(event: DragEvent) {
@@ -171,13 +144,13 @@ export class NodeEditorComponent {
 
   contextmenuEvent(event: MouseEvent) {
     event.preventDefault();
-    this.contextmenu.create(event, [
-      {
-        label: '删除',
-      },
-      {
-        label: '复制',
-      },
-    ]);
+    // this.contextmenu.create(event, [
+    //   {
+    //     label: '删除',
+    //   },
+    //   {
+    //     label: '复制',
+    //   },
+    // ]);
   }
 }

@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { DataBinding } from '@ghosten/common';
 import { Subscription } from 'rxjs';
@@ -29,12 +22,7 @@ export interface PanelFormItem {
       <div class="mb-3" *ngFor="let formItem of formList">
         <label class="form-label">{{ formItem.label || formItem.name }}</label>
         <div class="input-group input-group-sm has-validation">
-          <div
-            class="form-control"
-            *ngIf="isDataBinding(formItem.control!.value)"
-          >
-            ~~DataBinding~~
-          </div>
+          <div class="form-control" *ngIf="isDataBinding(formItem.control!.value)">~~DataBinding~~</div>
           <ng-container *ngIf="!isDataBinding(formItem.control!.value)">
             <ng-container [ngSwitch]="formItem.type">
               <input
@@ -42,31 +30,22 @@ export interface PanelFormItem {
                 type="text"
                 class="form-control"
                 [formControlName]="formItem.name"
-                [class.is-invalid]="
-                  formItem.control!.touched && formItem.control!.invalid
-                "
+                [class.is-invalid]="formItem.control!.touched && formItem.control!.invalid"
               />
               <input
                 *ngSwitchCase="'number'"
                 type="number"
                 class="form-control"
                 [formControlName]="formItem.name"
-                [class.is-invalid]="
-                  formItem.control!.touched && formItem.control!.invalid
-                "
+                [class.is-invalid]="formItem.control!.touched && formItem.control!.invalid"
               />
               <select
                 *ngSwitchCase="'select'"
                 class="form-select"
                 [formControlName]="formItem.name"
-                [class.is-invalid]="
-                  formItem.control!.touched && formItem.control!.invalid
-                "
+                [class.is-invalid]="formItem.control!.touched && formItem.control!.invalid"
               >
-                <option
-                  *ngFor="let option of formItem.options"
-                  [value]="option.value"
-                >
+                <option *ngFor="let option of formItem.options" [value]="option.value">
                   {{ option.label }}
                 </option>
               </select>
@@ -111,9 +90,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   set formList(formList: PanelFormItem[]) {
-    Object.keys(this.formGroup.controls).forEach(name =>
-      this.formGroup.removeControl(name),
-    );
+    Object.keys(this.formGroup.controls).forEach(name => this.formGroup.removeControl(name));
     this._formList = formList.map(formItem => {
       const formControl = new FormControl(
         {
@@ -133,9 +110,7 @@ export class FormComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit() {
-    this.subscription = this.formGroup.valueChanges.subscribe(() =>
-      this.formChange.emit(this.formGroup),
-    );
+    this.subscription = this.formGroup.valueChanges.subscribe(() => this.formChange.emit(this.formGroup));
   }
 
   ngOnDestroy() {

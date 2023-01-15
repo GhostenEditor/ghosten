@@ -8,20 +8,14 @@ function easeQuadInOut(p: number) {
   return 1 - Math.pow(p - 1, 4);
 }
 
-declare const document: Document;
-declare const Math: Math;
-export const fromDragEvent = (
-  event: MouseEvent | TouchEvent,
-): Observable<MouseEvent | TouchEvent> =>
-  dragMove(event).pipe(
+export const fromDragEvent = (target: Document, event: MouseEvent | TouchEvent): Observable<MouseEvent | TouchEvent> =>
+  dragMove(target, event).pipe(
     skipWhile(e => {
       const { x, y } = calculateOffset(event, e);
       return Math.abs(x) + Math.abs(y) < 30;
     }),
     take(1),
-    takeUntil(
-      dragEnd(event).pipe(tap(() => removeDragRootStyle('userSelect'))),
-    ),
+    takeUntil(dragEnd(target, event).pipe(tap(() => removeDragRootStyle(target.documentElement, 'userSelect')))),
   );
 
 export function cloneElement(target: HTMLElement): HTMLElement {
@@ -30,9 +24,7 @@ export function cloneElement(target: HTMLElement): HTMLElement {
     const targetCanvasList = target.querySelectorAll('canvas');
     const cloneCanvasList = mirror.querySelectorAll('canvas');
     Array.from(targetCanvasList).forEach((canvas, index) => {
-      cloneCanvasList[
-        index
-      ].style.background = `url(${canvas.toDataURL()}) no-repeat center center / contain`;
+      cloneCanvasList[index].style.background = `url(${canvas.toDataURL()}) no-repeat center center / contain`;
       cloneCanvasList[index].style.width = '100%';
       cloneCanvasList[index].style.height = '100%';
     });
@@ -40,101 +32,92 @@ export function cloneElement(target: HTMLElement): HTMLElement {
   return mirror;
 }
 
-export const createMirror = (target: HTMLElement) => {
-  const dragClientRect = target.getBoundingClientRect();
-  const mirror: HTMLElement = cloneElement(target);
-  mirror.classList.add('draggable-mirror');
-  mirror.style.left = dragClientRect.left + 'px';
-  mirror.style.top = dragClientRect.top + 'px';
-  mirror.style.width = dragClientRect.width + 'px';
-  mirror.style.height = dragClientRect.height + 'px';
-  document.body.appendChild(mirror);
-  return mirror;
-};
-export const createPlaceholder = (target: HTMLElement) => {
-  // const dragClientRect = target.getBoundingClientRect();
-  const placeholder: HTMLElement = cloneElement(target);
-  placeholder.classList.add('draggable-placeholder');
-  document.body.appendChild(placeholder);
-  return placeholder;
-};
-export const removeMirror = (mirror: HTMLElement) =>
-  mirror.parentElement && mirror.parentElement.removeChild(mirror);
+// export const createMirror = (target: HTMLElement) => {
+//   const dragClientRect = target.getBoundingClientRect();
+//   const mirror: HTMLElement = cloneElement(target);
+//   mirror.classList.add('draggable-mirror');
+//   mirror.style.left = dragClientRect.left + 'px';
+//   mirror.style.top = dragClientRect.top + 'px';
+//   mirror.style.width = dragClientRect.width + 'px';
+//   mirror.style.height = dragClientRect.height + 'px';
+//   document.body.appendChild(mirror);
+//   return mirror;
+// };
+// export const createPlaceholder = (target: HTMLElement) => {
+//   // const dragClientRect = target.getBoundingClientRect();
+//   const placeholder: HTMLElement = cloneElement(target);
+//   placeholder.classList.add('draggable-placeholder');
+//   document.body.appendChild(placeholder);
+//   return placeholder;
+// };
+export const removeMirror = (mirror: HTMLElement) => mirror.parentElement && mirror.parentElement.removeChild(mirror);
 
 // 计算光标相对于dropNode的位置
-export function calcRelativePosition(
-  t: HTMLElement,
-  event: MouseEvent | TouchEvent,
-) {
-  const { x, y, width, height } = t.getBoundingClientRect();
-  const { clientX, clientY } = !isTouchEvent(event) ? event : event.touches[0];
-  if (clientX - x < 10) {
-    return 'left';
-  }
-  if (clientY - y < 10) {
-    return 'top';
-  }
-  if (x + width - clientX < 10) {
-    return 'right';
-  }
-  if (y + height - clientY < 10) {
-    return 'bottom';
-  }
-  return 'center';
-}
+// export function calcRelativePosition(t: HTMLElement, event: MouseEvent | TouchEvent) {
+//   const { x, y, width, height } = t.getBoundingClientRect();
+//   const { clientX, clientY } = !isTouchEvent(event) ? event : event.touches[0];
+//   if (clientX - x < 10) {
+//     return 'left';
+//   }
+//   if (clientY - y < 10) {
+//     return 'top';
+//   }
+//   if (x + width - clientX < 10) {
+//     return 'right';
+//   }
+//   if (y + height - clientY < 10) {
+//     return 'bottom';
+//   }
+//   return 'center';
+// }
+//
+// export function findDragAndDrop(
+//   element: HTMLElement,
+//   drag = element,
+// ): { drag: HTMLElement | null; drop: HTMLElement | null } {
+//   let drop: HTMLElement | null = null;
+//   if (element.classList.contains('isDroppable')) {
+//     drop = element;
+//     return { drag, drop };
+//   }
+//   if (element.classList.contains('isDraggable')) {
+//     drag = element;
+//   }
+//   if (element.parentElement !== null) {
+//     return findDragAndDrop(element.parentElement, drag);
+//   } else {
+//     return { drag, drop };
+//   }
+// }
 
-export function findDragAndDrop(
-  element: HTMLElement,
-  drag = element,
-): { drag: HTMLElement | null; drop: HTMLElement | null } {
-  let drop: HTMLElement | null = null;
-  if (element.classList.contains('isDroppable')) {
-    drop = element;
-    return { drag, drop };
-  }
-  if (element.classList.contains('isDraggable')) {
-    drag = element;
-  }
-  if (element.parentElement !== null) {
-    return findDragAndDrop(element.parentElement, drag);
-  } else {
-    return { drag, drop };
-  }
-}
-
-export const dragStart = (
-  element: HTMLElement,
-): Observable<MouseEvent | TouchEvent> =>
+export const dragStart = (element: HTMLElement): Observable<MouseEvent | TouchEvent> =>
   merge(
     fromEvent<MouseEvent>(element, 'mousedown', { passive: true }),
-    fromEvent<TouchEvent>(element, 'touchstart', { passive: true }).pipe(
-      filter(event => event.touches.length === 1),
-    ),
+    fromEvent<TouchEvent>(element, 'touchstart', { passive: true }).pipe(filter(event => event.touches.length === 1)),
   );
 
 export const dragMove = (
+  target: Document,
   startEvent: MouseEvent | TouchEvent,
 ): Observable<MouseEvent | TouchEvent> => {
   if (isTouchEvent(startEvent)) {
-    return fromEvent<TouchEvent>(document, 'touchmove', {
+    return fromEvent<TouchEvent>(target, 'touchmove', {
       passive: false,
       capture: false,
     }).pipe(tap(event => event.preventDefault()));
   } else {
-    return fromEvent<MouseEvent>(document, 'mousemove', {
+    return fromEvent<MouseEvent>(target, 'mousemove', {
       passive: true,
       capture: false,
     });
   }
 };
 
-export const dragEnd = (
-  startEvent: MouseEvent | TouchEvent,
-): Observable<MouseEvent | TouchEvent> => {
+export const dragEnd = (target: Document, startEvent: MouseEvent | TouchEvent): Observable<MouseEvent | TouchEvent> => {
   if (isTouchEvent(startEvent)) {
-    return fromEvent<TouchEvent>(document, 'touchend', { capture: true });
+    return fromEvent<TouchEvent>(target, 'touchend', { capture: true });
   } else {
-    return fromEvent<MouseEvent>(document, 'mouseup', { capture: true });
+    return fromEvent<MouseEvent>(target, 'mouseup', { capture: true });
   }
 };
 
@@ -180,9 +163,7 @@ export class TranslateAnimation {
   lastFrameTime: number = performance.now();
 
   add(obj: TranslateAnimationObj) {
-    const currentTranslate = obj.element.style.transform.match(/(\d|\.)+/g) || [
-      0, 0,
-    ];
+    const currentTranslate = obj.element.style.transform.match(/(\d|\.)+/g) || [0, 0];
     const index = this.queue.findIndex(item => item.element === obj.element);
     const { duration = 250, element, to = { left: 0, top: 0 } } = obj;
     let from = obj.from;
@@ -234,12 +215,8 @@ export class TranslateAnimation {
       this.queue.forEach(obj => {
         const { element, from, to, duration = 200, elapse } = obj;
         const progress = elapse! / duration > 1 ? 1 : elapse! / duration;
-        const left = Math.round(
-          (to!.left - from!.left) * easeQuadInOut(progress) + from!.left,
-        );
-        const top = Math.round(
-          (to!.top - from!.top) * easeQuadInOut(progress) + from!.top,
-        );
+        const left = Math.round((to!.left - from!.left) * easeQuadInOut(progress) + from!.left);
+        const top = Math.round((to!.top - from!.top) * easeQuadInOut(progress) + from!.top);
         element.style.transform = `translate(${left}px,${top}px)`;
 
         if (left === 0 && top === 0) {
@@ -261,9 +238,7 @@ export class TranslateAnimation {
   }
 }
 
-export function isTouchEvent(
-  event: TouchEvent | MouseEvent,
-): event is TouchEvent {
+export function isTouchEvent(event: TouchEvent | MouseEvent): event is TouchEvent {
   return event.type.startsWith('touch');
 }
 

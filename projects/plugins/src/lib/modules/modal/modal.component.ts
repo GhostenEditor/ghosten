@@ -1,18 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 const fadeAnimation = trigger('fade', [
   state('in', style({ transform: 'matrix(1,0,0,1,0,0)', opacity: 1 })),
@@ -42,14 +29,7 @@ const fadeAnimation = trigger('fade', [
         [ngClass]="'modal-' + modalSize"
         [class.modal-fullscreen]="fullscreen"
       >
-        <div
-          class="modal-content"
-          @fade
-          cdkDrag
-          cdkDragBoundary="body"
-          #cdkDrag="cdkDrag"
-          [cdkDragStartDelay]="50"
-        >
+        <div class="modal-content" @fade cdkDrag cdkDragBoundary="body" #cdkDrag="cdkDrag" [cdkDragStartDelay]="50">
           <div class="modal-header" cdkDragHandle>
             <h4 class="modal-title flex-grow-1">{{ modalTitle }}</h4>
             <button
@@ -65,6 +45,7 @@ const fadeAnimation = trigger('fade', [
               class="btn btn-text"
               data-bs-dismiss="modal"
               aria-label="Close"
+              autofocus
               (mousedown)="$event.stopPropagation()"
               (click)="cancel.emit()"
             >
@@ -82,23 +63,12 @@ const fadeAnimation = trigger('fade', [
               (click)="confirm.emit()"
               i18n="Button: Confirm"
             >
-              <div
-                class="spinner-border spinner-border-sm"
-                role="status"
-                *ngIf="modalPending"
-              >
+              <div class="spinner-border spinner-border-sm" role="status" *ngIf="modalPending">
                 <span class="visually-hidden">Loading...</span>
               </div>
               确定
             </button>
-            <button
-              type="button"
-              class="btn btn-text"
-              (click)="cancel.emit()"
-              i18n="Button: Cancel"
-            >
-              取消
-            </button>
+            <button type="button" class="btn btn-text" (click)="cancel.emit()" i18n="Button: Cancel">取消</button>
           </div>
         </div>
       </div>
@@ -115,8 +85,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.scrollWidth;
+    const scrollbarWidth = window.innerWidth - document.documentElement.scrollWidth;
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = scrollbarWidth + 'px';
   }

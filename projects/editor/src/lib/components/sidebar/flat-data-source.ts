@@ -54,12 +54,7 @@ export class TreeFlattener<T, F, K = F> {
     public getChildren: (node: T) => Observable<T[]> | T[] | undefined | null,
   ) {}
 
-  _flattenNode(
-    node: T,
-    level: number,
-    resultNodes: F[],
-    parentMap: boolean[],
-  ): F[] {
+  _flattenNode(node: T, level: number, resultNodes: F[], parentMap: boolean[]): F[] {
     const flatNode = this.transformFunction(node, level);
     resultNodes.push(flatNode);
 
@@ -78,12 +73,7 @@ export class TreeFlattener<T, F, K = F> {
     return resultNodes;
   }
 
-  _flattenChildren(
-    children: T[],
-    level: number,
-    resultNodes: F[],
-    parentMap: boolean[],
-  ): void {
+  _flattenChildren(children: T[], level: number, resultNodes: F[], parentMap: boolean[]): void {
     children.forEach((child, index) => {
       let childParentMap: boolean[] = parentMap.slice();
       childParentMap.push(index !== children.length - 1);
@@ -127,6 +117,7 @@ export class TreeFlattener<T, F, K = F> {
   }
 }
 
+// noinspection GrazieInspection
 /**
  * Data source for flat tree.
  * The data source need to handle expansion/collapsion of the tree node and change the data feed
@@ -162,18 +153,9 @@ export class TreeFlatDataSource<T, F, K = F> extends DataSource<F> {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<F[]> {
-    return merge(
-      collectionViewer.viewChange,
-      this._treeControl.expansionModel.changed,
-      this._flattenedData,
-    ).pipe(
+    return merge(collectionViewer.viewChange, this._treeControl.expansionModel.changed, this._flattenedData).pipe(
       map(() => {
-        this._expandedData.next(
-          this._treeFlattener.expandFlattenedNodes(
-            this._flattenedData.value,
-            this._treeControl,
-          ),
-        );
+        this._expandedData.next(this._treeFlattener.expandFlattenedNodes(this._flattenedData.value, this._treeControl));
         return this._expandedData.value;
       }),
     );

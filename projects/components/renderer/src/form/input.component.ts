@@ -10,12 +10,9 @@ import { fromEvent, takeUntil } from 'rxjs';
     class: 'd-block',
   },
   template: `
-    <label
-      [for]="'form-node-' + gtNode.id"
-      class="form-label"
-      *ngIf="gtNode.property.showLabel"
-      >{{ gtNode.property.labelText }}</label
-    >
+    <label [for]="'config-form-node-' + gtNode.id" class="form-label" *ngIf="gtNode.property.showLabel">{{
+      gtNode.property.labelText
+    }}</label>
     <div class="input-group has-validation" [ngClass]="property.inputSize">
       <ng-container *ngIf="formGroup" [formGroup]="formGroup">
         <button
@@ -30,7 +27,7 @@ import { fromEvent, takeUntil } from 'rxjs';
           type="text"
           class="form-control"
           [type]="property.inputType"
-          [id]="'form-node-' + gtNode.id"
+          [id]="'config-form-node-' + gtNode.id"
           [attr.placeholder]="gtNode.property.placeholder"
           [class.is-valid]="control.touched && control.valid"
           [class.is-invalid]="control.touched && control.invalid"
@@ -47,10 +44,7 @@ import { fromEvent, takeUntil } from 'rxjs';
         >
           +
         </button>
-        <div
-          [class.valid-feedback]="control.valid"
-          [class.invalid-feedback]="control.invalid"
-        >
+        <div [class.valid-feedback]="control.valid" [class.invalid-feedback]="control.invalid">
           {{ errorText(control.errors) }}
         </div>
       </ng-container>
@@ -68,13 +62,11 @@ import { fromEvent, takeUntil } from 'rxjs';
           class="form-control"
           #input
           #ngModel="ngModel"
-          [id]="'form-node-' + gtNode.id"
+          [id]="'config-form-node-' + gtNode.id"
           [type]="property.inputType"
           [attr.placeholder]="gtNode.property.placeholder"
           [class.is-valid]="ngModel.control.touched && ngModel.control.valid"
-          [class.is-invalid]="
-            ngModel.control.touched && ngModel.control.invalid
-          "
+          [class.is-invalid]="ngModel.control.touched && ngModel.control.invalid"
           [readonly]="gtNode.property.readonly"
           [(ngModel)]="gtNode.property.value"
           (change)="onEvent('change')"
@@ -89,10 +81,7 @@ import { fromEvent, takeUntil } from 'rxjs';
         >
           +
         </button>
-        <div
-          [class.valid-feedback]="ngModel.control.valid"
-          [class.invalid-feedback]="ngModel.control.invalid"
-        >
+        <div [class.valid-feedback]="ngModel.control.valid" [class.invalid-feedback]="ngModel.control.invalid">
           {{ errorText(ngModel.control.errors) }}
         </div>
       </ng-container>
@@ -110,9 +99,7 @@ export class InputComponent extends FormAbstractComponent<InputProperty> {
           const value = this.property.value;
           const toNumber = value ? +value : 0;
           if (!Number.isNaN(toNumber)) {
-            this.property.value =
-              toNumber -
-              Math.sign(event.deltaY) * Math.ceil(Math.abs(event.deltaY) / 100);
+            this.property.value = toNumber - Math.sign(event.deltaY) * Math.ceil(Math.abs(event.deltaY) / 100);
           }
         });
     }

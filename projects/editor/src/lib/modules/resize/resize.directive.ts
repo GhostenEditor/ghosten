@@ -1,26 +1,11 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  NgZone,
-  OnInit,
-  Output,
-  Renderer2,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Inject, Input, NgZone, OnInit, Output, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { clamp } from '@ghosten/common';
 
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { fromEvent, iif, merge } from 'rxjs';
 
-import {
-  getDOMTransformMatrix,
-  isTouchEvent,
-  removeDragRootStyle,
-  setDragRootStyle,
-} from '../../utils';
+import { getDOMTransformMatrix, isTouchEvent, removeDragRootStyle, setDragRootStyle } from '../../utils';
 
 type ResizeType = 't' | 'b' | 'l' | 'r' | 'tl' | 'tr' | 'bl' | 'br';
 
@@ -34,6 +19,7 @@ export class ResizeDirective implements OnInit {
   @Input() maxWidth: number = Infinity;
   @Input() minHeight: number = 0;
   @Input() maxHeight: number = Infinity;
+  @Input() setMin = false;
   @Output() updateTransform = new EventEmitter<string>();
 
   private readonly container: HTMLElement;
@@ -50,9 +36,7 @@ export class ResizeDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    const position = window
-      .getComputedStyle(this.container)
-      .getPropertyValue('position');
+    const position = window.getComputedStyle(this.container).getPropertyValue('position');
     if (position === 'static') {
       this._renderer.setStyle(this.container, 'position', 'relative');
     }
@@ -71,17 +55,13 @@ export class ResizeDirective implements OnInit {
         this.setResizeStyle(resizeType, resizer);
         this._renderer.appendChild(resizerContainer, resizer);
         merge(
-          fromEvent<MouseEvent>(resizer, 'mousedown', { passive: false }).pipe(
-            filter(event => event.button === 0),
-          ),
+          fromEvent<MouseEvent>(resizer, 'mousedown', { passive: false }).pipe(filter(event => event.button === 0)),
           fromEvent<TouchEvent>(resizer, 'touchstart', { passive: true }),
         ).subscribe(event => this.resize(event, resizeType));
       });
     });
-    this._widthResize =
-      this.resizes === 'all' || /[lr]/.test(this.resizes.join(''));
-    this._heightResize =
-      this.resizes === 'all' || /[tb]/.test(this.resizes.join(''));
+    this._widthResize = this.resizes === 'all' || /[lr]/.test(this.resizes.join(''));
+    this._heightResize = this.resizes === 'all' || /[tb]/.test(this.resizes.join(''));
   }
 
   setResizeStyle(type: ResizeType, resizer: HTMLDivElement) {
@@ -153,7 +133,7 @@ export class ResizeDirective implements OnInit {
     const lastWidth = parseInt(style.getPropertyValue('width'), 10);
     const lastHeight = parseInt(style.getPropertyValue('height'), 10);
     const matrix = getDOMTransformMatrix(this.container);
-    setDragRootStyle('userSelect', 'none');
+    setDragRootStyle(this._document.documentElement, 'userSelect', 'none');
     if (!isTouchEvent(event)) {
       let cursor: string = 'auto';
       switch (type) {
@@ -174,7 +154,7 @@ export class ResizeDirective implements OnInit {
           cursor = 'nesw-resize';
           break;
       }
-      setDragRootStyle('cursor', cursor);
+      setDragRootStyle(this._document.documentElement, 'cursor', cursor);
     }
     iif(
       () => isTouchEvent(event),
@@ -186,16 +166,14 @@ export class ResizeDirective implements OnInit {
         takeUntil(
           fromEvent(this._document, 'touchend').pipe(
             tap(() => {
-              removeDragRootStyle('userSelect');
-              removeDragRootStyle('cursor');
+              removeDragRootStyle(this._document.documentElement, 'userSelect');
+              removeDragRootStyle(this._document.documentElement, 'cursor');
             }),
           ),
         ),
         map(evt => ({
-          offsetX:
-            evt.touches[0].clientX - (event as TouchEvent).touches[0].clientX,
-          offsetY:
-            evt.touches[0].clientY - (event as TouchEvent).touches[0].clientY,
+          offsetX: evt.touches[0].clientX - (event as TouchEvent).touches[0].clientX,
+          offsetY: evt.touches[0].clientY - (event as TouchEvent).touches[0].clientY,
         })),
       ),
       fromEvent<MouseEvent>(this._document, 'mousemove', {
@@ -205,8 +183,8 @@ export class ResizeDirective implements OnInit {
         takeUntil(
           fromEvent(this._document, 'mouseup').pipe(
             tap(() => {
-              removeDragRootStyle('userSelect');
-              removeDragRootStyle('cursor');
+              removeDragRootStyle(this._document.documentElement, 'userSelect');
+              removeDragRootStyle(this._document.documentElement, 'cursor');
             }),
           ),
         ),
@@ -222,80 +200,32 @@ export class ResizeDirective implements OnInit {
       let dh = 0;
       switch (type) {
         case 't':
-          offsetY = -clamp(
-            -offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
+          offsetY = -clamp(-offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
           break;
         case 'l':
-          offsetX = -clamp(
-            -offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetX = -clamp(-offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
           break;
         case 'b':
-          offsetY = clamp(
-            offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
+          offsetY = clamp(offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
           break;
         case 'r':
-          offsetX = clamp(
-            offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetX = clamp(offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
           break;
         case 'tl':
-          offsetY = -clamp(
-            -offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
-          offsetX = -clamp(
-            -offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetY = -clamp(-offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
+          offsetX = -clamp(-offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
           break;
         case 'tr':
-          offsetY = -clamp(
-            -offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
-          offsetX = clamp(
-            offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetY = -clamp(-offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
+          offsetX = clamp(offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
           break;
         case 'bl':
-          offsetY = clamp(
-            offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
-          offsetX = -clamp(
-            -offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetY = clamp(offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
+          offsetX = -clamp(-offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
           break;
         case 'br':
-          offsetY = clamp(
-            offsetY,
-            this.maxHeight - lastHeight,
-            this.minHeight - lastHeight,
-          );
-          offsetX = clamp(
-            offsetX,
-            this.maxWidth - lastWidth,
-            this.minWidth - lastWidth,
-          );
+          offsetY = clamp(offsetY, this.maxHeight - lastHeight, this.minHeight - lastHeight);
+          offsetX = clamp(offsetX, this.maxWidth - lastWidth, this.minWidth - lastWidth);
 
           break;
       }
@@ -336,21 +266,15 @@ export class ResizeDirective implements OnInit {
           break;
       }
       if (this.transform) {
-        this.updateTransform.emit(
-          matrix.translate(dx / matrix.a, dy / matrix.d).toString(),
-        );
+        this.updateTransform.emit(matrix.translate(dx / matrix.a, dy / matrix.d).toString());
       }
       if (this._widthResize) {
-        this._renderer.setStyle(
-          this.container,
-          'width',
-          `${lastWidth + dw / matrix.a}px`,
-        );
+        this._renderer.setStyle(this.container, 'width', `${lastWidth + dw / matrix.a}px`);
       }
       if (this._heightResize) {
         this._renderer.setStyle(
           this.container,
-          'height',
+          this.setMin ? 'min-height' : 'height',
           `${lastHeight + dh / matrix.d}px`,
         );
       }
