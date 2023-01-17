@@ -40,7 +40,7 @@ export default function closest(element: Element | null, value: any): HTMLElemen
     }
 
     current = current.parentNode;
-  } while (current /*&& current !== document.body && current !== document*/);
+  } while (current && current !== document.body && current !== document);
 
   return null;
 }

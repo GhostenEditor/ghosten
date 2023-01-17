@@ -14,7 +14,7 @@ import { PageConfig } from './types';
     (confirm)="confirm()"
     (cancel)="modalClose.emit()"
   >
-    <div class="alert alert-primary" role="alert"><i class="gt-icon">bell</i> 系统刷新后才能看到菜单栏的更新</div>
+    <div class="alert alert-primary" role="alert"><i class="gt-icon">bell</i> <ng-container i18n="Tip: You'll see the change after refreshing browser!">系统刷新后才能看到菜单栏的更新</ng-container></div>
     <div class="mb-3">
       <label class="form-label" i18n="Table Column Header: Title">标题</label>
       <input
@@ -28,7 +28,7 @@ import { PageConfig } from './types';
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label class="form-label">菜单图标</label>
+        <label class="form-label" i18n="Table Column Header: Icon">菜单图标</label>
         <div class="input-group">
           <select class="form-select" formControlName="icon">
             <option [ngValue]="null"></option>
@@ -56,10 +56,10 @@ import { PageConfig } from './types';
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label class="form-label" i18n="Table Column Header: Parent Menu">菜单类型</label>
+        <label class="form-label" i18n="Table Column Header: Menu Category">菜单类型</label>
         <select class="form-select" formControlName="type">
-          <option value="Function">功能</option>
-          <option value="Directory">目录</option>
+          <option value="Function" i18n="Menu Category: Function">功能</option>
+          <option value="Directory" i18n="Menu Category: Directory">目录</option>
         </select>
       </div>
       <div class="col-md-6 mb-3">
@@ -192,9 +192,9 @@ export class PageEditComponent implements OnInit {
 
   ngOnInit() {
     if (this.mode === 'add') {
-      this.modalTitle = '页面创建';
+      this.modalTitle = $localize`:Modal Title\: Add Page:页面创建`;
     } else {
-      this.modalTitle = '页面修改';
+      this.modalTitle = $localize`:Modal Title\: Modify Page:页面修改`;
     }
   }
 

@@ -6,7 +6,7 @@ import { Subject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ChangeActionData, GtEvent, InsertNodeData, MoveNodeData, RemoveNodeData, TopButtonClickData } from '../types';
-import { ChangeActionStartEvent, GtEventTarget } from '../classes';
+import { ChangeActionEndEvent, ChangeActionStartEvent, GtEventTarget } from '../classes';
 
 @Injectable()
 export class EventsService {
@@ -86,12 +86,7 @@ export class EventsService {
     return this.target.dispatchEvent(new ChangeActionStartEvent(action));
   }
 
-  changeActionEnd() {
-    return this.target.dispatchEvent(
-      new CustomEvent('changeactionend', {
-        cancelable: false,
-        bubbles: false,
-      }),
-    );
+  changeActionEnd(action: IGtNode.Action, script: string) {
+    return this.target.dispatchEvent(new ChangeActionEndEvent(action, script));
   }
 }

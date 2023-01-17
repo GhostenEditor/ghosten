@@ -42,9 +42,9 @@ import { PageEditComponent } from './page-edit.component';
             <td>{{ page.url }}</td>
             <td>{{ page.parentId }}</td>
             <td class="text-nowrap">
-              <button class="btn btn-light btn-sm me-2" (click)="editPage(page)">修改</button>
-              <button class="btn btn-light btn-sm me-2" (click)="deletePage(page.id)">删除</button>
-              <button class="btn btn-light btn-sm" *ngIf="page.type === 'Function'" (click)="activatePage(page.id)">
+              <button class="btn btn-light btn-sm me-2" i18n="Button: Modify" (click)="editPage(page)">修改</button>
+              <button class="btn btn-light btn-sm me-2" i18n="Button: Remove" (click)="deletePage(page.id)">删除</button>
+              <button class="btn btn-light btn-sm" i18n="Button: Edit" *ngIf="page.type === 'Function'" (click)="activatePage(page.id)">
                 编辑
               </button>
             </td>

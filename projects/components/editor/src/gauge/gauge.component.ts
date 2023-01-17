@@ -5,14 +5,14 @@ import { GaugeProperty } from '@ghosten/components';
 @Component({
   selector: 'gt-gauge',
   template: `
-    <ng-template
+    <canvas
       gt-gauge
       [data]="property.data | dataBinding"
       [max]="gtNode.property.gaugeMax"
       [min]="gtNode.property.gaugeMin"
       [startColor]="property.startColor"
       [endColor]="property.endColor"
-    ></ng-template>
+    ></canvas>
     <div class="px-2 text-center">{{ gtNode.property.title }}</div>
   `,
 })

@@ -20,7 +20,6 @@ import { map } from 'rxjs/operators';
       </div>
       <small class="text-body-tertiary"><i>*Note: It is alpha version.</i></small>
     </div>
-    <!--    <gt-editor [data]="null" class="border"></gt-editor>-->
   `,
   styles: [
     `

@@ -32,7 +32,7 @@ import { FormItem } from '../../types';
       </tbody>
     </table>
     <div class="d-grid gap-2 mt-2">
-      <button class="btn btn-light" (click)="actionEdit()" i18n="Button: Add">添加</button>
+      <button class="btn btn-light" i18n="Button: Add" (click)="actionEdit()">添加</button>
     </div>
   `,
 })

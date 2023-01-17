@@ -15,7 +15,11 @@ import { ToastService } from '../toast/toast.service';
 @Component({
   selector: 'app-navbar',
   providers: [Location, { provide: LocationStrategy, useClass: PathLocationStrategy }],
-  template: ` <nav class="navbar navbar-expand-lg bg-primary sticky-top" data-bs-theme="dark">
+  template: ` <nav
+    class="navbar navbar-expand-lg bg-primary sticky-top"
+    data-bs-theme="dark"
+    style="--bs-emphasis-color-rgb: 248,249,250;"
+  >
     <div class="container">
       <button
         class="navbar-toggler"
@@ -57,21 +61,21 @@ import { ToastService } from '../toast/toast.service';
       >
         <ul class="navbar-nav flex-row flex-wrap">
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="后退" (click)="location.back()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Backward" title="后退" (click)="location.back()">
               <i class="gt-icon">chevron_left</i>
-              <small class="d-lg-none ms-2">后退</small>
+              <small class="d-lg-none ms-2" i18n="Button: Backward">后退</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="前进" (click)="location.forward()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Forward" title="前进" (click)="location.forward()">
               <i class="gt-icon">chevron_right</i>
-              <small class="d-lg-none ms-2">前进</small>
+              <small class="d-lg-none ms-2" i18n="Button: Foreward">前进</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="刷新" (click)="reload()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Refresh" title="刷新" (click)="reload()">
               <i class="gt-icon">refresh_ccw</i>
-              <small class="d-lg-none ms-2">刷新</small>
+              <small class="d-lg-none ms-2" i18n="Button: Refresh">刷新</small>
             </button>
           </li>
           <li class="nav-item py-2 col-12 col-lg-auto">
@@ -79,19 +83,19 @@ import { ToastService } from '../toast/toast.service';
             <hr class="d-lg-none text-white-50" />
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="创建页面" (click)="addPage()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Add Page" title="创建页面" (click)="addPage()">
               <i class="gt-icon">add</i>
-              <small class="d-lg-none ms-2">创建页面</small>
+              <small class="d-lg-none ms-2" i18n="Button: Add Page">创建页面</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="页面列表" (click)="pageList()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Page List" title="页面列表" (click)="pageList()">
               <i class="gt-icon">list</i>
-              <small class="d-lg-none ms-2">页面列表</small>
+              <small class="d-lg-none ms-2" i18n="Button: Page List">页面列表</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link position-relative overflow-hidden" title="导入">
+            <button type="button" class="btn btn-link nav-link position-relative overflow-hidden" i18n-title="Button: Import" title="导入">
               <label
                 ><input
                   #file
@@ -102,13 +106,13 @@ import { ToastService } from '../toast/toast.service';
                   (change)="import(file)"
               /></label>
               <i class="gt-icon">upload</i>
-              <small class="d-lg-none ms-2">导入</small>
+              <small class="d-lg-none ms-2" i18n="Button: Import">导入</small>
             </button>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="导出" (click)="export()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Export" title="导出" (click)="export()">
               <i class="gt-icon">download</i>
-              <small class="d-lg-none ms-2">导出</small>
+              <small class="d-lg-none ms-2" i18n="Button: Export">导出</small>
             </button>
           </li>
           <li class="nav-item py-2 col-12 col-lg-auto">
@@ -116,9 +120,9 @@ import { ToastService } from '../toast/toast.service';
             <hr class="d-lg-none text-white-50" />
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <button type="button" class="btn btn-link nav-link" title="重置" (click)="reset()">
+            <button type="button" class="btn btn-link nav-link" i18n-title="Button: Reset" title="重置" (click)="reset()">
               <i class="gt-icon">refresh_ccw</i>
-              <small class="d-lg-none ms-2">重置</small>
+              <small class="d-lg-none ms-2" i18n="Button: Reset">重置</small>
             </button>
           </li>
         </ul>
@@ -171,7 +175,7 @@ export class NavbarComponent {
 
   export() {
     this.http.get<File>('exportDB').subscribe(data => {
-      const a = this.renderer.createComment('a');
+      const a = this.renderer.createElement('a');
       a.download = data.name;
       a.href = URL.createObjectURL(data);
       a.click();

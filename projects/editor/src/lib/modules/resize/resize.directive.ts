@@ -1,5 +1,16 @@
-import { Directive, ElementRef, EventEmitter, Inject, Input, NgZone, OnInit, Output, Renderer2 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  Renderer2,
+} from '@angular/core';
 import { clamp } from '@ghosten/common';
 
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -25,18 +36,22 @@ export class ResizeDirective implements OnInit {
   private readonly container: HTMLElement;
   private _widthResize: boolean = false;
   private _heightResize: boolean = false;
+  private readonly isBrowser: boolean;
 
   constructor(
     _elementRef: ElementRef,
     private _renderer: Renderer2,
+    @Inject(PLATFORM_ID) platformId: Object,
     @Inject(DOCUMENT) private _document: Document,
     private _ngZone: NgZone,
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.container = _elementRef.nativeElement;
   }
 
   ngOnInit(): void {
-    const position = window.getComputedStyle(this.container).getPropertyValue('position');
+    if (!this.isBrowser) return;
+    const position = getComputedStyle(this.container).getPropertyValue('position');
     if (position === 'static') {
       this._renderer.setStyle(this.container, 'position', 'relative');
     }
@@ -128,8 +143,9 @@ export class ResizeDirective implements OnInit {
   }
 
   resize(event: MouseEvent | TouchEvent, type: string) {
+    if (!this.isBrowser) return;
     event.stopPropagation();
-    const style = window.getComputedStyle(this.container);
+    const style = getComputedStyle(this.container);
     const lastWidth = parseInt(style.getPropertyValue('width'), 10);
     const lastHeight = parseInt(style.getPropertyValue('height'), 10);
     const matrix = getDOMTransformMatrix(this.container);

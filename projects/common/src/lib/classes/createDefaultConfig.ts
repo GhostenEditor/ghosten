@@ -10,25 +10,32 @@ const commonCore = {
   canPasteStyle: true,
   dynamicTemplate: false,
 };
-const commonProperty: FormItemModel[] = [{ name: 'show', label: '显示', type: 'switch', value: true }];
+const commonProperty: FormItemModel[] = [
+  {
+    label: $localize`:Property Label\: Show:显示`,
+    name: 'show',
+    type: 'switch',
+    value: true,
+  },
+];
 const commonStyle: FormItemModel[] = [
   {
-    label: '宽度',
+    label: 'Width',
     name: 'width',
     type: 'numberHasUnit',
   },
   {
-    label: '高度',
+    label: 'Height',
     name: 'height',
     type: 'numberHasUnit',
   },
   {
-    label: '内边距',
+    label: 'Padding',
     name: 'padding',
     type: 'fourNumbers',
   },
   {
-    label: '外边距',
+    label: 'Margin',
     name: 'margin',
     type: 'fourNumbers',
   },
@@ -101,14 +108,17 @@ const commonStyle: FormItemModel[] = [
     type: 'number',
   },
   {
+    label: 'Color',
     name: 'color',
     type: 'color',
   },
   {
+    label: 'Background',
     name: 'background',
     type: 'color',
   },
   {
+    label: 'Flex Direction',
     name: 'flexDirection',
     type: 'select',
     options: [
@@ -119,10 +129,12 @@ const commonStyle: FormItemModel[] = [
     ],
   },
   {
+    label: 'Flex Grow',
     name: 'flexGrow',
     type: 'number',
   },
   {
+    label: 'Flex Shrink',
     name: 'flexShrink',
     type: 'number',
   },

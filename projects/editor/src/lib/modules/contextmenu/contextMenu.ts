@@ -6,17 +6,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { debounceTime, distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 
-export class Menu {
-  label?: string | number;
-  disabled?: boolean;
-  divider?: boolean;
-  children?: Menu[];
-  active?: boolean;
-  checked?: boolean;
-  desc?: string;
-
-  onclick?(menu: Menu, event: MouseEvent): void;
-}
+import { Menu } from '../../types';
 
 // const Menu_Data = new InjectionToken('Menu Data');
 // const Menu_Level = new InjectionToken('Menu Level');

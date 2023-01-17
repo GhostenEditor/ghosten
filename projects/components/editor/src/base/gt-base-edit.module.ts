@@ -27,7 +27,11 @@ import { TextComponent } from './text.component';
             type: 'text',
             icon: 'text',
           },
-          { label: '图片', type: 'image', icon: 'picture' },
+          {
+            label: $localize`:Element Label\: Image:图片`,
+            type: 'image',
+            icon: 'picture',
+          },
         ],
       },
       multi: true,

@@ -1,4 +1,14 @@
-import { ContentChild, Directive, ElementRef, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import {
+  ContentChild,
+  Directive,
+  ElementRef,
+  Inject,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  Renderer2,
+} from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 
 import { Subscription, animationFrames, merge } from 'rxjs';
@@ -7,6 +17,7 @@ import { debounceTime } from 'rxjs/operators';
 import { EventsService } from '../../services';
 import { GtEdit } from '../../classes';
 import { drawLayout } from './page-structure';
+import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
   selector: '[page-structure-source]',
@@ -24,6 +35,7 @@ export class PageStructureDirective implements OnInit, OnDestroy {
   private gtPage: ElementRef<HTMLElement>;
 
   private subscription: Subscription = Subscription.EMPTY;
+  private readonly isBrowser: boolean;
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -32,11 +44,17 @@ export class PageStructureDirective implements OnInit, OnDestroy {
     private gt: GtEdit,
     private ngZone: NgZone,
     private direction: Directionality,
-  ) {}
+    @Inject(PLATFORM_ID) platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit() {
     if (!this.gtPage) {
       throw new Error();
+    }
+    if (!this.isBrowser) {
+      return;
     }
     const container = this.el.nativeElement;
     const gtPage = this.gtPage.nativeElement;

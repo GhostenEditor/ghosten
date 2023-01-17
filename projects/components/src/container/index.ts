@@ -79,35 +79,35 @@ export const gtContainerConfigMap = () => {
     ],
     property: [
       {
-        label: '显示标题',
+        label: $localize`:Property Label\: Show Title:显示标题`,
         name: 'showHeader',
         type: 'switch',
       },
       {
-        label: '标题',
+        label: $localize`:Property Label\: Title:标题`,
         name: 'title',
         type: 'text',
-        value: '标题',
+        value: 'Title',
         canBind: true,
       },
       {
-        label: '显示Body',
+        label: $localize`:Property Label\: Show Body:显示Body`,
         name: 'showBody',
         type: 'switch',
         value: true,
       },
       {
-        label: '显示底栏',
+        label: $localize`:Property Label\: Show Footer:显示底栏`,
         name: 'showFooter',
         type: 'switch',
       },
       {
-        label: '显示列表',
+        label: $localize`:Property Label\: Show List Group:显示列表`,
         name: 'showListGroup',
         type: 'switch',
       },
       {
-        label: '样式',
+        label: $localize`:Property Label\: Style:样式`,
         name: 'style',
         type: 'select',
         options: [
@@ -130,6 +130,7 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: 'Align',
         name: 'align',
         type: 'select',
         options: [
@@ -139,10 +140,12 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: $localize`:Property Label\: Top Image:顶部图片`,
         name: 'topImage',
         type: 'textarea',
       },
       {
+        label: $localize`:Property Label\: Bottom Image:底部图片`,
         name: 'bottomImage',
         type: 'textarea',
       },
@@ -178,6 +181,7 @@ export const gtContainerConfigMap = () => {
     },
     property: [
       {
+        label: 'Type',
         name: 'type',
         type: 'select',
         value: 'primary',
@@ -193,6 +197,7 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: 'Dismissible',
         name: 'dismissible',
         type: 'switch',
         value: false,
@@ -205,6 +210,7 @@ export const gtContainerConfigMap = () => {
     },
     property: [
       {
+        label: 'Size',
         type: 'select',
         name: 'size',
         value: '',
@@ -215,6 +221,7 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: 'Orientation',
         type: 'select',
         name: 'orientation',
         value: 'horizontal',
@@ -231,14 +238,17 @@ export const gtContainerConfigMap = () => {
     },
     property: [
       {
+        label: 'Horizontal',
         name: 'horizontal',
         type: 'switch',
       },
       {
+        label: 'Flush',
         name: 'flush',
         type: 'switch',
       },
       {
+        label: 'Numbered',
         name: 'numbered',
         type: 'switch',
       },
@@ -250,19 +260,22 @@ export const gtContainerConfigMap = () => {
     },
     property: [
       {
+        label: 'Active',
         name: 'active',
         type: 'switch',
       },
       {
+        label: 'Disabled',
         name: 'disabled',
         type: 'switch',
       },
       {
+        label: 'Action',
         name: 'action',
         type: 'switch',
       },
       {
-        label: '样式',
+        label: $localize`:Property Label\: Style:样式`,
         name: 'style',
         type: 'select',
         options: [
@@ -281,6 +294,7 @@ export const gtContainerConfigMap = () => {
   const nav = createDefaultConfig({
     property: [
       {
+        label: $localize`:Property Label\: Style:样式`,
         name: 'style',
         type: 'select',
         options: [
@@ -289,6 +303,7 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: 'Fill',
         name: 'fill',
         type: 'select',
         options: [
@@ -297,6 +312,7 @@ export const gtContainerConfigMap = () => {
         ],
       },
       {
+        label: 'Align',
         name: 'align',
         type: 'select',
         options: [

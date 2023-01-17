@@ -68,21 +68,22 @@ export function gtFormConfigMap() {
   const radio = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
       },
       {
-        label: '显示label',
+        label: $localize`:Property Label\: Show Label:显示标签`,
         name: 'showLabel',
         type: 'switch',
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
       },
       {
+        label: 'Layout',
         name: 'layout',
         type: 'select',
         options: [
@@ -92,11 +93,13 @@ export function gtFormConfigMap() {
         ],
       },
       {
+        label: 'Value',
         name: 'value',
         type: 'text',
         canBind: true,
       },
       {
+        label: 'Options',
         name: 'options',
         type: 'table',
         columns: [
@@ -111,21 +114,22 @@ export function gtFormConfigMap() {
   const checkbox = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
       },
       {
-        label: '显示label',
+        label: $localize`:Property Label\: Show Label:显示标签`,
         name: 'showLabel',
         type: 'switch',
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
       },
       {
+        label: 'Layout',
         name: 'layout',
         type: 'select',
         options: [
@@ -135,11 +139,13 @@ export function gtFormConfigMap() {
         ],
       },
       {
+        label: 'Value',
         name: 'value',
         type: 'text',
         canBind: true,
       },
       {
+        label: 'Options',
         name: 'options',
         type: 'table',
         columns: [
@@ -154,22 +160,22 @@ export function gtFormConfigMap() {
   const toggle = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
       },
       {
-        label: 'disabled',
+        label: $localize`:Property Label\: Disabled:禁用`,
         name: 'disabled',
         type: 'switch',
       },
       {
-        label: 'value',
+        label: 'Value',
         name: 'value',
         type: 'switch',
       },
@@ -178,14 +184,14 @@ export function gtFormConfigMap() {
   const button = createDefaultConfig({
     property: [
       {
-        label: '文字',
+        label: $localize`:Property Label\: Text:文字`,
         name: 'text',
         type: 'text',
         value: 'Button',
         canBind: true,
       },
       {
-        label: '尺寸',
+        label: $localize`:Property Label\: Size:尺寸`,
         name: 'buttonSize',
         type: 'select',
         options: [
@@ -195,7 +201,7 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '颜色',
+        label: $localize`:Property Label\: Color:颜色`,
         name: 'buttonColor',
         type: 'select',
         value: 'btn-primary',
@@ -220,7 +226,7 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '禁用',
+        label: $localize`:Property Label\: Disabled:禁用`,
         name: 'disabled',
         type: 'switch',
         canBind: true,
@@ -239,23 +245,23 @@ export function gtFormConfigMap() {
   const input = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
       },
       {
-        label: '显示label',
+        label: $localize`:Property Label\: Show Label:显示标签`,
         name: 'showLabel',
         type: 'switch',
         value: false,
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
       },
       {
-        label: '尺寸',
+        label: $localize`:Property Label\: Size:尺寸`,
         name: 'inputSize',
         type: 'select',
         options: [
@@ -265,7 +271,7 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '类型',
+        label: $localize`:Property Label\: Category:类型`,
         name: 'inputType',
         type: 'select',
         value: 'text',
@@ -277,20 +283,20 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '禁用',
+        label: $localize`:Property Label\: Disabled:禁用`,
         name: 'disabled',
         type: 'switch',
         value: false,
         canBind: true,
       },
       {
-        label: '只读',
+        label: $localize`:Property Label\: Readonly:只读`,
         name: 'readonly',
         type: 'switch',
         value: false,
       },
       {
-        label: '占位符',
+        label: $localize`:Property Label\: Placeholder:占位符`,
         name: 'placeholder',
         type: 'text',
       },
@@ -300,25 +306,25 @@ export function gtFormConfigMap() {
   const select = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
         canBind: true,
       },
       {
-        label: '显示label',
+        label: $localize`:Property Label\: Show Label:显示标签`,
         name: 'showLabel',
         type: 'switch',
         value: false,
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
         canBind: true,
       },
       {
-        label: '尺寸',
+        label: $localize`:Property Label\: Size:尺寸`,
         name: 'inputSize',
         type: 'select',
         options: [
@@ -328,7 +334,7 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '值',
+        label: $localize`:Property Label\: Value:值`,
         name: 'value',
         type: 'text',
       },
@@ -339,7 +345,7 @@ export function gtFormConfigMap() {
         canBind: true,
       },
       {
-        label: '禁用',
+        label: $localize`:Property Label\: Disabled:禁用`,
         name: 'disabled',
         type: 'switch',
         value: false,
@@ -377,23 +383,23 @@ export function gtFormConfigMap() {
   const textarea = createDefaultConfig({
     property: [
       {
-        label: 'name',
+        label: 'Name',
         name: 'name',
         type: 'text',
       },
       {
-        label: '显示label',
+        label: $localize`:Property Label\: Show Label:显示标签`,
         name: 'showLabel',
         type: 'switch',
         value: false,
       },
       {
-        label: 'labelText',
+        label: $localize`:Property Label\: Label Text:标签文本`,
         name: 'labelText',
         type: 'text',
       },
       {
-        label: '尺寸',
+        label: $localize`:Property Label\: Size:尺寸`,
         name: 'inputSize',
         type: 'select',
         options: [
@@ -403,18 +409,18 @@ export function gtFormConfigMap() {
         ],
       },
       {
-        label: '值',
+        label: $localize`:Property Label\: Value:值`,
         name: 'value',
         type: 'text',
       },
       {
-        label: '禁用',
+        label: $localize`:Property Label\: Disabled:禁用`,
         name: 'disabled',
         type: 'switch',
         value: false,
       },
       {
-        label: '占位符',
+        label: $localize`:Property Label\: Placeholder:占位符`,
         name: 'placeholder',
         type: 'text',
       },

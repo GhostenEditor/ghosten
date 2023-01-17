@@ -87,10 +87,10 @@ import { GtEdit } from '../../classes';
         </button>
       </div>
       <div class="d-grid gap-2" [class.mt-2]="gt.customComponent.length">
-        <button class="btn btn-light" (click)="gt.addCustomComponent()">添加</button>
+        <button class="btn btn-light" i18n="Button: Add" (click)="gt.addCustomComponent()">添加</button>
       </div>
     </gt-accordion-item>
-    <gt-accordion-item cardTitle="自定义(remote)">
+    <gt-accordion-item i18n-cardTitle="Element Group Title: Custom Component(Remote)" cardTitle="自定义(Remote)">
       <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
         <button
           type="button"
@@ -120,7 +120,7 @@ import { GtEdit } from '../../classes';
         </button>
       </div>
       <div class="d-grid gap-2" [class.mt-2]="gt.remoteCustomComponent.length">
-        <button class="btn btn-light" (click)="gt.addRemoteCustomComponent()">添加</button>
+        <button class="btn btn-light" i18n="Button: Add" (click)="gt.addRemoteCustomComponent()">添加</button>
       </div>
     </gt-accordion-item>
   </gt-accordion>`,

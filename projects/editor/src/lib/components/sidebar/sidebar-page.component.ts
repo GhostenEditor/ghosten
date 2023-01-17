@@ -27,7 +27,7 @@ import { GtEdit } from '../../classes';
       </ng-container>
     </gt-accordion>
     <div class="d-grid gap-2 p-3">
-      <button class="btn btn-light" (click)="gt.addBoard()" i18n="Button: Add">添加</button>
+      <button class="btn btn-light" i18n="Button: Add" (click)="gt.addBoard()">添加</button>
     </div>
   `,
 })

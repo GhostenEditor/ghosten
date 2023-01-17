@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, Optional, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  Optional,
+  Output,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { SPACE } from '@angular/cdk/keycodes';
 
 import { GtNode, LogEvent } from '@ghosten/common';
@@ -13,6 +23,7 @@ import { BlackboardComponent } from './components/blackboard/blackboard.componen
 import { ContextMenu } from './modules';
 import { EventsService } from './services';
 import { GtEdit } from './classes';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   preserveWhitespaces: false,
@@ -90,6 +101,7 @@ import { GtEdit } from './classes';
 export class GtEditComponent implements OnDestroy {
   @ViewChild(BlackboardComponent, { static: true })
   blackboard: BlackboardComponent;
+  private readonly isBrowser: boolean;
 
   @Input() set data(data: any) {
     if (data) {
@@ -116,7 +128,12 @@ export class GtEditComponent implements OnDestroy {
     private contextmenu: ContextMenu,
     @Optional() @Inject(GT_CONTEXTMENU) private gtContextMenu: GtContextMenu,
     @Optional() @Inject(GT_EVENTS_LISTENER) gtEventsListener: any,
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    if (!this.isBrowser) {
+      return;
+    }
     if (typeof gtEventsListener === 'function') {
       gtEventsListener(events.target);
     }
@@ -219,7 +236,7 @@ export class GtEditComponent implements OnDestroy {
   }
 
   resetPosition() {
-    // this.blackboard.resetPosition();
+    this.blackboard.resetPosition();
   }
 
   onContextmenu(targetNode: GtNode, event: MouseEvent) {

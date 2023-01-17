@@ -44,8 +44,6 @@ const setColorScheme = (dark: boolean) => (document.documentElement.dataset.bsTh
 //   document.documentElement.style.fontSize =
 //     Math.max(0, Math.round((window.innerWidth - 1000) / 200)) + 12 + 'px';
 // };
-
-setColorScheme(darkMode.matches);
 darkMode.addEventListener('change', event => setColorScheme(event.matches));
 // window.addEventListener('resize', convertStyle);
 // window.addEventListener('DOMContentLoaded', convertStyle);

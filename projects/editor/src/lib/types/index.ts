@@ -2,8 +2,19 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 
 import { Board, GtNode, IGtNode } from '@ghosten/common';
 
-import { GtEdit } from '../classes';
-import { Menu } from '../modules';
+import { type GtEdit } from '../classes';
+
+export class Menu {
+  label?: string | number;
+  disabled?: boolean;
+  divider?: boolean;
+  children?: Menu[];
+  active?: boolean;
+  checked?: boolean;
+  desc?: string;
+
+  onclick?(menu: Menu, event: MouseEvent): void;
+}
 
 export type GtContextMenu = (gt: GtEdit, gtNode: GtNode) => Menu[];
 

@@ -156,7 +156,6 @@
               "demo/manifest.webmanifest"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "demo/styles/index.sass"
             ],
             "scripts": [],
@@ -176,7 +175,28 @@
               "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
-              "baseHref": "/ghosten/",
+              "baseHref": "/",
+              "buildOptimizer": true,
+              "vendorChunk": true,
+              "commonChunk": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "600kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            },
+            "ssr": {
+              "optimization": true,
+              "outputHashing": "all",
+              "namedChunks": false,
+              "baseHref": "/",
               "buildOptimizer": true,
               "vendorChunk": true,
               "commonChunk": true,
@@ -260,18 +280,26 @@
           "options": {
             "outputPath": "dist/demo/server",
             "main": "demo/server.ts",
-            "tsConfig": "demo/tsconfig.server.json",
-            "localize": true
+            "tsConfig": "demo/tsconfig.server.json"
           },
           "configurations": {
             "production": {
+              "outputHashing": "media",
+              "localize": true,
+              "fileReplacements": [
+                {
+                  "replace": "demo/app/app.server.module.ts",
+                  "with": "demo/app/app.server.shell.module.ts"
+                }
+              ]
+            },
+            "ssr": {
               "outputHashing": "media"
             },
             "development": {
               "optimization": false,
               "sourceMap": true,
-              "extractLicenses": false,
-              "localize": false
+              "extractLicenses": false
             }
           },
           "defaultConfiguration": "production"
@@ -293,14 +321,13 @@
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "routes": [
-              "/"
-            ]
+            "guessRoutes": false,
+            "routesFile": "demo/routes.txt"
           },
           "configurations": {
             "production": {
-              "browserTarget": "demo:build:production",
-              "serverTarget": "demo:server:production"
+              "browserTarget": "demo:build:ssr",
+              "serverTarget": "demo:server:ssr"
             },
             "development": {
               "browserTarget": "demo:build:development",

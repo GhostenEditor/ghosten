@@ -4,7 +4,7 @@ export const gtBaseConfigMap = () => {
   const text = createDefaultConfig({
     property: [
       {
-        label: '文字',
+        label: $localize`:Property Label\: Text:文字`,
         name: 'text',
         type: 'textarea',
         value: 'Some Text',
@@ -33,37 +33,32 @@ export const gtBaseConfigMap = () => {
           { label: '900', value: '900' },
         ],
       },
-      {
-        label: '颜色',
-        type: 'color',
-        name: 'color',
-      },
     ],
   });
   const icon = createDefaultConfig({
     property: [
       {
-        options: [],
-        label: '图标类型',
+        label: $localize`:Property Label\: Icon Type:图标类型`,
         name: 'iconType',
-        type: 'icon',
+        type: 'select',
+        options: [],
       },
     ],
   });
   const image = createDefaultConfig({
     property: [
       {
-        label: '图片地址',
+        label: $localize`:Property Label\: Image Path:图片地址`,
         type: 'text',
         name: 'src',
       },
       {
-        label: 'alt',
+        label: 'Alt',
         type: 'text',
         name: 'alt',
       },
       {
-        label: 'title',
+        label: 'Title',
         type: 'text',
         name: 'title',
       },

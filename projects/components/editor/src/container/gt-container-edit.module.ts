@@ -65,7 +65,11 @@ import { NavComponent } from './nav.component';
             type: 'alert',
             icon: 'bell',
           },
-          { label: '按钮组', type: 'buttonGroup', icon: 'button_group' },
+          {
+            label: $localize`:Element Label\: Button Group:按钮组`,
+            type: 'buttonGroup',
+            icon: 'button_group',
+          },
         ],
       },
       multi: true,

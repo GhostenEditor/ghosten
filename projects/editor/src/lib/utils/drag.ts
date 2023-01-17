@@ -160,7 +160,7 @@ export interface TranslateAnimationObj {
 export class TranslateAnimation {
   status: 'start' | 'stop' = 'stop';
   queue: TranslateAnimationObj[] = [];
-  lastFrameTime: number = performance.now();
+  lastFrameTime: number = Date.now();
 
   add(obj: TranslateAnimationObj) {
     const currentTranslate = obj.element.style.transform.match(/(\d|\.)+/g) || [0, 0];
@@ -208,8 +208,7 @@ export class TranslateAnimation {
   }
 
   anime() {
-    requestAnimationFrame(() => {
-      const currentFrameTime = performance.now();
+    requestAnimationFrame(currentFrameTime => {
       const timePerFrame = currentFrameTime - this.lastFrameTime;
       // console.log(this.queue);
       this.queue.forEach(obj => {

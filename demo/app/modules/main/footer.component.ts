@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
               <a target="_blank" href="/ghosten/zh/">简体中文版</a>
             </li>
             <li class="mb-2">
-              <a target="_blank" href="/ghosten/en-US/">English</a>
+              <a target="_blank" href="/ghosten/en-US/">English Version</a>
             </li>
             <li class="mb-2">
               <span>日本語版 (todo)</span>

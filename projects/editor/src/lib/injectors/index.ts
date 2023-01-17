@@ -15,5 +15,6 @@ export const GT_TEMPLATE_MAP = new InjectionToken<Record<string, string>>('Ghost
 export const GT_INTERNAL_ELEMENT_LISTS = new InjectionToken<ElementList[]>('Ghosten Internal Element Lists');
 export const GT_NODE_DEFAULT_CONFIG = new InjectionToken<Record<string, Map<string, any>>>('Gt Node Default Config');
 export const GT_EDITOR_BRAND = new InjectionToken<EditorBrand>('Ghosten Editor Brand');
+export const GT_EDITOR_THEME_COLOR = new InjectionToken<() => 'light' | 'dark'>('Ghosten Editor Theme Color');
 export const GT_CONFIG_FORM_TYPE_MAP = new InjectionToken<Record<string, Type<any>>>('Ghosten Editor Config Form Map');
 export const GT_EVENTS_LISTENER = new InjectionToken<any>('Ghosten Editor Event Listener');

@@ -7,6 +7,7 @@ import {
   GT_AUTH_CONFIG,
   GT_DEFAULT_CONFIG,
   GT_EDITOR_BRAND,
+  GT_EDITOR_THEME_COLOR,
   GT_EDIT_COMPONENT_MAP,
   GT_ELEMENT_LISTS,
   GT_INTERNAL_ELEMENT_LISTS,
@@ -32,6 +33,10 @@ export const providers: Provider[] = [
       alt: 'Ghosten Logo',
       click() {},
     },
+  },
+  {
+    provide: GT_EDITOR_THEME_COLOR,
+    useValue: () => 'light',
   },
   {
     provide: GT_DEFAULT_CONFIG,

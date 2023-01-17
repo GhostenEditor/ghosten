@@ -2,11 +2,8 @@ import { ROUTES, Route, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { GtComponentsEditorModule } from '@ghosten/components/editor';
 import { GtComponentsRendererModule } from '@ghosten/components/renderer';
-import { GtEditCoreModule } from '@ghosten/editor';
 import { GtRenderCoreModule } from '@ghosten/renderer';
-import { GtPluginModule } from '@ghosten/plugins';
 
 import { ErrorComponent } from './error.component';
 import { FooterComponent } from './footer.component';
@@ -24,11 +21,8 @@ import { TemplateResolve } from './template.resovle';
     CommonModule,
     RouterModule,
     NavigationModule,
-    GtEditCoreModule,
     GtRenderCoreModule,
-    // GtComponentsEditorModule,
     GtComponentsRendererModule,
-    // GtPluginModule,
   ],
   declarations: [
     MainComponent,

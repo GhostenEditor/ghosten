@@ -1,6 +1,7 @@
 /*
  * Public API Surface of components
  */
+import '@angular/localize/init';
 export * from './base';
 export * from './container';
 export * from './form';

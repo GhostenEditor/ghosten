@@ -1,4 +1,4 @@
-import { Directive, Input, NgZone, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
 import { Platform } from '@angular/cdk/platform';
 
 import { Subscription } from 'rxjs';
@@ -43,8 +43,8 @@ export class GaugeDirective implements OnDestroy {
     });
   }
 
-  constructor(private _ngZone: NgZone, viewContainerRef: ViewContainerRef, platform: Platform) {
-    this.gauge = new Gauge(viewContainerRef.element.nativeElement.parentElement, platform.SAFARI);
+  constructor(private _ngZone: NgZone, elementRef: ElementRef, platform: Platform) {
+    this.gauge = new Gauge(elementRef.nativeElement, platform.SAFARI);
   }
 
   ngOnDestroy() {

@@ -10,12 +10,12 @@ import { EventsService } from '../services';
 import { GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP } from '../injectors-internal';
 import { GtHistory } from './gt-history';
 import { RemoveNodeData } from '../types';
+import { GT_EDITOR_THEME_COLOR } from '../injectors';
 
 @Injectable()
 export class GtEdit extends Gt {
-  static darkMode: boolean = false;
   get darkMode() {
-    return GtEdit.darkMode;
+    return this.themeColor() === 'dark';
   }
 
   globalService: any;
@@ -43,7 +43,7 @@ export class GtEdit extends Gt {
 
   constructor(
     public events: EventsService,
-    // @Inject(GT_EDIT_COMPONENT_MAP) componentMap: any[],
+    @Inject(GT_EDITOR_THEME_COLOR) private themeColor: () => 'light' | 'dark',
     @Inject(GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP)
     public override defaultConfigMap: IGtNode.DefaultConfigMap,
   ) {
@@ -561,9 +561,3 @@ export class GtEdit extends Gt {
     return this.settings.export();
   }
 }
-
-const darkMode = matchMedia('(prefers-color-scheme: dark)');
-GtEdit.darkMode = darkMode.matches;
-darkMode.addEventListener('change', function () {
-  GtEdit.darkMode = this.matches;
-});

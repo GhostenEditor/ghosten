@@ -1,33 +1,24 @@
-// import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, PLATFORM_ID } from '@angular/core';
-// import { RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 
-// import { AppShellComponent } from './app-shell/app-shell.component';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
-
-// @Component({
-//   selector: 'app-root',
-//   template: '<router-outlet></router-outlet>',
-// })
-// export class AppComponent {}
+import { Observable } from 'rxjs';
 
 @NgModule({
-  imports: [
-    // BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    AppModule,
-    ServerModule,
-    // RouterModule.forRoot([{ path: 'shell', component: AppShellComponent }]),
-  ],
+  imports: [AppModule, ServerModule],
   bootstrap: [AppComponent],
   providers: [
     {
-      provide: PLATFORM_ID,
-      useValue: 'serverApp',
+      provide: HTTP_INTERCEPTORS,
+      useClass: class implements HttpInterceptor {
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          return next.handle(req.clone({ url: `http://localhost:4001/${req.url}` }));
+        }
+      },
+      multi: true,
     },
   ],
-  // declarations: [AppShellComponent],
-  // exports: [AppShellComponent],
 })
 export class AppServerModule {}

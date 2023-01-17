@@ -24,7 +24,6 @@ export function app(): express.Express {
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
-
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
@@ -35,16 +34,13 @@ export function app(): express.Express {
     }),
   );
 
-  server.get('getRoutes', (req, res) => {
-    console.log('getRoutes');
-    res.json([]);
-  });
-
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
     res.render(indexHtml, {
       req,
-      providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: req.baseUrl },
+      ],
     });
   });
 

@@ -4,7 +4,5 @@ export * from './blackboard.drag';
 export * from './drag';
 export * from './getDOMTransformMatrix';
 export * from './toggleDragRootStyle';
+export * from './reflow';
 
-export function reflow(element: HTMLElement) {
-  element.offsetHeight; // eslint-disable-line no-unused-expressions
-}

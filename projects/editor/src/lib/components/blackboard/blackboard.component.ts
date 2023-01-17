@@ -10,10 +10,11 @@ import {
   OnInit,
   Optional,
   Output,
+  PLATFORM_ID,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Directionality } from '@angular/cdk/bidi';
 
 import { GtNode } from '@ghosten/common';
@@ -75,6 +76,8 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
   @Output() gtNodeHover = new EventEmitter<GtNode | null>();
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChild('page', { static: true }) page: ElementRef<HTMLDivElement>;
+  private readonly isBrowser: boolean;
+
   transform = `matrix(1, 0, 0, 1, 0, 0)`;
   /**
    * @Description: 储存hover状态的gtNode.property.name
@@ -119,8 +122,9 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
     private contextmenu: ContextMenu,
     @Inject(DOCUMENT) private _document: Document,
     @Optional() @Inject(GT_CONTEXTMENU) private gtContextMenu: GtContextMenu,
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
-    // this.cdr.detach();
+    this.isBrowser = isPlatformBrowser(platformId);
     this.events.CHANGE_BOARD.subscribe(() => this.init());
   }
 
@@ -150,7 +154,14 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.resetPosition();
+    if (this.isBrowser) {
+      this.resetPosition();
+    } else {
+      this.page.nativeElement.style.width = '800px';
+      this.page.nativeElement.style.minHeight = '1000px';
+      this.page.nativeElement.style.marginLeft = 'calc(50% - 400px)';
+      this.transform = 'translate(0,60px)';
+    }
   }
 
   init() {

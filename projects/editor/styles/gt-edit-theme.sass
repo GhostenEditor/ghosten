@@ -4,6 +4,19 @@
 \:root
   --bs-primary: #404dff
   --bs-primary-rgb: 64, 77, 255
+  @media (prefers-color-scheme: light)
+    &
+      --bs-body-color: #171a3b
+      --bs-primary-bg-subtle: #f1f2ff
+      --bs-heading-color: #151953
+
+  @media (prefers-color-scheme: dark)
+    &
+      --bs-primary-bg-subtle: #212529
+      --bs-body-bg: #1b1b1b
+      --bs-body-bg-rgb: 27, 27, 27
+      --bs-body-color: #ecedfe
+      --bs-heading-color: #ecedff
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
   appearance: none
@@ -57,15 +70,4 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 //.toast
   --bs-toast-header-bg: rgba(var(--bs-body-bg-rgb), 0.5)
 
-[data-bs-theme=light]
-  --bs-body-color: #171a3b
-  --bs-primary-bg-subtle: #f1f2ff
-  --bs-heading-color: #151953
-
-[data-bs-theme=dark]
-  --bs-primary-bg-subtle: #212529
-  --bs-body-bg: #1b1b1b
-  --bs-body-bg-rgb: 27, 27, 27
-  --bs-body-color: #ecedfe
-  --bs-heading-color: #ecedff
 

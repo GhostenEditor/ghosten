@@ -61,12 +61,11 @@ const fadeAnimation = trigger('fade', [
               class="btn btn-light"
               [disabled]="modalPending"
               (click)="confirm.emit()"
-              i18n="Button: Confirm"
             >
               <div class="spinner-border spinner-border-sm" role="status" *ngIf="modalPending">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              确定
+              <ng-container i18n="Button: Confirm">确定</ng-container>
             </button>
             <button type="button" class="btn btn-text" (click)="cancel.emit()" i18n="Button: Cancel">取消</button>
           </div>

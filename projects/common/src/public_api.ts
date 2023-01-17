@@ -1,3 +1,4 @@
+import '@angular/localize/init';
 import { createDefaultConfig } from './lib/classes';
 
 export * from './lib/utils';

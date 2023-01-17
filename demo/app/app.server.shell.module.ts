@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ServerModule } from '@angular/platform-server';
 
 @Component({
-  selector: 'app-app-shell',
+  selector: 'app-root',
   template: ` <div class="sk-plane"></div>`,
   styles: [
     `
@@ -30,4 +32,11 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class AppShellComponent {}
+export class AppComponent {}
+
+@NgModule({
+  imports: [BrowserModule.withServerTransition({ appId: 'serverApp' }), ServerModule],
+  bootstrap: [AppComponent],
+  declarations: [AppComponent],
+})
+export class AppServerModule {}

@@ -8,7 +8,6 @@ import { NgModule } from '@angular/core';
 import { ConfigFormModule } from './modules/config-form/config-form.module';
 import { CreateTableComponent } from './create-table.component';
 import { ModalModule } from './modules/modal/modal.module';
-import { NodeEditorModule } from './modals/node-editor/node-editor.module';
 import { modals } from './modals';
 import { providers } from './providers';
 
@@ -21,7 +20,6 @@ import { providers } from './providers';
     CdkListboxModule,
     ReactiveFormsModule,
     ModalModule,
-    NodeEditorModule,
     ConfigFormModule,
   ],
   declarations: [CreateTableComponent, ...modals],

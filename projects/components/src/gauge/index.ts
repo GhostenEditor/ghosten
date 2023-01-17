@@ -7,8 +7,6 @@ export * from './battery.directive';
 
 export interface GaugeProperty {
   title: string;
-  gaugeNormalMin: number;
-  gaugeNormalMax: number;
   gaugeMin: number;
   gaugeMax: number;
   startColor: string;
@@ -18,8 +16,6 @@ export interface GaugeProperty {
 
 export interface WaterProperty {
   title: string;
-  gaugeNormalMin: number;
-  gaugeNormalMax: number;
   gaugeMin: number;
   gaugeMax: number;
   minColor: string;
@@ -39,37 +35,46 @@ export interface BatteryProperty {
 export const gtGaugeConfigMap = () => {
   const gauge = createDefaultConfig({
     property: [
-      { name: 'title', type: 'text' },
-      { name: 'gaugeNormalMin', type: 'number' },
-      { name: 'gaugeNormalMax', type: 'number' },
-      { name: 'gaugeMin', type: 'number', value: 0 },
-      { name: 'gaugeMax', type: 'number', value: 100 },
-      { name: 'startColor', type: 'color', value: '#5b79f1' },
-      { name: 'endColor', type: 'color', value: '#29ffc6' },
-      { name: 'data', type: 'number', canBind: true },
+      {
+        label: $localize`:Property Label\: Title:标题`,
+        name: 'title',
+        type: 'text',
+      },
+      { label: $localize`:Property Label\: Min:最小值`, name: 'gaugeMin', type: 'number', value: 0 },
+      { label: $localize`:Property Label\: Max:最大值`, name: 'gaugeMax', type: 'number', value: 100 },
+      { label: $localize`:Property Label\: Min Color:最小值颜色`, name: 'startColor', type: 'color', value: '#5b79f1' },
+      { label: $localize`:Property Label\: Max Color:最大值颜色`, name: 'endColor', type: 'color', value: '#29ffc6' },
+      { label: $localize`:Property Label\: Data:值`, name: 'data', type: 'number', canBind: true },
     ],
     style: [{ name: 'display', type: 'select', value: 'inline-block' }],
   });
   const water = createDefaultConfig({
     property: [
-      { name: 'title', type: 'text' },
-      { name: 'gaugeNormalMin', type: 'number' },
-      { name: 'gaugeNormalMax', type: 'number' },
-      { name: 'gaugeMin', type: 'number', value: 0 },
-      { name: 'gaugeMax', type: 'number', value: 100 },
-      { name: 'minColor', type: 'color', value: '#5b79f1' },
-      { name: 'maxColor', type: 'color', value: '#29ffc6' },
-      { name: 'background', type: 'color', value: '#033E49' },
-      { name: 'data', type: 'number', value: 50 },
+      {
+        label: $localize`:Property Label\: Title:标题`,
+        name: 'title',
+        type: 'text',
+      },
+      { label: $localize`:Property Label\: Min:最小值`, name: 'gaugeMin', type: 'number', value: 0 },
+      { label: $localize`:Property Label\: Max:最大值`, name: 'gaugeMax', type: 'number', value: 100 },
+      { label: $localize`:Property Label\: Min Color:最小值颜色`, name: 'minColor', type: 'color', value: '#5b79f1' },
+      { label: $localize`:Property Label\: Max Color:最大值颜色`, name: 'maxColor', type: 'color', value: '#29ffc6' },
+      { label: $localize`:Property Label\: Background:背景`, name: 'background', type: 'color', value: '#033E49' },
+      { label: $localize`:Property Label\: Data:值`, name: 'data', type: 'number', value: 50 },
     ],
     style: [{ name: 'display', type: 'select', value: 'inline-block' }],
   });
   const battery = createDefaultConfig({
     property: [
-      { name: 'title', type: 'text' },
-      { name: 'gaugeMin', type: 'number', value: 0 },
-      { name: 'gaugeMax', type: 'number', value: 100 },
       {
+        label: $localize`:Property Label\: Title:标题`,
+        name: 'title',
+        type: 'text',
+      },
+      { label: $localize`:Property Label\: Min:最小值`, name: 'gaugeMin', type: 'number', value: 0 },
+      { label: $localize`:Property Label\: Max:最大值`, name: 'gaugeMax', type: 'number', value: 100 },
+      {
+        label: 'Orientation',
         name: 'direction',
         type: 'select',
         value: 'vertical',
@@ -78,7 +83,7 @@ export const gtGaugeConfigMap = () => {
           { label: 'horizontal', value: 'horizontal' },
         ],
       },
-      { name: 'data', type: 'number', canBind: true },
+      { label: $localize`:Property Label\: Data:值`, name: 'data', type: 'number', canBind: true },
     ],
     style: [
       { name: 'display', type: 'select', value: 'flex' },

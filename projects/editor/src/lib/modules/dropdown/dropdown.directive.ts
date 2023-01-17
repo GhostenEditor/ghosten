@@ -1,11 +1,11 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 
 import { Subscription, merge } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { DropdownComponent, DropdownItem } from './dropdown.component';
-import { ComponentPortal } from '@angular/cdk/portal';
 
 @Directive({ selector: '[gt-dropdown]' })
 export class DropdownDirective {

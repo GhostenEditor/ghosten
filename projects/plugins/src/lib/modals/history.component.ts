@@ -7,7 +7,7 @@ import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'history-component',
-  template: ` <gt-modal modalTitle="历史" (cancel)="cancel.emit()">
+  template: ` <gt-modal i18n-modalTitle="Modal Title: History" modalTitle="历史" (cancel)="cancel.emit()">
     <table class="table table-striped table-bordered table-hover">
       <thead class="position-sticky bg-body" style="top: -1rem">
         <tr>

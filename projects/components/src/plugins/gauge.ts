@@ -1,7 +1,7 @@
 import { clamp } from '@ghosten/common';
 
 export class Gauge {
-  public canvas: HTMLCanvasElement;
+  private container: HTMLElement = this.canvas.parentElement!;
   public ctx: CanvasRenderingContext2D;
 
   private get percent() {
@@ -46,7 +46,7 @@ export class Gauge {
 
   private indicatorColor = '#b42531';
   private indicatorBaseColor = '#e4e5ed';
-  private devicePixelRatio = window.devicePixelRatio || 1;
+  private devicePixelRatio = devicePixelRatio || 1;
 
   public get width() {
     return this.canvas.width;
@@ -67,15 +67,13 @@ export class Gauge {
   }
 
   constructor(
-    private container = document.body,
+    private canvas: HTMLCanvasElement,
     private isSafari: boolean,
     { background, foreground, min = 0, max = 100 }: any = {
       min: 0,
       max: 100,
     },
   ) {
-    this.canvas = document.createElement('canvas');
-    container.prepend(this.canvas);
     this.width = 50;
     this.height = 50;
     this.min = min;
