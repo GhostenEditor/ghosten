@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
         </button>
       </div>
       <small class="text-body-tertiary"><i>*Note: It is alpha version.</i></small>
-      <img src="assets/screenshot.png" class="img-fluid border rounded mt-5" alt="screenshot" />
+      <img src="assets/screenshot.webp" class="img-fluid border rounded mt-5" alt="screenshot" width="3420" height="2140" />
     </div>
   `,
   styles: [

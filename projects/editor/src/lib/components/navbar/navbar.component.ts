@@ -30,7 +30,7 @@ import { GtEdit } from '../../classes';
     >
       <i class="gt-icon">list</i>
     </button>
-    <a
+    <span
       style="cursor: pointer"
       (click)="editorBrand.click && editorBrand.click()"
       class="navbar-brand d-flex align-items-center"
@@ -44,7 +44,7 @@ import { GtEdit } from '../../classes';
         style="width: 2rem; height: 2rem;"
       />
       <span class="fw-bold ms-2 d-md-inline d-none">{{ editorBrand.title }}</span>
-    </a>
+    </span>
     <div class="vr my-2 text-body"></div>
     <nav class="nav nav-pills me-auto ms-3 d-none d-md-flex">
       <button
