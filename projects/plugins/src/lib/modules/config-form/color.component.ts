@@ -89,6 +89,5 @@ export class ColorComponent {
       this.color = color;
       this.formControl.setValue(color);
     });
-    // componentRef.instance.width = 300;
   }
 }

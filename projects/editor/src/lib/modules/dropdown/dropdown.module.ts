@@ -9,6 +9,5 @@ import { DropdownDirective } from './dropdown.directive';
   imports: [CommonModule, OverlayModule],
   exports: [DropdownDirective, DropdownComponent],
   declarations: [DropdownDirective, DropdownComponent],
-  providers: [],
 })
 export class DropdownModule {}

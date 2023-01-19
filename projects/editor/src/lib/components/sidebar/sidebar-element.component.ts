@@ -53,74 +53,41 @@ import { GtEdit } from '../../classes';
       </div>
     </gt-accordion-item>
     <gt-accordion-item
-      *ngIf="gtAuth.customComponent"
-      [cardTitle]="customList.title"
-      [expanded]="customList.expanded"
-      (opened)="opened(customList)"
-      (closed)="closed(customList)"
+      *ngFor="let list of customList"
+      [cardTitle]="list.title"
+      [expanded]="list.expanded"
+      (opened)="opened(list)"
+      (closed)="closed(list)"
     >
       <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
         <button
           type="button"
           class="text-center btn btn-text overflow-hidden"
-          *ngFor="let custom of gt.customComponent"
+          *ngFor="let item of list.elements"
           #target
-          [class.active]="gt.currentBoard === custom"
-          [attr.data-id]="custom.id"
-          [title]="custom.name || custom.type"
-          (mousedown)="itemDrag(custom, target, $event)"
-          (touchstart)="itemDrag(custom, target, $event)"
-          (dblclick)="editCustom(custom)"
-          (contextmenu)="editCustomInfo(custom, $event)"
+          [class.active]="gt.currentBoard === item"
+          [attr.data-id]="item.id"
+          [title]="item.name || item.type"
+          (mousedown)="itemDrag(item, target, $event)"
+          (touchstart)="itemDrag(item, target, $event)"
+          (dblclick)="editCustom(item)"
+          (contextmenu)="editCustomInfo(item, $event)"
         >
           <i class="fs-1 gt-icon">custom</i>
           <input
             type="text"
             class="form-control input-xs"
             *ngIf="editTypeMode"
-            [(ngModel)]="custom.type"
+            [(ngModel)]="item.type"
             (blur)="editTypeMode = false"
           />
           <div *ngIf="!editTypeMode" class="text-truncate">
-            {{ custom.name || custom.type }}
+            {{ item.name || item.type }}
           </div>
         </button>
       </div>
-      <div class="d-grid gap-2" [class.mt-2]="gt.customComponent.length">
-        <button class="btn btn-light" i18n="Button: Add" (click)="gt.addCustomComponent()">添加</button>
-      </div>
-    </gt-accordion-item>
-    <gt-accordion-item i18n-cardTitle="Element Group Title: Custom Component(Remote)" cardTitle="自定义(Remote)">
-      <div class="d-grid" style="grid: auto / 1fr 1fr 1fr; grid-gap: .5rem">
-        <button
-          type="button"
-          class="text-center btn btn-text overflow-hidden"
-          *ngFor="let custom of gt.remoteCustomComponent"
-          #target
-          [class.active]="gt.currentBoard === custom"
-          [attr.data-id]="custom.id"
-          [title]="custom.name || custom.type"
-          (mousedown)="itemDrag(custom, target, $event)"
-          (touchstart)="itemDrag(custom, target, $event)"
-          (dblclick)="editCustom(custom)"
-          (contextmenu)="editCustomInfo(custom, $event)"
-        >
-          <i class="fs-1 gt-icon">custom</i>
-          <input
-            type="text"
-            class="form-control input-xs"
-            *ngIf="editTypeMode"
-            [(ngModel)]="custom.name"
-            (mousedown)="$event.stopPropagation()"
-            (blur)="editTypeMode = false"
-          />
-          <div *ngIf="!editTypeMode" class="text-truncate">
-            {{ custom.name || custom.type }}
-          </div>
-        </button>
-      </div>
-      <div class="d-grid gap-2" [class.mt-2]="gt.remoteCustomComponent.length">
-        <button class="btn btn-light" i18n="Button: Add" (click)="gt.addRemoteCustomComponent()">添加</button>
+      <div class="d-grid gap-2" [class.mt-2]="list.elements.length">
+        <button class="btn btn-light" i18n="Button: Add" (click)="addCustom(list.type)">添加</button>
       </div>
     </gt-accordion-item>
   </gt-accordion>`,
@@ -128,11 +95,23 @@ import { GtEdit } from '../../classes';
 export class SidebarElementComponent {
   editMode = false;
   editTypeMode = false;
-  customList: any = {
-    title: $localize`:Element Group Title\: Custom Component:自定义`,
-    elements: this.gt.customComponent,
-    expanded: this.gt.settings.elementAccordionExpanded[$localize`:Element Group Title\: Custom Component:自定义`],
-  };
+  customList: { title: string; type: string; elements: Board[]; expanded: boolean }[] = [
+    {
+      title: $localize`:Element Group Title\: Custom Component:自定义`,
+      type: 'cc',
+      elements: this.gt.customComponent,
+      expanded: this.gt.settings.elementAccordionExpanded[$localize`:Element Group Title\: Custom Component:自定义`],
+    },
+    {
+      title: $localize`:Element Group Title\: Custom Component(Remote):自定义(Remote)`,
+      type: 'rcc',
+      elements: this.gt.remoteCustomComponent,
+      expanded:
+        this.gt.settings.elementAccordionExpanded[
+          $localize`:Element Group Title\: Custom Component(Remote):自定义(Remote)`
+        ],
+    },
+  ];
 
   constructor(
     public gt: GtEdit,
@@ -175,24 +154,20 @@ export class SidebarElementComponent {
     setDragRootStyle(this._document.documentElement, 'userSelect', 'none');
     fromDragEvent(this._document, event)
       .pipe(
-        // map((evt): HTMLElement | null =>
-        //   closest(evt.target as HTMLElement, '.gt-element'),
-        // ),
-        // filter((dragEl: HTMLElement | null): dragEl is HTMLElement => !!dragEl),
         map(() => {
           this.cdr.detach();
           const container = this._document.createElement('div');
           originalTarget = dragEl;
           const type = element.type;
           let template: string;
-          if (type) {
+          if (type === 'cc' || type === 'rcc') {
+            template = `<div style="width: 10rem;height: 10rem;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">自定义组件</div>`;
+          } else {
             if (this.templateMap[type]) {
               template = this.templateMap[type];
             } else {
               template = `<div style="width: 10rem;height: 10rem;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">未知组件</div>`;
             }
-          } else {
-            template = `<div style="width: 10rem;height: 10rem;display: flex;justify-content: center;align-items: center;border: 3px dashed #fff">自定义组件</div>`;
           }
           container.style.setProperty('max-width', '10rem');
           container.innerHTML = template;
@@ -314,6 +289,17 @@ export class SidebarElementComponent {
       .subscribe();
   }
 
+  addCustom(type: string) {
+    switch (type) {
+      case 'cc':
+        this.gt.addCustomComponent();
+        break;
+      case 'rcc':
+        this.gt.addRemoteCustomComponent();
+        break;
+    }
+  }
+
   editCustom(custom: Board) {
     this.gt.setCurrentBoard(custom);
     this.editMode = true;
@@ -362,12 +348,12 @@ export class SidebarElementComponent {
     this.cdr.detectChanges();
   }
 
-  opened(panel: ElementList) {
+  opened(panel: { title: string; expanded?: boolean }) {
     panel.expanded = true;
     this.gt.settings.changeElementAccordionExpanded(panel.title, true);
   }
 
-  closed(panel: ElementList) {
+  closed(panel: { title: string; expanded?: boolean }) {
     panel.expanded = false;
     this.gt.settings.changeElementAccordionExpanded(panel.title, false);
   }

@@ -55,7 +55,10 @@ export const topBarButtons: Provider = {
           button: {
             name: 'preview',
           },
-          data: gt.exportString(),
+          data: {
+            config: gt.exportString(),
+            components: gt.remoteCustomComponent.map(item => JSON.stringify(item.export())),
+          },
         });
       },
     },

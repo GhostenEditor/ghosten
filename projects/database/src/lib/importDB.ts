@@ -8,10 +8,12 @@ export function importDB(db: IDBDatabase, data: File): Promise<MessageEvent> {
     .arrayBuffer()
     .then(data => pako.inflate(data, { to: 'string' }))
     .then(data => JSON.parse(data))
-    .then(({ config, history }) => {
-      const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY'], 'readwrite');
+    .then(({ config, history, component, componentHistory }) => {
+      const transaction = db.transaction(['CONFIG', 'CONFIG_HISTORY', 'COMPONENT', 'COMPONENT_HISTORY'], 'readwrite');
       const configObjectStore = transaction.objectStore('CONFIG');
       const configHistoryObjectStore = transaction.objectStore('CONFIG_HISTORY');
+      const componentOjectStore = transaction.objectStore('COMPONENT');
+      const componentHistoryOjectStore = transaction.objectStore('COMPONENT_HISTORY');
       configObjectStore.openCursor().addEventListener('success', function () {
         const cursor = this.result;
         if (cursor) {
@@ -27,9 +29,25 @@ export function importDB(db: IDBDatabase, data: File): Promise<MessageEvent> {
           cursor.delete();
           cursor.continue();
         } else {
-          history.forEach((item: any) => {
-            configHistoryObjectStore.add(item);
-          });
+          history.forEach((item: any) => configHistoryObjectStore.add(item));
+        }
+      });
+      componentOjectStore.openCursor().addEventListener('success', function () {
+        const cursor = this.result;
+        if (cursor) {
+          cursor.delete();
+          cursor.continue();
+        } else {
+          component.forEach((item: any) => componentOjectStore.add(item));
+        }
+      });
+      componentHistoryOjectStore.openCursor().addEventListener('success', function () {
+        const cursor = this.result;
+        if (cursor) {
+          cursor.delete();
+          cursor.continue();
+        } else {
+          componentHistory.forEach((item: any) => componentHistoryOjectStore.add(item));
         }
       });
       return resolveTransaction(transaction).then(() => ({

@@ -3,8 +3,6 @@ export interface MenuItem {
   label: string;
   icon: string | null;
   directory: boolean;
-  // parentId: number | null;
-  // parent?: MenuItem;
   path?: string;
   url?: string;
   expanded?: boolean;

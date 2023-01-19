@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { GtData, LogEvent } from '@ghosten/common';
+import { LogEvent } from '@ghosten/common';
 import { Subscription } from 'rxjs';
 
 import { GtRender } from './classes/gt.class';
@@ -12,21 +12,21 @@ import { TemplateDirective } from './directives/template.directive';
 })
 export class GtRenderComponent implements OnInit, OnDestroy {
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
-  @Input() data: string | null | GtData;
+  @Input() set data(data: any) {
+    if (data) {
+      this.gt.init(data.config, data.components);
+    } else {
+      this.gt.init();
+    }
+  }
   @Output() log = new EventEmitter<LogEvent>();
   private subscription = Subscription.EMPTY;
 
-  constructor(private gt: GtRender) {}
+  constructor(private gt: GtRender) {
+    this.subscription = this.gt.log.subscribe(data => this.log.emit(data));
+  }
 
   ngOnInit() {
-    // (this.data as Blob).arrayBuffer().then(console.log);
-    this.subscription = this.gt.log.subscribe(data => this.log.emit(data));
-    this.gt.init(this.data);
-    // this.log.emit({
-    //   type: 'info',
-    //   message: 'Application Initialization',
-    //   data: this.gt,
-    // });
     this.template.insert(this.gt.currentBoard!.gt);
   }
 

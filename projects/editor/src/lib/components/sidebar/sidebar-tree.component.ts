@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragDrop, CdkDragSortEvent, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { CdkNestedTreeNode, CdkTree, FlatTreeControl } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
@@ -12,13 +12,13 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { TreeFlatDataSource, TreeFlattener } from './flat-data-source';
 
 import { GtNode } from '@ghosten/common';
 
 import { Subscription, merge, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { TreeFlatDataSource, TreeFlattener } from './flat-data-source';
 import { ContextMenu } from '../../modules';
 import { EventsService } from '../../services';
 import { GT_CONTEXTMENU } from '../../injectors';
@@ -47,7 +47,6 @@ interface FlattenNode {
         [treeControl]="treeControl"
         [cdkDropListSortPredicate]="cdkDropListSortPredicate"
         (cdkDropListDropped)="cdkDropListDropped($event)"
-        (cdkDropListSorted)="sorted($event)"
       >
         <cdk-tree-node
           class="d-block mb-1"
@@ -57,7 +56,6 @@ interface FlattenNode {
           [cdkDragDisabled]="node.source.template && !node.source.isTemplateRoot"
           [cdkDragData]="node.source"
           cdkDropList
-          [cdkDropListEnterPredicate]="cdkDropListEnterPredicate"
           cdkTreeNodePadding
           cdkTreeNodePaddingIndent="26"
         >
@@ -82,7 +80,6 @@ interface FlattenNode {
           cdkDragLockAxis="y"
           [cdkDragData]="node.source"
           cdkDropList
-          [cdkDropListEnterPredicate]="cdkDropListEnterPredicate"
           cdkTreeNodePadding
           cdkTreeNodePaddingIndent="26"
         >
@@ -174,7 +171,7 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     )
       // todo 性能优化
       // .pipe(debounceTime(0))
-      .subscribe(event => {
+      .subscribe(() => {
         this.dataSource.data = [this.gt.currentBoard!.gt];
         this.cdr.detectChanges();
       });
@@ -217,16 +214,6 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     if (!this.gt.selected.includes(selectedNode)) {
       this.gt.changeSelect(selectedNode);
     }
-  }
-
-  sorted(event: CdkDragSortEvent<GtNode>) {}
-
-  dropped(event: any) {
-    // console.log(event);
-  }
-
-  cdkDropListEnterPredicate(drag: CdkDrag, drop: CdkDropList): boolean {
-    return true;
   }
 
   cdkDropListSortPredicate(index: number, drag: CdkDrag<GtNode>, drop: CdkDropList<GtNode>): boolean {

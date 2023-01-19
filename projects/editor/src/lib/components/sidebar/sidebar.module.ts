@@ -14,6 +14,7 @@ import { SidebarComponent } from './sidebar.component';
 import { SidebarConfigComponent } from './sidebar-config.component';
 import { SidebarElementComponent } from './sidebar-element.component';
 import { SidebarPageComponent } from './sidebar-page.component';
+import { SidebarService } from './sidebar.service';
 import { SidebarTreeComponent } from './sidebar-tree.component';
 
 @NgModule({
@@ -36,6 +37,7 @@ import { SidebarTreeComponent } from './sidebar-tree.component';
     SidebarComponent,
     FloatBarComponent,
   ],
+  providers: [SidebarService],
   exports: [SidebarComponent],
 })
 export class SidebarModule {}

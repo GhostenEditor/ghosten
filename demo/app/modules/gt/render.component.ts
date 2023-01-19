@@ -3,14 +3,14 @@ import { LogEvent } from '@ghosten/common';
 
 @Component({
   selector: 'app-gt-render',
-  template: ` <gt-modal
+  template: ` <app-modal
     i18n-modalTitle="Modal Title: Preview"
     modalTitle="预览"
     modalSize="xl"
     (cancel)="modalDismiss.emit()"
   >
     <gt-renderer [data]="data" (log)="log($event)"></gt-renderer>
-  </gt-modal>`,
+  </app-modal>`,
 })
 export class RenderComponent {
   @Input() data: any;

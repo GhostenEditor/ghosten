@@ -7,10 +7,9 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { FormEvent, FormItem } from '../../types';
 import { DataBindingComponent } from './components/data-binding.component';
-import { TemplateDirective } from './template.directive';
-
 import { GT_CONFIG_FORM_TYPE_MAP } from '../../injectors';
 import { InputComponent } from './components/input.component';
+import { TemplateDirective } from './template.directive';
 
 @Component({
   selector: 'config-form-group',
@@ -67,7 +66,7 @@ export class FormGroupComponent implements OnInit, OnDestroy {
         map(value => value instanceof DataBinding),
         distinctUntilChanged(),
       )
-      .subscribe(value => {
+      .subscribe(() => {
         this.template.remove();
         const component =
           this.formControl.value instanceof DataBinding
@@ -76,7 +75,7 @@ export class FormGroupComponent implements OnInit, OnDestroy {
         if (!component) {
           return;
         }
-        this.template.insert(this.formItem, component, [
+        this.template.insert(component, [
           { provide: FormGroup, useValue: this.formGroup },
           { provide: FormControl, useValue: this.formControl },
           { provide: 'FormItem', useValue: this.formItem },

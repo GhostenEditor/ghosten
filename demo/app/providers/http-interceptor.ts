@@ -1,11 +1,11 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-
-import { GtDatabase } from '@ghosten/database';
-
-import { EMPTY, Observable, catchError, from, take } from "rxjs";
-import { map, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+
+import { EMPTY, Observable, catchError, take } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+// import { GtDatabase } from '@ghosten/database';
 
 import { WorkerConnector } from '../worker';
 
@@ -13,7 +13,8 @@ import { WorkerConnector } from '../worker';
 export class HttpInterceptorAdapter implements HttpInterceptor {
   private readonly isBrowser: boolean;
   private worker = new WorkerConnector();
-  private gtDatabase = new GtDatabase();
+
+  // private gtDatabase = new GtDatabase();
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -60,7 +61,7 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
             ? Object.fromEntries(new URLSearchParams(req.params.toString()))
             : req.body;
         return this.worker.request(req.url, paramsOrBody);
-        // return from(this.gtDatabase.message(req.url, paramsOrBody));
+      // return from(this.gtDatabase.message(req.url, paramsOrBody));
       default:
         return EMPTY;
     }

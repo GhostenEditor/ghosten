@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { SPACE } from '@angular/cdk/keycodes';
+import { isPlatformBrowser } from '@angular/common';
 
 import { GtNode, LogEvent } from '@ghosten/common';
 
@@ -23,7 +24,7 @@ import { BlackboardComponent } from './components/blackboard/blackboard.componen
 import { ContextMenu } from './modules';
 import { EventsService } from './services';
 import { GtEdit } from './classes';
-import { isPlatformBrowser } from '@angular/common';
+import { SidebarService } from './components/sidebar/sidebar.service';
 
 @Component({
   preserveWhitespaces: false,
@@ -35,6 +36,15 @@ import { isPlatformBrowser } from '@angular/common';
     >
       <gt-navbar></gt-navbar>
       <div class="d-flex flex-grow-1 flex-md-row flex-column overflow-hidden">
+        <gt-sidebar
+          gtResize
+          style="width: 20rem"
+          type="left"
+          [maxWidth]="400"
+          [minWidth]="230"
+          [resizes]="['r']"
+        ></gt-sidebar>
+        <div class="vr d-none d-md-flex h-100 text-body-secondary"></div>
         <div class="d-inline-flex flex-md-column flex-row p-1" (mousedown)="$event.stopPropagation()">
           <button
             class="btn btn-text mb-md-1 me-1 me-md-0"
@@ -85,7 +95,9 @@ import { isPlatformBrowser } from '@angular/common';
                 >
                   {{ node.type }}
                 </a>
-                <ng-container *ngIf="node === (gt.selected[0] || gt.gt)">{{ node.type }}</ng-container>
+                <span *ngIf="node === (gt.selected[0] || gt.gt)" (contextmenu)="onContextmenu(node, $event)">{{
+                  node.type
+                }}</span>
               </li>
             </ol>
             <span class="badge text-bg-primary">{{ hoveredGtNode?.type | uppercase }}</span>
@@ -93,7 +105,14 @@ import { isPlatformBrowser } from '@angular/common';
         </div>
         <div class="vr d-none d-md-flex h-100 text-body-secondary"></div>
         <hr class="d-lg-none text-body-secondary m-0" />
-        <gt-sidebar gtResize style="width: 20rem" [maxWidth]="400" [minWidth]="230" [resizes]="['l', 't']"></gt-sidebar>
+        <gt-sidebar
+          gtResize
+          type="right"
+          style="width: 20rem"
+          [maxWidth]="400"
+          [minWidth]="230"
+          [resizes]="['l', 't']"
+        ></gt-sidebar>
       </div>
     </div>
   `,
@@ -111,6 +130,7 @@ export class GtEditComponent implements OnDestroy {
         description: data.description,
         ...data.settings,
       });
+      this.sidebar.initSettings();
     } else {
       this.gt.init();
     }
@@ -126,6 +146,7 @@ export class GtEditComponent implements OnDestroy {
     public gt: GtEdit,
     events: EventsService,
     private contextmenu: ContextMenu,
+    public sidebar: SidebarService,
     @Optional() @Inject(GT_CONTEXTMENU) private gtContextMenu: GtContextMenu,
     @Optional() @Inject(GT_EVENTS_LISTENER) gtEventsListener: any,
     @Inject(PLATFORM_ID) platformId: Object,

@@ -4,7 +4,7 @@ import { ComponentRef, Directive, Injector, StaticProvider, Type, ViewContainerR
 export class TemplateDirective {
   constructor(public viewContainerRef: ViewContainerRef, private injector: Injector) {}
 
-  insert<K>(formItem: any, component: Type<K>, providers: StaticProvider[] = [], index?: number): ComponentRef<K> {
+  insert<K>(component: Type<K>, providers: StaticProvider[] = [], index?: number): ComponentRef<K> {
     const injector: Injector = Injector.create({
       providers,
       parent: this.injector,

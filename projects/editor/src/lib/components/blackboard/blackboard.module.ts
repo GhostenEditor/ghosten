@@ -7,6 +7,5 @@ import { BlackboardComponent } from './blackboard.component';
   imports: [PanModule, PageStructureModule, ResizeModule, ZoomModule, TemplateModule],
   exports: [BlackboardComponent],
   declarations: [BlackboardComponent],
-  providers: [],
 })
 export class BlackboardModule {}

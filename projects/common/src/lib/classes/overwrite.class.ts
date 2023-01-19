@@ -14,7 +14,6 @@ export class Overwrite {
       acc[key] = {
         property: this[key].property.export(),
         style: this[key].style.export(),
-        dataSource: this[key].dataSource.export(),
       };
     }
     return acc;

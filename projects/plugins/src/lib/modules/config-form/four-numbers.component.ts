@@ -1,8 +1,6 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription, merge } from 'rxjs';
-
-// import { FormControlService } from '../form-control.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'properties-four-numbers',
@@ -27,16 +25,9 @@ export class FourNumbersComponent implements OnDestroy {
   values: { value: number | null }[];
   private subscription = Subscription.EMPTY;
 
-  constructor(
-    @Inject('FormItem') public formItem: any,
-    public formControl: FormControl,
-    public formGroup: FormGroup, // private formControlService: FormControlService,
-  ) {
+  constructor(@Inject('FormItem') public formItem: any, public formControl: FormControl, public formGroup: FormGroup) {
     this.setValue();
-    this.subscription = merge(
-      this.formControl.valueChanges,
-      // this.formControlService.update,
-    ).subscribe(() => this.setValue());
+    this.subscription = this.formControl.valueChanges.subscribe(() => this.setValue());
   }
 
   ngOnDestroy() {

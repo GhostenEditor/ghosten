@@ -3,7 +3,7 @@ import { concat, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'home',
+  selector: 'app-home',
   template: `
     <div class="text-center position-relative p-1">
       <h1 class="mt-5 mb-4" style="font-size: 4rem;">GHOSTEN EDITOR</h1>
@@ -19,6 +19,7 @@ import { map } from 'rxjs/operators';
         </button>
       </div>
       <small class="text-body-tertiary"><i>*Note: It is alpha version.</i></small>
+      <img src="assets/screenshot.png" class="img-fluid border rounded mt-5" alt="screenshot" />
     </div>
   `,
   styles: [

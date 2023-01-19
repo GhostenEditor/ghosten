@@ -13,6 +13,7 @@ import { MainService } from '../../providers/main.service';
 import { NavbarComponent } from './navbar.component';
 import { NavigationModule } from '../navigation/navigation.module';
 import { OffcanvasComponent } from './offcanvas.component';
+import { PageManagementModule } from '../page-management/page-management.module';
 import { TemplateComponent } from './template.component';
 import { TemplateResolve } from './template.resovle';
 
@@ -23,6 +24,7 @@ import { TemplateResolve } from './template.resovle';
     NavigationModule,
     GtRenderCoreModule,
     GtComponentsRendererModule,
+    PageManagementModule,
   ],
   declarations: [
     MainComponent,

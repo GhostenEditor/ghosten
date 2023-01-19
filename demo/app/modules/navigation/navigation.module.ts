@@ -6,10 +6,9 @@ import { RouterModule } from '@angular/router';
 
 import { NavigationComponent } from './navigation.component';
 import { NavigationItemComponent } from './navigation-item.component';
-import { PageManagementModule } from '../page-management/page-management.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, OverlayModule, CdkAccordionModule, PageManagementModule],
+  imports: [CommonModule, RouterModule, OverlayModule, CdkAccordionModule],
   exports: [NavigationComponent],
   declarations: [NavigationComponent, NavigationItemComponent],
 })

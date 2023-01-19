@@ -1,6 +1,5 @@
 import { cloneDeep, randomizer } from '../utils';
 import { Core } from './core.class';
-import { DataSource } from './dataSource.class';
 import { IGtNode } from '../types';
 import { Overwrite } from './overwrite.class';
 import { Property } from './property.class';
@@ -9,7 +8,7 @@ import { Style } from './style.class';
 /**
  * @Description: GtNode的生成类
  */
-export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> {
+export class GtNode<T = {}, ComponentRef = any> {
   /**
    * @Description: 唯一标识，自动生成
    */
@@ -33,7 +32,6 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
   core: Core;
   style: Style;
   property: Property & T;
-  dataSource: DataSource;
   validator?: IGtNode.Validator[];
   directive: IGtNode.Directive[] = [];
   variable: IGtNode.Variable[] = [];
@@ -51,9 +49,7 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
    */
   action: Record<string, IGtNode.Action[]>;
 
-  // component: C;
   componentRef: ComponentRef | null = null;
-  componentPortal: ComponentPortal;
   /**
    * @Description: 当前GtNode的parentNode，若GtNode为根GtNode（既type='root'），parent为null
    */
@@ -77,19 +73,8 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
     if (inheritedNode instanceof GtNode) {
       this.template = inheritedNode;
     }
-    const {
-      id,
-      type,
-      validator,
-      directive,
-      style,
-      property,
-      dataSource,
-      outletID,
-      variableName,
-      variable,
-      ...nodeConfig
-    } = _rawData;
+    const { id, type, validator, directive, style, property, outletID, variableName, variable, ...nodeConfig } =
+      _rawData;
     this.id = id || randomizer();
     this.variableName = variableName || null;
     this.type = type;
@@ -102,18 +87,11 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
     this.style = Style.create(style || {}, inheritedNode.style);
     this.property = Property.create<T>(property || {}, inheritedNode.property);
     this.action = Object.assign(Object.create(cloneDeep(inheritedNode.action)), nodeConfig.action);
-    this.dataSource = DataSource.create(dataSource, inheritedNode.dataSource);
     this.rights =
       inheritedNode.rights && Object.assign(Object.create(cloneDeep(inheritedNode.rights)), nodeConfig.rights);
     this.validator = validator || inheritedNode.validator || [];
     this.directive = directive || inheritedNode.directive || [];
     this.variable = variable || inheritedNode.variable || [];
-    // validator || (inheritedNode.validator && Object.assign(Object.create(null), inheritedNode.validator, validator));
-    // Object.defineProperty(this, 'component', {
-    //   enumerable: false,
-    //   configurable: false,
-    //   value: component,
-    // });
   }
 
   findClosest(type: string): GtNode | null {
@@ -196,7 +174,6 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
       [IGtNode.PropertyEnum.id]: this.id,
       [IGtNode.PropertyEnum.parent]: this.parent ? this.parent.id : undefined,
       [IGtNode.PropertyEnum.childIndex]: this.parent ? this.parent.children.indexOf(this) : undefined,
-      [IGtNode.PropertyEnum.dataSource]: this.dataSource.export(),
       [IGtNode.PropertyEnum.style]: this.style.export(),
       [IGtNode.PropertyEnum.property]: this.property.export(),
       [IGtNode.PropertyEnum.rights]: this.rights,
@@ -217,11 +194,8 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
     };
   }
 
-  setParent(parentNode: GtNode | null, index?: number, outletID?: string) {
+  setParent(parentNode: GtNode | null, index: number, outletID?: string) {
     if (parentNode) {
-      if (index === undefined || index === null) {
-        index = parentNode.children.length;
-      }
       if (this.parent) {
         const oldIndex = this.parent!.children.indexOf(this);
         if (parentNode === this.parent) {
@@ -229,13 +203,13 @@ export class GtNode<T = {}, C = any, ComponentRef = any, ComponentPortal = any> 
             if (this.outletID !== outletID) {
               this.outletID = outletID;
               if (this.parent.componentRef) {
-                this.parent.componentRef.instance.move(this, index > oldIndex ? index - 1 : index);
+                this.parent.componentRef.instance.move(this, index);
               }
             }
           } else {
             if (this.parent.componentRef) {
               this.outletID = outletID;
-              this.parent.componentRef.instance.move(this, index > oldIndex ? index - 1 : index);
+              this.parent.componentRef.instance.move(this, index);
             }
             this.parent.children.splice(oldIndex, 1);
             this.parent.children.splice(index, 0, this);

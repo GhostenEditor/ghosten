@@ -11,3 +11,7 @@ export const slideFadeIn = trigger('slideFadeIn', [
   state('*', style({ transform: 'matrix(1,0,0,1,0,0)' })),
   transition('* <=> void', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
 ]);
+export const fadeAnimation = trigger('fade', [
+  state('in', style({ opacity: 1 })),
+  transition('void => *', [style({ opacity: 0 }), animate('225ms cubic-bezier(0.4,0.0,0.2,1)')]),
+]);

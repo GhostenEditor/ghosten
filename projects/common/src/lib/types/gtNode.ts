@@ -1,4 +1,4 @@
-import { Core, DataSource, Property, Style } from '../classes';
+import { Core, Property, Style } from '../classes';
 import { BoardData } from './board';
 import { IMetadata } from './metadata';
 
@@ -49,7 +49,6 @@ export namespace IGtNode {
     property?: any;
     action?: any;
     rights?: any;
-    dataSource?: any;
     directive?: any[];
     template?: string;
     childIndex?: number;
@@ -64,7 +63,6 @@ export namespace IGtNode {
     core: Core;
     property: Property;
     style: Style;
-    dataSource: DataSource;
     action: any;
     rights: boolean;
     validator: boolean;
@@ -81,7 +79,6 @@ export namespace IGtNode {
     childIndex = 'childIndex',
     style = 'style',
     property = 'property',
-    dataSource = 'dataSource',
     rights = 'rights',
     validator = 'validator',
     action = 'action',

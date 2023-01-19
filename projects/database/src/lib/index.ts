@@ -26,14 +26,11 @@ export class GtDatabase {
 
   init(): Promise<IDBDatabase> {
     return new Promise(resolve => {
-      const dbRequest = indexedDB.open(this.DBName, 4);
-
+      const dbRequest = indexedDB.open(this.DBName, 3);
+      let importDataPromise: Promise<any> | null = null;
       dbRequest.addEventListener('upgradeneeded', function () {
         const db = this.result;
         Array.from(db.objectStoreNames).forEach(name => db.deleteObjectStore(name));
-        const interactionStore = db.createObjectStore('USER_INTERACTION', {
-          keyPath: 'category',
-        });
         const configStore = db.createObjectStore('CONFIG', {
           keyPath: 'id',
           autoIncrement: true,
@@ -50,13 +47,9 @@ export class GtDatabase {
         const editConfigStore = db.createObjectStore('EDIT_CONFIG', {
           keyPath: 'type',
         });
-        interactionStore.createIndex('category', 'category', { unique: true });
-        interactionStore.createIndex('value', 'value');
         configStore.createIndex('id', 'id', { unique: true });
-        // configStore.createIndex('description', 'description');
         configStore.createIndex('url', 'url');
         configStore.createIndex('type', 'type');
-        // configStore.createIndex('icon', 'icon');
         configStore.createIndex('parentId', 'parentId');
         configStore.createIndex('url_parentId', ['url', 'parentId']);
         configHistoryStore.createIndex('id', 'id');
@@ -69,6 +62,16 @@ export class GtDatabase {
         componentHistory.createIndex('id_timestamp', ['id', 'timestamp']);
         editConfigStore.createIndex('type', 'type');
         editConfigStore.createIndex('value', 'value');
+        importDataPromise = new Promise(resolve => {
+          const xhr = new XMLHttpRequest();
+
+          xhr.addEventListener('load', function () {
+            importDB(db, this.response).then(() => resolve(null));
+          });
+          xhr.responseType = 'blob';
+          xhr.open('GET', 'assets/export.gt');
+          xhr.send();
+        });
       });
       dbRequest.addEventListener('success', () => {
         log('info', 'connect success');
@@ -77,7 +80,11 @@ export class GtDatabase {
           log('warn', 'closed unexpectedly');
           this.db = null;
         });
-        resolve(this.db);
+        if (importDataPromise) {
+          importDataPromise.then(() => resolve(this.db!));
+        } else {
+          resolve(this.db);
+        }
       });
       dbRequest.addEventListener('error', error => log('error', 'IndexedDB connect request failed %O', error));
     });

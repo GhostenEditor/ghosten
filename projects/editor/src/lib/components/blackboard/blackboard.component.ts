@@ -33,7 +33,6 @@ import { GtEdit } from '../../classes';
   preserveWhitespaces: false,
   selector: 'gt-blackboard',
   providers: [TranslateAnimation],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'position-relative d-flex flex-column flex-grow-1 overflow-hidden',
   },
@@ -147,7 +146,6 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
           distinctUntilChanged(),
         )
         .subscribe(node => {
-          // this.gtNodeHover.emit(node);
           this.ngZone.run(() => this.gtNodeHover.emit(node));
         });
     });
@@ -199,11 +197,7 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
   }
 
   initDragEvent() {
-    const drag = new Drag<{
-      mirror: HTMLElement;
-      placeholder: HTMLElement;
-      target: HTMLElement;
-    }>(this.el.nativeElement, this._document);
+    const drag = new Drag(this.el.nativeElement, this._document);
     const gt = this.gt;
     Object.defineProperty(drag, 'disabled', {
       get(): any {
@@ -241,7 +235,6 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
       });
     });
     drag.dragEnd.subscribe(({ parentElement, refChild, target }) => {
-      // console.log(parentElement, refChild, target);
       const targetID = target.dataset.id!;
       const parentID = findGtElement(parentElement)!.dataset.id!;
       const targetNode = this.gt.getNodeById(targetID);
@@ -252,12 +245,16 @@ export class BlackboardComponent implements OnInit, AfterViewInit {
         console.error('something wrong!');
         return;
       }
-      this.gt.moveNode(
-        targetNode,
-        parentNode,
-        refNode ? parentNode.children.indexOf(refNode) : undefined,
-        parentElement.dataset.droppable,
-      );
+      let index = parentNode.children.length - 1;
+      if (refNode) {
+        index = parentNode.children.indexOf(refNode);
+        if (refNode.parent === targetNode.parent) {
+          if (index > targetNode.parent!.children.indexOf(targetNode)) {
+            index -= 1;
+          }
+        }
+      }
+      this.gt.moveNode(targetNode, parentNode, index, parentElement.dataset.droppable);
     });
   }
 }

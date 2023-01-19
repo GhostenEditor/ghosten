@@ -7,7 +7,6 @@ import { ListGroupItem } from '@ghosten/components';
   host: {
     class: 'list-group-item',
     '[class.active]': 'property.active',
-    '[class.disabled]': 'property.disabled',
     '[class.list-group-item-action]': 'property.active',
     '[class]': 'property.style',
   },

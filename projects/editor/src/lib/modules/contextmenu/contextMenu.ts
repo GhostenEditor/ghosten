@@ -1,22 +1,12 @@
 import { Component, Directive, EventEmitter, Injectable, Injector, Output, ViewEncapsulation } from '@angular/core';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ComponentPortal } from '@angular/cdk/portal';
 
 import { debounceTime, distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 
 import { Menu } from '../../types';
-
-// const Menu_Data = new InjectionToken('Menu Data');
-// const Menu_Level = new InjectionToken('Menu Level');
-
-declare const window: Window;
-
-const fadeAnimation = trigger('fade', [
-  state('in', style({ opacity: 1 })),
-  transition('void => *', [style({ opacity: 0 }), animate('200ms ease-out')]),
-]);
+import { fadeAnimation } from '../../animations';
 
 @Component({
   selector: 'gt-context-menu',
@@ -26,7 +16,6 @@ const fadeAnimation = trigger('fade', [
   animations: [fadeAnimation],
   host: {
     '(pointerdown)': 'preventDefault($event)',
-    // '(wheel)': 'preventDefault($event)',
   },
   template: `
     <!--    <div class="scroll-up">上</div>-->
@@ -121,8 +110,6 @@ export class ContextMenu {
   private overlayRefs: any[] = [];
   private currentMenus: any[] = [];
 
-  // private currentLevel = -1;
-
   constructor(private injector: Injector, private overlay: Overlay) {}
 
   create(event: MouseEvent, menus: Menu[], level = 0) {
@@ -138,10 +125,7 @@ export class ContextMenu {
     if (menus && menus.length) {
       this.currentMenus.push(menus);
       const injector = Injector.create({
-        providers: [
-          // {provide: Menu_Data, useValue: menus},
-          // {provide: Menu_Level, useValue: level},
-        ],
+        providers: [],
         parent: this.injector,
       });
       const componentPortal = new ComponentPortal(ContextMenuComponent, null, injector);

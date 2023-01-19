@@ -12,10 +12,10 @@ export class EditResolve implements Resolve<any> {
       .get<any>('getLatestConfigByID', {
         params: { id: route.params.id },
       })
-      // .pipe(
-      //   tap(data => {
-      //     if (!data) this.router.navigate(['404']).catch();
-      //   }),
-      // );
+      .pipe(
+        tap(data => {
+          if (!data) this.router.navigate(['404']).catch();
+        }),
+      );
   }
 }

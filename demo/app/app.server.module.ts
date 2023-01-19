@@ -2,9 +2,10 @@ import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 
+import { Observable } from 'rxjs';
+
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
-import { Observable } from 'rxjs';
 
 @NgModule({
   imports: [AppModule, ServerModule],

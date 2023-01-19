@@ -1,6 +1,5 @@
 export function battery(
   context: CanvasRenderingContext2D,
-  title = '',
   value = 0,
   max = 100,
   min = 0,
@@ -30,7 +29,6 @@ export function battery(
     context.rotate(Math.PI / 2);
   }
   context.scale(1, -1);
-  // context.translate(0, 35);
   if (direction === 'vertical') {
     context.translate(-itemWidth / 2, -canvas.height / 2);
   } else {
@@ -54,21 +52,16 @@ export function battery(
     context.font = 'bold 16px Kanit';
     context.fillStyle = foreground;
     context.textBaseline = 'top';
-    // context.fillText(`${value}/${max}`, canvas.width / 2, 0);
     context.textBaseline = 'bottom';
-    // context.fillText(title, canvas.width / 2, canvas.height);
   } else {
     context.textAlign = 'right';
     context.font = 'bold 12px Kanit';
     context.fillStyle = foreground;
     context.textBaseline = 'middle';
-    // context.fillText(`${value}/${max}`, canvas.width, canvas.height / 2);
     context.textBaseline = 'middle';
     context.textAlign = 'left';
-    // context.fillText(title, 0, canvas.height / 2);
   }
   context.restore();
-  // requestAnimationFrame(() => this.draw());
 }
 
 function drawRoundRect(

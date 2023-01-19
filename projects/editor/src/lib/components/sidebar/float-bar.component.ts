@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Portal } from '@angular/cdk/portal';
 
 import { GtEdit } from '../../classes';
@@ -19,6 +19,7 @@ import { GtEdit } from '../../classes';
       style="width: 260px;height: 600px;"
       [style.transform]="transform"
       (updateTransform)="updateTransform($event)"
+      (cdkDragEnded)="dragEnded.emit($event)"
     >
       <div class="card-header bg-body" style="cursor: move" cdkDragHandle>
         <ul class="nav nav-pills card-header-pills">
@@ -46,17 +47,12 @@ import { GtEdit } from '../../classes';
   host: {
     style: 'width:0;height:0;',
   },
-  animations: [
-    trigger('fade', [
-      state('in', style({ transform: 'scale(1)', opacity: 1 })),
-      transition('void => *', [style({ transform: 'scale(.8)', opacity: 0 }), animate('250ms ease-out')]),
-    ]),
-  ],
 })
 export class FloatBarComponent<T> {
   @Input() icon: string;
   @Input() componentPortal: Portal<T> | null;
   @Output() windowClose = new EventEmitter();
+  @Output() dragEnded = new EventEmitter<CdkDragEnd>();
   transform: string;
 
   constructor(public gt: GtEdit, private cdr: ChangeDetectorRef) {}

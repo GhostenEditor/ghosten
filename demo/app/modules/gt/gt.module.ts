@@ -1,7 +1,7 @@
 import { Router, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { GT_EDITOR_BRAND, GT_EDITOR_THEME_COLOR, GtEditCoreModule } from "@ghosten/editor";
+import { GT_EDITOR_BRAND, GT_EDITOR_THEME_COLOR, GtEditCoreModule } from '@ghosten/editor';
 import { GtComponentsEditorModule } from '@ghosten/components/editor';
 import { GtComponentsRendererModule } from '@ghosten/components/renderer';
 import { GtPluginModule } from '@ghosten/plugins';

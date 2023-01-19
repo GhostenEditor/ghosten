@@ -29,7 +29,7 @@ export class DataBindingPipe implements OnDestroy, PipeTransform {
     }
   }
 
-  transform(value: DataBinding | any, ...args: any[]): any {
+  transform(value: DataBinding | any): any {
     if (value instanceof DataBinding) {
       if (!value.compiled) {
         value.compiledData = value.compile(

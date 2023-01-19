@@ -37,10 +37,7 @@ const gtDefaultData: GtData = {
   template: [],
 };
 
-export interface Global {
-  dataSource?: any[];
-  router?: any;
-}
+export interface Global {}
 
 /**
  * @Description: Ghost的基础类
@@ -54,9 +51,7 @@ export abstract class Gt {
    * @Description: ghost的元数据
    */
   metadata = new Metadata();
-  global: Global = {
-    dataSource: [],
-  };
+  global: Global = {};
   /**
    * @Description: GtNode树的根节点
    */
@@ -103,7 +98,7 @@ export abstract class Gt {
     if (remoteComponents) {
       remoteComponents.forEach(comp =>
         this._generateBoardFromBoardData({
-          ...JSON.parse(comp, (k, v) => {
+          ...JSON.parse(comp, (_, v) => {
             if (typeof v === 'string') {
               if (/^\/.+\/$/.test(v)) {
                 return new RegExp(v.slice(1, -1));
@@ -142,7 +137,7 @@ export abstract class Gt {
 
   private _parseGtData(data: string | null | undefined | GtData): GtData {
     if (typeof data === 'string') {
-      return JSON.parse(data, (k, v) => {
+      return JSON.parse(data, (_, v) => {
         if (typeof v === 'string') {
           if (/^\/.+\/$/.test(v)) {
             return new RegExp(v.slice(1, -1));
@@ -187,7 +182,7 @@ export abstract class Gt {
     data: IGtNode.Config,
     parent: GtNode | null = this.getNodeById(data.parent!),
     inheritedNode?: GtNode,
-    index?: number,
+    index: number = parent ? parent.children.length : 0,
     boardId: string = parent!.boardId,
   ): GtNode | null {
     if (typeof data.template === 'string') {
@@ -255,7 +250,7 @@ export abstract class Gt {
     data: IGtNode.Config,
     parent: GtNode,
     templateNode: GtNode,
-    index?: number,
+    index: number,
     overwrite: Record<string, any> = {},
     boardId: string = this.currentBoard!.id,
   ) {
@@ -267,7 +262,6 @@ export abstract class Gt {
       node.templateRoot.overwrite[node.template.id] = {
         property: node.property,
         style: node.style,
-        dataSource: node.dataSource,
       };
       node.core.canPaste = false;
       node.core.canCopy = false;
@@ -321,7 +315,7 @@ export abstract class Gt {
    * @Return: string
    */
   public exportString(): string {
-    const replacer = (key: string, value: any) => {
+    const replacer = (_: string, value: any) => {
       if (value instanceof RegExp) {
         return value.toString();
       } else if (value instanceof DataBinding) {
@@ -339,9 +333,7 @@ export abstract class Gt {
 
   public destroy() {
     this.metadata.clear();
-    this.global = {
-      dataSource: [],
-    };
+    this.global = {};
     this.gt = null;
     this.nodeList.clear();
     this.boards = [];

@@ -71,15 +71,6 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
 
   ngOnInit() {
     this.initStyle();
-    // if (!this.gtNode.core.dynamicTemplate) {
-    //   if (this.gtNode.core.canHasChild) {
-    //     this.refresh();
-    //   }
-    //   if (this.gtNode.action) {
-    //     this.onEvent('onInit');
-    //   }
-    // }
-
     if (this.gtNode.variableName) {
       const variable: any = {};
       for (const property in this) {
@@ -146,10 +137,7 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
   }
 
   ngAfterViewInit() {
-    // if (this.gtNode.core.dynamicTemplate) {
-    //   this.refresh();
     this.onEvent('onInit');
-    // }
   }
 
   ngOnDestroy() {

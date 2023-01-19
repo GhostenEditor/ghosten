@@ -5,11 +5,8 @@ const fragment =
 
 export class WaterBall {
   private gl = this.canvas.getContext('webgl', {
-    // alpha: false,
-    // depth: true,
     antialias: true,
     premultipliedAlpha: false,
-    // preserveDrawingBuffer: true,
   })!;
   private program = createProgram(this.gl, vertex, fragment)!;
   private positionBuffer = this.gl.createBuffer();
@@ -42,8 +39,6 @@ export class WaterBall {
 
     resizeCanvasToDisplaySize(this.gl.canvas as HTMLCanvasElement);
     const gl = this.gl;
-    // gl.enable(gl.BLEND);
-    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     gl.clearColor(0, 0, 0, 1);
@@ -61,9 +56,6 @@ export class WaterBall {
     gl.uniform3f(this.backgroundUniformLocation, this.background[0], this.background[1], this.background[2]);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    // gl.clearColor(1, 1, 1, 1);
-    // gl.colorMask(false, false, false, true);
-    // gl.clear(gl.COLOR_BUFFER_BIT);
   }
 
   destroy() {

@@ -67,22 +67,6 @@ import { GtEdit } from '../../classes';
       >
         <gt-panel-config [type]="'rights'" [gtNode]="gtNode"></gt-panel-config>
       </gt-accordion-item>
-      <!--      <gt-accordion-item
-              *ngIf="gtNode.dataSource"
-              i18n-cardTitle="Config Card Title: Data Source"
-              cardTitle="数据源"
-              [expanded]="editorSetting.configAccordionExpanded.dataSource"
-              (opened)="opened('dataSource')"
-              (closed)="closed('dataSource')"
-            >
-              &lt;!&ndash;       <gt-panel-table
-                       [columns]="panel.columns"
-                       [data]="panel.rows()"
-                       (tableAdd)="panel.tableAdd()"
-                       (tableEdit)="panel.tableEdit($event)"
-                       (tableRemove)="panel.tableRemove($event)"
-                     ></gt-panel-table>&ndash;&gt;
-            </gt-accordion-item>-->
       <gt-accordion-item
         *ngIf="gtNode.directive"
         i18n-cardTitle="Config Card Title: Directive"
@@ -132,10 +116,6 @@ export class SidebarConfigComponent implements OnDestroy {
         if (selected.length === 1) {
           // todo 待修复无法触发set方法的bug
           this.gtNode = selected[0];
-          // this.gtNode = { ...selected[0] } as any;
-          // setTimeout(() => {
-          //   this.accordionList.get(0)!.accordion.open();
-          // }, 100);
         } else {
           this.gtNode = null;
         }

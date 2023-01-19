@@ -3,7 +3,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'settings',
-  template: ` <gt-modal i18n-modalTitle="Modal Title: Settings" modalTitle="设置" (confirm)="confirm.emit()" (cancel)="cancel.emit()">
+  template: ` <gt-modal
+    i18n-modalTitle="Modal Title: Settings"
+    modalTitle="设置"
+    (confirm)="confirm.emit()"
+    (cancel)="cancel.emit()"
+  >
     <form class="row g-3" [formGroup]="formGroup">
       <div class="col-md-6">
         <label class="form-label">字体大小</label>

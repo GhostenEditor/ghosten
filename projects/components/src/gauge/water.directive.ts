@@ -102,10 +102,6 @@ export class WaterDirective implements OnInit, OnDestroy {
     });
   }
 
-  // private updateColor() {
-  //   this.waterBall.color = this.getColor(this.waterBall.process);
-  // }
-
   private getColor(value: number): number[] {
     return interpolate<number[]>(convertColorToGL(this.minColor), convertColorToGL(this.maxColor))(value);
   }

@@ -25,8 +25,8 @@ import { FormItem } from '../../types';
           <td>{{ action.type }}</td>
           <td class="text-truncate" [title]="action.desc">{{ action.desc }}</td>
           <td>
-            <i class="gt-icon" style="cursor:pointer;" title="Edit" (click)="actionEdit(action)">edit</i>
-            <i class="gt-icon" style="cursor:pointer;" title="Remove" (click)="delete(action)">minus</i>
+            <i class="gt-icon" style="cursor:pointer;" title="Edit" (click)="actionEdit()">edit</i>
+            <i class="gt-icon" style="cursor:pointer;" title="Remove" (click)="delete()">minus</i>
           </td>
         </tr>
       </tbody>
@@ -105,31 +105,7 @@ export class PanelBoardComponent {
     this.board[name] = value;
   }
 
-  onclick({ name }: any) {
-    // if (name === 'events') {
-    //   this.dialog.openFromComponent(ModalActionComponent, {
-    //     width: '60%',
-    //   }).afterClosed().pipe(take(1), filter(events => events)).subscribe(events => {
-    //     this.board.events = events;
-    //   });
-    // }
-  }
+  actionEdit() {}
 
-  actionEdit(action: any = null) {
-    // this.dialog.openFromComponent(ModalActionComponent, {
-    //   data: {
-    //     action,
-    //     types: Object.keys(this.board.events!),
-    //     target: this.board.events
-    //   }
-    // })
-    //   .afterClosed().subscribe(result => {
-    //   // console.log(result);
-    //   this.cdr.detectChanges();
-    // });
-  }
-
-  delete(action: any) {
-    // this.gtNode.action[action.type].splice(this.gtNode.action[action.type].indexOf(action), 1);
-  }
+  delete() {}
 }

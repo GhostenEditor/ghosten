@@ -45,7 +45,6 @@ export function getNavigations(db: IDBDatabase): Promise<MessageEvent> {
       }
       item.url = paths.join('/');
     });
-    // mainService.menus = items.filter(v => !v.parentId);
     items.forEach(item => {
       delete item.parent;
     });

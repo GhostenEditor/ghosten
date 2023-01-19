@@ -29,7 +29,7 @@ export class ConfigFormComponent implements OnDestroy {
   public formGroup: FormGroup = new FormGroup({});
   private _differ: IterableDiffer<FormItem> = this.iterableDiffers
     .find([])
-    .create<FormItem>((index, item) => item.type + '-' + item.name);
+    .create<FormItem>((_, item) => item.type + '-' + item.name);
   private _subscriptions = new Map<string, Subscription>();
 
   @Input()
@@ -45,7 +45,6 @@ export class ConfigFormComponent implements OnDestroy {
           });
           this.formGroup.addControl(item.name, formControl);
           const { instance } = this.template.insert(
-            item,
             FormGroupComponent,
             [
               { provide: FormGroup, useValue: this.formGroup },

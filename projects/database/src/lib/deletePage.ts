@@ -10,7 +10,7 @@ export function deletePage(db: IDBDatabase, { id }: any): Promise<MessageEvent> 
   configHistoryObjectStore
     .index('id')
     .openCursor(IDBKeyRange.only(id))
-    .addEventListener('success', function (event) {
+    .addEventListener('success', function () {
       const cursor = this.result;
       if (cursor) {
         cursor.delete();

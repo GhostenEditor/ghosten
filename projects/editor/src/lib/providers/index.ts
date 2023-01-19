@@ -2,7 +2,6 @@ import { Optional, Provider } from '@angular/core';
 
 import { Core, IGtNode, Property, Style, gtBaseConfigMap } from '@ghosten/common';
 
-import { CommonSourceService, EventsService } from '../services';
 import {
   GT_AUTH_CONFIG,
   GT_DEFAULT_CONFIG,
@@ -18,12 +17,12 @@ import {
 import { GT_NODE_INTERNAL_CONFIG_LIST_MAP, GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP } from '../injectors-internal';
 import { DivisionComponent } from '../components/items/division.component';
 import { ElementList } from '../types';
+import { EventsService } from '../services';
 import { GtEdit } from '../classes';
 import { authConfig } from '../configs';
 
 export const providers: Provider[] = [
   GtEdit,
-  CommonSourceService,
   EventsService,
   {
     provide: GT_EDITOR_BRAND,

@@ -70,7 +70,6 @@ export class PanelConfigComponent implements OnDestroy {
         inherit: this.gtNode.template
           ? !Object.prototype.hasOwnProperty.call(this.gtNode[this.type], formItem.name)
           : undefined,
-        // validator: formItem && formItem.validator && formItem.validator(this.gt)
       }));
   }
 
@@ -113,7 +112,6 @@ export class PanelConfigComponent implements OnDestroy {
     }
 
     formControl.setValue(formItem.value, { emitEvent: false, onlySelf: true });
-    // this.formList = this.getFormList();
     this.cdr.markForCheck();
   }
 

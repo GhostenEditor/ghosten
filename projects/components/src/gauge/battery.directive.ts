@@ -15,13 +15,14 @@ export class BatteryDirective implements OnInit, OnDestroy {
   @Input() direction: 'horizontal' | 'vertical';
 
   constructor(private elementRef: ElementRef<HTMLCanvasElement>, private ngZone: NgZone) {}
+
   // todo ssr not supports canvas
   ngOnInit() {
     this.ngZone.runOutsideAngular(() => {
       const context = this.elementRef.nativeElement.getContext('2d')!;
-      battery(context, this.title, this.data, this.gaugeMax, this.gaugeMin, this.direction);
+      battery(context, this.data, this.gaugeMax, this.gaugeMin, this.direction);
       const loop = () => {
-        battery(context, this.title, this.data, this.gaugeMax, this.gaugeMin, this.direction);
+        battery(context, this.data, this.gaugeMax, this.gaugeMin, this.direction);
         this.frameId = requestAnimationFrame(loop);
       };
       this.frameId = requestAnimationFrame(loop);

@@ -9,6 +9,5 @@ import { TemplateModule } from '../../modules';
   imports: [TemplateModule],
   exports: [DataBindingPipe],
   declarations: [EditAbstractComponent, DivisionComponent, DataBindingPipe],
-  providers: [],
 })
 export class ItemsModule {}

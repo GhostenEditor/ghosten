@@ -9,7 +9,7 @@ import { removeDragRootStyle, setDragRootStyle } from './toggleDragRootStyle';
 import { closest } from './index';
 import { isDescendant } from './isDescendant';
 
-export class Drag<T> {
+export class Drag {
   private _target: HTMLElement | null = null;
   private _mirror: HTMLElement | null = null;
   private _placeholder: HTMLElement | null = null;

@@ -34,7 +34,6 @@ export class DragDirective implements OnInit {
   }
 
   move(event: MouseEvent) {
-    // this._ngZone.runOutsideAngular(() => {
     if (this.gtDragDisabled) {
       return;
     }
@@ -61,6 +60,5 @@ export class DragDirective implements OnInit {
           matrix.translate(offsetX / matrix.a, offsetY / matrix.d).toString(),
         );
       });
-    // });
   }
 }

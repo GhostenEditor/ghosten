@@ -186,9 +186,7 @@ export class Gauge {
       this.tickPadding = Math.round((size / 300) * 8);
       this.tickWidth = Math.round((size / 300) * 3);
       this.indicatorWidth = Math.round((size / 300) * 18);
-      // this.render();
     }
-    // requestAnimationFrame(() => this.resize());
   }
 
   public render() {

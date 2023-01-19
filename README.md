@@ -37,7 +37,9 @@ Table of contents
 
 - [x] Support Dark Mode
 - [x] Desktop Application
-- [x] 多语言支持
+- [x] Internationalization
+- [x] Support Touch Devices and Mobile Devices
+- [x] Support SSR
 
 ## Todos
 
@@ -70,14 +72,3 @@ This is a monorepo which contains many packages:
 
 ## Getting Started
 
-### 第一步
-
-```shell
-npm install --save @ghosten/common @ghosten/editor @ghosten/renderer @ghosten/editor @ghosten/plugins @ghosten/components 
-```
-
-`@ghosten/database` 是采用的indexedDB API进行的本地存储，可根据需要进行安装
-
-```shell
-npm install --save @ghosten/database
-```

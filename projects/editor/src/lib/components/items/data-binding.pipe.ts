@@ -6,7 +6,7 @@ import { DataBinding } from '@ghosten/common';
   pure: false,
 })
 export class DataBindingPipe implements PipeTransform {
-  transform(value: DataBinding | any, ...args: any[]): any {
+  transform(value: DataBinding | any): any {
     if (value instanceof DataBinding) {
       return '~~数据绑定~~';
     } else if (typeof value === 'string') {

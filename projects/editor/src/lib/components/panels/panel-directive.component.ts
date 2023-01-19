@@ -63,27 +63,6 @@ interface DirectiveItem extends PanelCard {
           </li>
         </ul>
       </div>
-      <!--<gt-panel-card
-        *ngFor="let directive of directives"
-        [item]="directive"
-        (removeItem)="removeValidator(directive)"
-      >
-        <div class="card-title">Input</div>
-        <gt-config-form
-          [formList]="directive.form.input"
-          (formChange)="formChange(directive, 'input', $event)"
-        ></gt-config-form>
-        <div class="card-title">Output</div>
-        <gt-config-form
-          [formList]="directive.form.output"
-          (formChange)="formChange(directive, 'output', $event)"
-        ></gt-config-form>
-        <div class="card-title">Export</div>
-        <gt-config-form
-          [formList]="directive.form.export"
-          (formChange)="formChange(directive, 'export', $event)"
-        ></gt-config-form>
-      </gt-panel-card>-->
     </div>
     <div class="d-grid gap-2 mt-2">
       <button

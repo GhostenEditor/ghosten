@@ -7,10 +7,10 @@ import { merge } from 'rxjs';
 
 import { GtSettings, IGtSettings } from './gt-settings';
 import { EventsService } from '../services';
+import { GT_EDITOR_THEME_COLOR } from '../injectors';
 import { GT_NODE_INTERNAL_DEFAULT_CONFIG_MAP } from '../injectors-internal';
 import { GtHistory } from './gt-history';
 import { RemoveNodeData } from '../types';
-import { GT_EDITOR_THEME_COLOR } from '../injectors';
 
 @Injectable()
 export class GtEdit extends Gt {
@@ -48,7 +48,6 @@ export class GtEdit extends Gt {
     public override defaultConfigMap: IGtNode.DefaultConfigMap,
   ) {
     super();
-    // this.componentMap = Object.assign({}, ...componentMap);
     this.events.onEvent.subscribe(data => {
       switch (data.type) {
         case 'CHANGE_PROPERTY':
@@ -63,7 +62,6 @@ export class GtEdit extends Gt {
       this.events.CHANGE_STYLE,
       this.events.CHANGE_PROPERTY,
       this.events.CHANGE_ACTION,
-      this.events.CHANGE_DATASOURCE,
       this.events.CHANGE_VALIDATOR,
       this.events.CHANGE_RIGHTS,
       this.events.PASTE_STYLE,
@@ -74,18 +72,13 @@ export class GtEdit extends Gt {
       this.events.REDO,
     )
       .pipe(debounceTime(30000))
-      .subscribe(data =>
+      .subscribe(() =>
         this.events.AUTO_SAVE.next({
           config: this.exportString(),
           settings: this.settings.export(),
         }),
       );
     this.events.CHANGE_SELECT.subscribe(selected => (this.settings.selected = selected.map(({ id }) => id)));
-    this.events.UPDATE_TEMPLATE.subscribe(({ template, list }) => {
-      // list.forEach((node: any) => {
-      //   node.children = template.children.map((data: GtNode) => this._createCustomNode(data, node, node, node.overwrite));
-      // });
-    });
   }
 
   initSettings(settings: IGtSettings) {
@@ -355,7 +348,7 @@ export class GtEdit extends Gt {
    * @Params index?: number 放置GtNode中的序号
    * @Return: void
    */
-  moveNode(drag: GtNode, drop: GtNode, index?: number, outletID?: string) {
+  moveNode(drag: GtNode, drop: GtNode, index: number, outletID?: string) {
     if (
       drag.parent === drop &&
       drag.outletID === outletID &&
@@ -401,17 +394,12 @@ export class GtEdit extends Gt {
           type: 'warning',
           message: '该节点由模板生成，无法删除',
         });
-        // return this.notice.noticeWarning('无法删除', '该节点由模板生成，无法删除');
       }
       if (gtNode.template && gtNode.isTemplateRoot && gtNode.template.inheritList) {
         gtNode.template.inheritList.splice(gtNode.template.inheritList.indexOf(gtNode), 1);
       }
       const index = gtNode.parent!.children.indexOf(gtNode);
       this._removeGtNode(gtNode);
-      // gtNode.parent!.componentRef!.instance.remove(gtNode);
-      // gtNode.parent!.children.splice(index, 1);
-      // this.nodeList.delete(gtNode.id);
-      // this.currentBoard!.nodeList.delete(gtNode.id);
       deleteList.push({ gtNode: gtNode, parent: gtNode.parent!, index });
     });
     this.selected = [];
@@ -422,7 +410,7 @@ export class GtEdit extends Gt {
   addCustomNode(type: string, parent: GtNode, index = -1) {
     const templateNode = this.boards.filter(c => c.id === type)[0].gt;
 
-    const gtNode = this.createGtNode({ type: 'template', template: templateNode.id }, parent);
+    const gtNode = this.createGtNode({ type: 'template', template: templateNode.id }, parent, undefined, index);
     if (!gtNode) {
       return;
     }
@@ -434,7 +422,6 @@ export class GtEdit extends Gt {
   override setCurrentBoard(board: Board) {
     super.setCurrentBoard(board);
     this.events.CHANGE_BOARD.next(board);
-    // this.changeSelect(this.currentBoard!.gt);
   }
 
   /**
@@ -529,16 +516,6 @@ export class GtEdit extends Gt {
     this.removeNode();
     this.customComponent.splice(this.customComponent.indexOf(board), 1);
   }
-
-  // private _setValidator(gtNode: GtNode, flag: boolean) {
-  //   gtNode.validator =
-  //     flag &&
-  //     this.defaultConfigMap.get(gtNode.type)!.validator &&
-  //     cloneDeep(this.defaultConfigMap.get(gtNode.type)!.validator);
-  //   if (gtNode.core.canHasChild) {
-  //     gtNode.children.forEach(node => this._setValidator(node, flag));
-  //   }
-  // }
 
   /**
    * @Description: 删除的递归方法，递归GtNode的子节点

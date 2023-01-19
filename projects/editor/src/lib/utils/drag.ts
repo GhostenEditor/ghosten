@@ -32,63 +32,7 @@ export function cloneElement(target: HTMLElement): HTMLElement {
   return mirror;
 }
 
-// export const createMirror = (target: HTMLElement) => {
-//   const dragClientRect = target.getBoundingClientRect();
-//   const mirror: HTMLElement = cloneElement(target);
-//   mirror.classList.add('draggable-mirror');
-//   mirror.style.left = dragClientRect.left + 'px';
-//   mirror.style.top = dragClientRect.top + 'px';
-//   mirror.style.width = dragClientRect.width + 'px';
-//   mirror.style.height = dragClientRect.height + 'px';
-//   document.body.appendChild(mirror);
-//   return mirror;
-// };
-// export const createPlaceholder = (target: HTMLElement) => {
-//   // const dragClientRect = target.getBoundingClientRect();
-//   const placeholder: HTMLElement = cloneElement(target);
-//   placeholder.classList.add('draggable-placeholder');
-//   document.body.appendChild(placeholder);
-//   return placeholder;
-// };
 export const removeMirror = (mirror: HTMLElement) => mirror.parentElement && mirror.parentElement.removeChild(mirror);
-
-// 计算光标相对于dropNode的位置
-// export function calcRelativePosition(t: HTMLElement, event: MouseEvent | TouchEvent) {
-//   const { x, y, width, height } = t.getBoundingClientRect();
-//   const { clientX, clientY } = !isTouchEvent(event) ? event : event.touches[0];
-//   if (clientX - x < 10) {
-//     return 'left';
-//   }
-//   if (clientY - y < 10) {
-//     return 'top';
-//   }
-//   if (x + width - clientX < 10) {
-//     return 'right';
-//   }
-//   if (y + height - clientY < 10) {
-//     return 'bottom';
-//   }
-//   return 'center';
-// }
-//
-// export function findDragAndDrop(
-//   element: HTMLElement,
-//   drag = element,
-// ): { drag: HTMLElement | null; drop: HTMLElement | null } {
-//   let drop: HTMLElement | null = null;
-//   if (element.classList.contains('isDroppable')) {
-//     drop = element;
-//     return { drag, drop };
-//   }
-//   if (element.classList.contains('isDraggable')) {
-//     drag = element;
-//   }
-//   if (element.parentElement !== null) {
-//     return findDragAndDrop(element.parentElement, drag);
-//   } else {
-//     return { drag, drop };
-//   }
-// }
 
 export const dragStart = (element: HTMLElement): Observable<MouseEvent | TouchEvent> =>
   merge(

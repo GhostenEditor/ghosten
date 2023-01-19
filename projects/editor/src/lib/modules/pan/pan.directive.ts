@@ -1,14 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Output,
-  Renderer2,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Inject, Input, NgZone, OnDestroy, Output } from '@angular/core';
 import { EMPTY, Subscription } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
@@ -30,7 +20,7 @@ export class PanDirective implements OnDestroy {
   @Output() updateTransform = new EventEmitter<string>();
   private subscription = Subscription.EMPTY;
 
-  constructor(private el: ElementRef, renderer: Renderer2, ngZone: NgZone, @Inject(DOCUMENT) _document: Document) {
+  constructor(private el: ElementRef, ngZone: NgZone, @Inject(DOCUMENT) _document: Document) {
     ngZone.runOutsideAngular(() => {
       this.subscription = dragStart(this.el.nativeElement)
         .pipe(

@@ -14,7 +14,6 @@ export class EventsService {
   CHANGE_SELECT = new Subject<GtNode[]>();
   CHANGE_STYLE = new Subject<any>();
   CHANGE_PROPERTY = new Subject<any>();
-  CHANGE_DATASOURCE = new Subject<any>();
   CHANGE_ACTION = new Subject<ChangeActionData>();
   CHANGE_RIGHTS = new Subject<any>();
   CHANGE_VALIDATOR = new Subject<any>();
@@ -41,24 +40,10 @@ export class EventsService {
   REMOVE_COMPONENT = new EventEmitter<{ id: string }>();
   TOP_BUTTON_CLICK = new EventEmitter<TopButtonClickData>();
   CUSTOM = new EventEmitter<GtEvent.Custom['data']>();
-  // AUTO_SAVE = merge(
-  //   this.CHANGE_STYLE,
-  //   this.CHANGE_PROPERTY,
-  //   this.CHANGE_ACTION,
-  //   this.CHANGE_DATASOURCE,
-  //   this.CHANGE_VALIDATOR,
-  //   this.CHANGE_RIGHTS,
-  //   this.MOVE_NODE,
-  //   this.REMOVE_NODE,
-  //   this.INSERT_NODE,
-  //   this.UNDO,
-  //   this.REDO,
-  // ).pipe(debounceTime(3000));
   onEvent = merge(
     this.CHANGE_SELECT.pipe(map(data => ({ type: 'CHANGE_SELECT', data }))),
     this.CHANGE_STYLE.pipe(map(data => ({ type: 'CHANGE_STYLE', data }))),
     this.CHANGE_PROPERTY.pipe(map(data => ({ type: 'CHANGE_PROPERTY', data }))),
-    this.CHANGE_DATASOURCE.pipe(map(data => ({ type: 'CHANGE_DATASOURCE', data }))),
     this.CHANGE_ACTION.pipe(map(data => ({ type: 'CHANGE_ACTION', data }))),
     this.CHANGE_RIGHTS.pipe(map(data => ({ type: 'CHANGE_RIGHTS', data }))),
     this.CHANGE_VALIDATOR.pipe(map(data => ({ type: 'CHANGE_VALIDATOR', data }))),

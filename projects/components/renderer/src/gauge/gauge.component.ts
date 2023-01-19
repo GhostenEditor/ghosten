@@ -5,8 +5,7 @@ import { RenderAbstractComponent } from '@ghosten/renderer';
 @Component({
   selector: 'gt-gauge',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <canvas
+  template: ` <canvas
       gt-gauge
       [max]="property.gaugeMax"
       [min]="property.gaugeMin"

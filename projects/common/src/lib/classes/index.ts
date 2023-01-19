@@ -6,6 +6,4 @@ export * from './overwrite.class';
 export * from './board.class';
 export * from './gt.node';
 export { createDefaultConfig } from './createDefaultConfig';
-export * from './data-source-picker';
-export * from './dataSource.class';
 export * from './data-binding.class';

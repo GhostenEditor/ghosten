@@ -71,7 +71,7 @@ import { fromEvent, takeUntil } from 'rxjs';
           [(ngModel)]="gtNode.property.value"
           (change)="onEvent('change')"
           (blur)="onEvent('blur')"
-          (focus)="onFocus($event, input)"
+          (focus)="onFocus(input)"
         />
         <button
           *ngIf="property.inputType === 'number'"
@@ -89,7 +89,7 @@ import { fromEvent, takeUntil } from 'rxjs';
   `,
 })
 export class InputComponent extends FormAbstractComponent<InputProperty> {
-  onFocus(event: FocusEvent, target: HTMLInputElement) {
+  onFocus(target: HTMLInputElement) {
     if (this.property.inputType === 'number') {
       fromEvent<WheelEvent>(target, 'wheel')
         .pipe(takeUntil(fromEvent(target, 'blur')))

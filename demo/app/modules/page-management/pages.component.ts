@@ -11,8 +11,8 @@ import { PageConfig } from './types';
 import { PageEditComponent } from './page-edit.component';
 
 @Component({
-  selector: 'gt-modal-pages',
-  template: ` <gt-modal
+  selector: 'app-modal-pages',
+  template: ` <app-modal
     i18n-modalTitle="Modal Title: Page List"
     modalTitle="页面列表"
     modalSize="xl"
@@ -43,8 +43,15 @@ import { PageEditComponent } from './page-edit.component';
             <td>{{ page.parentId }}</td>
             <td class="text-nowrap">
               <button class="btn btn-light btn-sm me-2" i18n="Button: Modify" (click)="editPage(page)">修改</button>
-              <button class="btn btn-light btn-sm me-2" i18n="Button: Remove" (click)="deletePage(page.id)">删除</button>
-              <button class="btn btn-light btn-sm" i18n="Button: Edit" *ngIf="page.type === 'Function'" (click)="activatePage(page.id)">
+              <button class="btn btn-light btn-sm me-2" i18n="Button: Remove" (click)="deletePage(page.id)">
+                删除
+              </button>
+              <button
+                class="btn btn-light btn-sm"
+                i18n="Button: Edit"
+                *ngIf="page.type === 'Function'"
+                (click)="activatePage(page.id)"
+              >
                 编辑
               </button>
             </td>
@@ -55,7 +62,7 @@ import { PageEditComponent } from './page-edit.component';
     <div class="d-grid gap-2 mt-2">
       <button class="btn btn-light" i18n="Button: Add" (click)="addPage()">添加</button>
     </div>
-  </gt-modal>`,
+  </app-modal>`,
 })
 export class PagesComponent implements OnInit {
   @Output() modalClose = new EventEmitter();

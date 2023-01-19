@@ -6,8 +6,20 @@ export interface IGtSettings {
   currentBoardName: string;
   elementAccordionExpanded: Record<string, boolean>;
   configAccordionExpanded: Record<string, boolean>;
-  activeRightTab: number;
+  sidebarPosition: Record<ISidebarPosition['type'], ISidebarPosition>;
   selectedNodes: string[];
+}
+
+export interface ISidebarPosition {
+  type: 'element' | 'config' | 'tree' | 'page';
+  position: 'left' | 'right' | 'float';
+  active?: boolean;
+  rect?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
 }
 
 export class GtSettings {
@@ -18,12 +30,13 @@ export class GtSettings {
   configAccordionExpanded: Record<string, boolean> = {};
   elementAccordionExpanded: Record<string, boolean> = {};
   currentBoardName: string;
+  sidebarPosition: Record<ISidebarPosition['type'], ISidebarPosition>;
 
   init(settings: IGtSettings) {
     this.name = settings.name;
     this.description = settings.description;
     this.selected = settings.selectedNodes || [];
-    this.rightTabIndex = settings.activeRightTab || 0;
+    this.sidebarPosition = settings.sidebarPosition;
     this.configAccordionExpanded = settings.configAccordionExpanded || {};
     this.elementAccordionExpanded = settings.elementAccordionExpanded || {};
     this.currentBoardName = settings.currentBoardName;
@@ -52,8 +65,8 @@ export class GtSettings {
       currentBoardName: this.currentBoardName,
       elementAccordionExpanded: this.elementAccordionExpanded,
       configAccordionExpanded: this.configAccordionExpanded,
-      activeRightTab: this.rightTabIndex,
       selectedNodes: this.selected,
+      sidebarPosition: this.sidebarPosition,
     };
   }
 }

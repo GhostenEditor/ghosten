@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { PageConfig } from './types';
 
 @Component({
-  selector: 'page-edit',
-  template: ` <gt-modal
+  selector: 'app-modal-page-edit',
+  template: ` <app-modal
     [modalTitle]="modalTitle"
     [modalPending]="modalPending"
     [modalFooter]="true"
@@ -14,7 +14,12 @@ import { PageConfig } from './types';
     (confirm)="confirm()"
     (cancel)="modalClose.emit()"
   >
-    <div class="alert alert-primary" role="alert"><i class="gt-icon">bell</i> <ng-container i18n="Tip: You'll see the change after refreshing browser!">系统刷新后才能看到菜单栏的更新</ng-container></div>
+    <div class="alert alert-primary" role="alert">
+      <i class="gt-icon">bell</i>
+      <ng-container i18n="Tip: You'll see the change after refreshing browser!"
+        >系统刷新后才能看到菜单栏的更新
+      </ng-container>
+    </div>
     <div class="mb-3">
       <label class="form-label" i18n="Table Column Header: Title">标题</label>
       <input
@@ -89,7 +94,7 @@ import { PageConfig } from './types';
       ></textarea>
       <div class="invalid-feedback" *ngIf="pageDescription.touched">此项为必填项</div>
     </div>
-  </gt-modal>`,
+  </app-modal>`,
 })
 export class PageEditComponent implements OnInit {
   @Input() mode: 'add' | 'modify' = 'add';
