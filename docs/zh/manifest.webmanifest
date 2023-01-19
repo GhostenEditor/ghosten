@@ -6,8 +6,8 @@
   "background_color": "#404dff",
   "orientation": "landscape",
   "display": "fullscreen",
-  "scope": "/ghosten/",
-  "start_url": "/ghosten/",
+  "scope": "/ghosten/zh/",
+  "start_url": "/ghosten/zh/",
   "icons": [
     {
       "src": "assets/icons/128.png",
@@ -32,7 +32,8 @@
     {
       "src": "assets/icons/512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
