@@ -1,7 +1,0 @@
-{
-  "extends": "../../tslint.json",
-  "rules": {
-    "directive-selector": [true, "attribute", "gt"],
-    "component-selector": [true, "element", "gt"]
-  }
-}
