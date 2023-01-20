@@ -5,9 +5,9 @@
   "theme_color": "#404dff",
   "background_color": "#404dff",
   "orientation": "landscape",
-  "display": "fullscreen",
-  "scope": "/ghosten/zh/",
-  "start_url": "/ghosten/zh/",
+  "display": "standalone",
+  "scope": "/ghosten/en-US/",
+  "start_url": "/ghosten/en-US/",
   "icons": [
     {
       "src": "assets/icons/128.png",
