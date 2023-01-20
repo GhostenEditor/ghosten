@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 14.x
@@ -20,7 +20,10 @@ jobs:
       run: |
         npm install
         npm run build
-        
+
+    - name: Copy index.html
+      run: cp index.html ./dist/demo/browser/
+
     - name: Deploy Docs
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
