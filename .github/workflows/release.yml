@@ -26,12 +26,12 @@ jobs:
       run: |
         npm install
         npm run tauri:build
-    
-    - name: Release
+
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: true
-        title: "Development Build"
         files: |
           src-tauri/target/release/bundle/dmg/GHOSTEN EDITOR_0.1.0_x64.dmg
         
