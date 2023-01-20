@@ -175,7 +175,7 @@
               "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
-              "baseHref": "/",
+              "baseHref": "/ghosten/",
               "buildOptimizer": true,
               "vendorChunk": true,
               "commonChunk": true,
