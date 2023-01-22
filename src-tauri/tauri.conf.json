@@ -13,7 +13,9 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "dialog": {
+        "confirm": true
+      }
     },
     "bundle": {
       "active": true,
@@ -64,7 +66,8 @@
         "height": 720,
         "resizable": true,
         "title": "GHOSTEN EDITOR",
-        "width": 1280
+        "width": 1280,
+        "fileDropEnabled": false
       }
     ]
   }
