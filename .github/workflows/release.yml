@@ -71,7 +71,7 @@ jobs:
 
       - name: Build the Mac x86
         uses: tauri-apps/tauri-action@v0
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -84,7 +84,7 @@ jobs:
 
       - name: Build the Mac arm
         uses: tauri-apps/tauri-action@v0
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -97,7 +97,7 @@ jobs:
 
       - name: Build the Windows x86
         uses: tauri-apps/tauri-action@v0
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'windows-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -110,7 +110,7 @@ jobs:
 
       - name: Build the Windows arm
         uses: tauri-apps/tauri-action@v0
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'windows-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
