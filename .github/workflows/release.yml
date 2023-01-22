@@ -8,26 +8,48 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
+      runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14.x
+      - name: Install dependencies (ubuntu only)
+          if: matrix.platform == 'ubuntu-20.04'
+          # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
 
-    - name: Build
-      run: |
-        npm install
-        npm run tauri:build
+      - name: Rust setup
+          uses: dtolnay/rust-toolchain@stable
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        files: |
-          src-tauri/target/release/bundle/msi/GHOSTEN EDITOR_0.1.0_x64_en-US.msi
+            - name: Rust cache
+              uses: swatinem/rust-cache@v2
+              with:
+                workspaces: './src-tauri -> target'
 
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+          cache: 'npm'
+
+      - name: Build
+        run: |
+          npm install
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: "latest" # ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
