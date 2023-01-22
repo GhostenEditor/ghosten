@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
-
+          sudo rustup target add aarch64-unknown-linux-musl
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
 
@@ -44,7 +44,7 @@ jobs:
           npm install
 
       - name: Build the Linux arm
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'ubuntu-20.04'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -57,7 +57,7 @@ jobs:
           args: --target aarch64-unknown-linux-musl
 
       - name: Build the Linux x86
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'ubuntu-20.04'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,7 +70,7 @@ jobs:
           args: --target x86_64-unknown-linux-musl
 
       - name: Build the Mac x86
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
           args: --target x86_64-apple-darwin
 
       - name: Build the Mac arm
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -96,7 +96,7 @@ jobs:
           args: --target aarch64-apple-darwin
 
       - name: Build the Windows x86
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'windows-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
           args: --target x86_64-pc-windows-msvc
 
       - name: Build the Windows arm
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@dev
         if: matrix.platform == 'windows-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
