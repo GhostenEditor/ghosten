@@ -3,6 +3,11 @@ name: Deploy Docs
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'demo/**.ts'
+      - 'demo/**.html'
+      - 'demo/**.sass'
+
 
 jobs:
   build:

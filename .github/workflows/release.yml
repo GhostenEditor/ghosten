@@ -43,8 +43,9 @@ jobs:
         run: |
           npm install
 
-      - name: Build the app
+      - name: Build the Linux arm
         uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -53,4 +54,69 @@ jobs:
           releaseBody: 'See the assets to download and install this version.'
           releaseDraft: true
           prerelease: true
-          args: --target aarc64-pc-windows-msvc x86_64-pc-windows-msvc aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu
+          args: --target aarch64-unknown-linux-gnu
+
+      - name: Build the Linux x86
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
+          args: --target x86_64-unknown-linux-gnu
+
+      - name: Build the Mac x86
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
+          args: --target x86_64-apple-darwin
+
+      - name: Build the Mac arm
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
+          args: --target aarch64-apple-darwin
+
+      - name: Build the Windows x86
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
+          args: --target x86_64-pc-windows-msvc
+
+      - name: Build the Windows arm
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: true
+          args: --target aarc64-pc-windows-msvc
