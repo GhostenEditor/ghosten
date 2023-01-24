@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-home',
   template: `
     <div class="text-center position-relative p-1">
-      <h1 class="mt-5 mb-4" style="font-size: 4rem;">GHOSTEN EDITOR</h1>
+      <h1 class="mt-5 mb-4 display-3 fw-medium">GHOSTEN EDITOR</h1>
       <h6 class="fw-normal mb-5 text-secondary font-monospace m-auto" style="max-width: 24rem;height: 2.5em">
         {{ description }} <span class="cursor">|</span>
       </h6>

@@ -72,7 +72,6 @@ export class EditComponent {
           this.toast.show({
             type: 'primary',
             message: '组件保存成功',
-            duration: 10000,
             position: 'top_center',
           }),
         );
@@ -82,7 +81,6 @@ export class EditComponent {
           this.toast.show({
             type: 'primary',
             message: '组件删除成功',
-            duration: 10000,
             position: 'top_center',
           }),
         );

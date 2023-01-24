@@ -30,10 +30,7 @@ import { SidebarService } from './components/sidebar/sidebar.service';
   preserveWhitespaces: false,
   selector: 'gt-editor',
   template: `
-    <div
-      class="d-flex vh-100 flex-column"
-      style="padding: env(safe-area-inset-right) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"
-    >
+    <div class="d-flex vh-100 flex-column">
       <gt-navbar></gt-navbar>
       <div class="d-flex flex-grow-1 flex-md-row flex-column overflow-hidden">
         <gt-sidebar

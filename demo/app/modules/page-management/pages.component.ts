@@ -59,7 +59,7 @@ import { PageEditComponent } from './page-edit.component';
         </tbody>
       </table>
     </div>
-    <div class="d-grid gap-2 mt-2">
+    <div class="d-grid gap-2">
       <button class="btn btn-light" i18n="Button: Add" (click)="addPage()">添加</button>
     </div>
   </app-modal>`,

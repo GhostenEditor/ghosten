@@ -9,6 +9,7 @@
 
 ![npm](https://img.shields.io/npm/v/@ghosten/common?logo=npm)
 ![NPM](https://img.shields.io/npm/l/@ghosten/common)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/GhostenEditor/ghosten/release.yml)
 
 </div>
 

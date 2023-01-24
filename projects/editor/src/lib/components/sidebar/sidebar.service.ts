@@ -21,7 +21,7 @@ export class SidebarService {
       type: 'element',
       icon: 'add',
       component: SidebarElementComponent,
-      position: 'left',
+      position: 'right',
       active: true,
     },
     {
@@ -29,7 +29,6 @@ export class SidebarService {
       icon: 'edit',
       component: SidebarConfigComponent,
       position: 'right',
-      active: true,
     },
     {
       type: 'tree',
