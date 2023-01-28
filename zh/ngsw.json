@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1674551575044,
+  "timestamp": 1674931585986,
   "index": "/ghosten/zh/index.html",
   "assetGroups": [
     {
@@ -11,17 +11,17 @@
         "ignoreVary": true
       },
       "urls": [
-        "/ghosten/zh/258.5a4025ae1482a3cb.js",
-        "/ghosten/zh/583.f2e141de6d4fa17d.js",
+        "/ghosten/zh/258.e1d78370ae71dc37.js",
+        "/ghosten/zh/583.95b5e393b6cc58e3.js",
         "/ghosten/zh/622.ddf42700e48f6df9.js",
-        "/ghosten/zh/924.68854112125d9278.js",
+        "/ghosten/zh/924.29654b7650aa1bf4.js",
         "/ghosten/zh/index.html",
         "/ghosten/zh/main.15f3678c485d2d9c.js",
         "/ghosten/zh/manifest.webmanifest",
         "/ghosten/zh/polyfills.b06dc6e66537fa81.js",
-        "/ghosten/zh/runtime.1c7ae8be067963f4.js",
-        "/ghosten/zh/styles.770b0cdd583b9e33.css",
-        "/ghosten/zh/vendor.7bdc225b1255c5aa.js"
+        "/ghosten/zh/runtime.de148e37201bcd3e.js",
+        "/ghosten/zh/styles.5528a72486a398f6.css",
+        "/ghosten/zh/vendor.e724d75c57864bf8.js"
       ],
       "patterns": []
     },
@@ -49,10 +49,10 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/ghosten/zh/258.5a4025ae1482a3cb.js": "455584e4782d5ec9c450622bd86a5b4ca0fe329e",
-    "/ghosten/zh/583.f2e141de6d4fa17d.js": "4072826e96dfbb47aad0abbceec243febd16a1b8",
+    "/ghosten/zh/258.e1d78370ae71dc37.js": "4187146f9bb293e93bf82dd929aef4c6c00fea99",
+    "/ghosten/zh/583.95b5e393b6cc58e3.js": "03e827feae12425997045c9c023a7bb70273e6f0",
     "/ghosten/zh/622.ddf42700e48f6df9.js": "63e5b3c441c0be3ca5b98177031e43aa673ea4a5",
-    "/ghosten/zh/924.68854112125d9278.js": "6b6517f6491d7c3d82b348e1159898667434e7d5",
+    "/ghosten/zh/924.29654b7650aa1bf4.js": "20d1c2ed1e97e4da0d6bc8b21df553ad108866e0",
     "/ghosten/zh/Ghosten Icons-Regular.555750593c3cb9d4.woff2": "07570cdd6668ad8b81017a282a8dac9558971b98",
     "/ghosten/zh/assets/export.gt": "2897ad687c507cc6d89e1bdccba2c211b39e9b20",
     "/ghosten/zh/assets/icons/128.png": "43899ac47f62b975e61d155c0018815660f49fc2",
@@ -63,13 +63,13 @@
     "/ghosten/zh/assets/icons/favicon.ico": "698c4e4e6ee37cc450f7ccb61575e8db8cd6198f",
     "/ghosten/zh/assets/screenshot.webp": "485e0d2b76170e839571b319f08296c63db6b422",
     "/ghosten/zh/assets/splashscreen.html": "8ac712a89e7c36ba3b42b041a22fe73546661821",
-    "/ghosten/zh/index.html": "c32b7f3e19cf80aa0b5da3d6d38b97972a717dc2",
+    "/ghosten/zh/index.html": "d24ae44868672c27cbfd8c021d5ec9095bfe9723",
     "/ghosten/zh/main.15f3678c485d2d9c.js": "35f6357adedb277e0d591f9d7fed27716c6f5edf",
     "/ghosten/zh/manifest.webmanifest": "3ff8cd1fad02c57e074f5dcd0eb67dd57b7b21bc",
     "/ghosten/zh/polyfills.b06dc6e66537fa81.js": "1ee8cbd50b69e7728262397b3e991f4dbbf76751",
-    "/ghosten/zh/runtime.1c7ae8be067963f4.js": "a04bfccf356b6bfa09b28772c2e5be5e5e19a579",
-    "/ghosten/zh/styles.770b0cdd583b9e33.css": "706ed44b70013e198d08c33af0cd0356f9801154",
-    "/ghosten/zh/vendor.7bdc225b1255c5aa.js": "19f24d141621e70e3707d0e89c049d5fc5530d14"
+    "/ghosten/zh/runtime.de148e37201bcd3e.js": "801ce19b2241b8ed546d6f9432b7d0bede71960c",
+    "/ghosten/zh/styles.5528a72486a398f6.css": "999a2fc083661c47d98c47a63e45f9a92dd39d1a",
+    "/ghosten/zh/vendor.e724d75c57864bf8.js": "846d343a7c393b8743334f405aefc5392a970679"
   },
   "navigationUrls": [
     {
