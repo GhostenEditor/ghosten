@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { ModalComponent } from '../modal/modal.component';
 import { PageConfig } from './types';
 import { PageEditComponent } from './page-edit.component';
 
@@ -17,6 +18,7 @@ import { PageEditComponent } from './page-edit.component';
     modalTitle="页面列表"
     modalSize="xl"
     (cancel)="modalClose.emit()"
+    (animationDone)="animationDone.emit()"
   >
     <div class="overflow-auto">
       <table class="table table-bordered table-hover table-striped">
@@ -66,6 +68,8 @@ import { PageEditComponent } from './page-edit.component';
 })
 export class PagesComponent implements OnInit {
   @Output() modalClose = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
+  @ViewChild(ModalComponent, { static: true }) modal: ModalComponent;
   mode: 'add' | 'view' | 'edit' = 'view';
   pageList: PageConfig[];
 
@@ -120,6 +124,6 @@ export class PagesComponent implements OnInit {
 
   activatePage(id: number) {
     this.router.navigate(['edit', id]).catch();
-    this.modalClose.emit();
+    this.modal.onCancel();
   }
 }

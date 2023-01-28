@@ -8,6 +8,7 @@ import { LogEvent } from '@ghosten/common';
     modalTitle="预览"
     modalSize="xl"
     (cancel)="modalDismiss.emit()"
+    (animationDone)="animationDone.emit()"
   >
     <gt-renderer [data]="data" (log)="log($event)"></gt-renderer>
   </app-modal>`,
@@ -15,6 +16,7 @@ import { LogEvent } from '@ghosten/common';
 export class RenderComponent {
   @Input() data: any;
   @Output() modalDismiss = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
 
   log({ type, message, data }: LogEvent) {
     switch (type) {

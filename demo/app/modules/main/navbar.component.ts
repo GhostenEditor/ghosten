@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
 import { Router } from '@angular/router';
 
-import { merge, tap } from 'rxjs';
+import { merge, switchMap, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { PageEditComponent } from '../page-management/page-edit.component';
@@ -42,23 +42,7 @@ import { ToastService } from '../toast/toast.service';
         />
         <span class="fw-bold mx-1">GHOSTEN</span>
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        (click)="showRightSidebar = true"
-      >
-        <i class="gt-icon">dotted_line</i>
-      </button>
-      <app-offcanvas
-        offCanvasTitle="GHOSTEN"
-        position="end"
-        theme="primary"
-        [show]="showRightSidebar"
-        (offCanvasClose)="showRightSidebar = false"
-      >
+      <app-offcanvas offCanvasTitle="GHOSTEN" position="end" theme="primary" [(show)]="showRightSidebar">
         <ul class="navbar-nav flex-row flex-wrap">
           <li class="nav-item col-6 col-lg-auto">
             <button
@@ -174,7 +158,16 @@ import { ToastService } from '../toast/toast.service';
           </li>
         </ul>
       </app-offcanvas>
-      <div *ngIf="showRightSidebar" class="offcanvas-backdrop fade show" (click)="showRightSidebar = false"></div>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        (click)="showRightSidebar = true"
+      >
+        <i class="gt-icon">dotted_line</i>
+      </button>
     </div>
   </nav>`,
 })
@@ -235,7 +228,13 @@ export class NavbarComponent {
       disposeOnNavigation: true,
     });
     const componentRef = overlayRef.attach(new ComponentPortal(PagesComponent));
-    componentRef.instance.modalClose.pipe(take(1)).subscribe(() => overlayRef.dispose());
+    componentRef.instance.modalClose
+      .pipe(
+        tap(() => overlayRef.detachBackdrop()),
+        switchMap(() => componentRef.instance.animationDone),
+        take(1),
+      )
+      .subscribe(() => overlayRef.dispose());
   }
 
   addPage() {
@@ -254,7 +253,11 @@ export class NavbarComponent {
       ),
       componentRef.instance.modalClose,
     )
-      .pipe(take(1))
+      .pipe(
+        tap(() => overlayRef.detachBackdrop()),
+        switchMap(() => componentRef.instance.animationDone),
+        take(1),
+      )
       .subscribe(() => overlayRef.dispose());
   }
 

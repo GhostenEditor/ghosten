@@ -1,16 +1,36 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { DOCUMENT } from '@angular/common';
+import {
+  AnimationEvent,
+  animate,
+  animateChild,
+  group,
+  query,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-const fadeAnimation = trigger('fade', [
-  state('in', style({ transform: 'matrix(1,0,0,1,0,0)', opacity: 1 })),
-  transition('void => *', [
-    style({
-      transform: 'matrix(.9,0,0,.9,0,30)',
-      opacity: 0,
-    }),
-    animate('200ms cubic-bezier(0, 0, 0.2, 1)'),
-  ]),
+const fadeAnimation = trigger('dialogContainer', [
+  state('void, exit', style({ opacity: 0, transform: 'matrix(.9,0,0,.9,0,30)' })),
+  state('enter', style({ transform: 'none' })),
+  transition(
+    '* => enter',
+    group([
+      animate('200ms cubic-bezier(0, 0, 0.2, 1)', style({ transform: 'none', opacity: 1 })),
+      query('@*', animateChild(), { optional: true }),
+    ]),
+    {
+      params: { enterAnimationDuration: '150ms', exitAnimationDuration: '75ms' },
+    },
+  ),
+  transition(
+    '* => void, * => exit',
+    group([
+      animate('100ms cubic-bezier(0, 0, 0.2, 1)', style({ opacity: 0, transform: 'matrix(.9,0,0,.9,0,30)' })),
+      query('@*', animateChild(), { optional: true }),
+    ]),
+  ),
 ]);
 
 @Component({
@@ -30,7 +50,15 @@ const fadeAnimation = trigger('fade', [
         [ngClass]="'modal-' + modalSize"
         [class.modal-fullscreen]="fullscreen"
       >
-        <div class="modal-content" @fade cdkDrag cdkDragBoundary="body" #cdkDrag="cdkDrag" [cdkDragStartDelay]="50">
+        <div
+          class="modal-content"
+          [@dialogContainer]="_getAnimationState()"
+          (@dialogContainer.done)="_onAnimationDone($event)"
+          cdkDrag
+          cdkDragBoundary="body"
+          #cdkDrag="cdkDrag"
+          [cdkDragStartDelay]="50"
+        >
           <div class="modal-header" cdkDragHandle>
             <h4 class="modal-title flex-grow-1">{{ modalTitle }}</h4>
             <button
@@ -46,8 +74,9 @@ const fadeAnimation = trigger('fade', [
               class="btn btn-text"
               data-bs-dismiss="modal"
               aria-label="Close"
+              autofocus
               (mousedown)="$event.stopPropagation()"
-              (click)="cancel.emit()"
+              (click)="onCancel()"
             >
               <i class="gt-icon">close</i>
             </button>
@@ -56,13 +85,13 @@ const fadeAnimation = trigger('fade', [
             <ng-content></ng-content>
           </div>
           <div class="modal-footer" *ngIf="modalFooter">
-            <button type="button" class="btn btn-light" [disabled]="modalPending" (click)="confirm.emit()">
+            <button type="button" class="btn btn-light" [disabled]="modalPending" (click)="onConfirm()">
               <div class="spinner-border spinner-border-sm" role="status" *ngIf="modalPending">
                 <span class="visually-hidden">Loading...</span>
               </div>
               <ng-container i18n="Button: Confirm">确定</ng-container>
             </button>
-            <button type="button" class="btn btn-text" (click)="cancel.emit()" i18n="Button: Cancel">取消</button>
+            <button type="button" class="btn btn-text" (click)="onCancel()" i18n="Button: Cancel">取消</button>
           </div>
         </div>
       </div>
@@ -77,19 +106,38 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() fullscreen: boolean;
   @Output() confirm: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
-
-  constructor(@Inject(DOCUMENT) private _document: Document, private renderer: Renderer2) {}
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
+  private _state: 'void' | 'enter' | 'exit' = 'enter';
 
   ngOnInit() {
-    const body = this._document.body;
-    const scrollbarWidth = window.innerWidth - this._document.documentElement.scrollWidth;
-    this.renderer.setStyle(body, 'overflow', 'hidden');
-    this.renderer.setStyle(body, 'paddingRight', scrollbarWidth + 'px');
+    const scrollbarWidth = window.innerWidth - document.documentElement.scrollWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollbarWidth + 'px';
   }
 
   ngOnDestroy() {
-    const body = this._document.body;
-    this.renderer.removeStyle(body, 'overflow');
-    this.renderer.removeStyle(body, 'paddingRight');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  onConfirm() {
+    this.confirm.emit();
+  }
+
+  onCancel() {
+    this._state = 'exit';
+    this.cancel.emit();
+  }
+
+  _getAnimationState() {
+    return {
+      value: this._state,
+    };
+  }
+
+  _onAnimationDone({ toState }: AnimationEvent) {
+    if (toState === 'exit') {
+      this.animationDone.emit();
+    }
   }
 }

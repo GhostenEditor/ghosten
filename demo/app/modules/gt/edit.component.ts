@@ -7,7 +7,8 @@ import { Overlay } from '@angular/cdk/overlay';
 import { GtEvent } from '@ghosten/editor';
 import { LogEvent } from '@ghosten/common';
 
-import { tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { RenderComponent } from './render.component';
 import { ToastService } from '../toast/toast.service';
@@ -57,7 +58,13 @@ export class EditComponent {
             });
             const componentRef = overlayRef.attach(new ComponentPortal(RenderComponent));
             componentRef.instance.data = event.data.data;
-            componentRef.instance.modalDismiss.subscribe(() => overlayRef.dispose());
+            componentRef.instance.modalDismiss
+              .pipe(
+                tap(() => overlayRef.detachBackdrop()),
+                switchMap(() => componentRef.instance.animationDone),
+                take(1),
+              )
+              .subscribe(() => overlayRef.dispose());
             break;
         }
         break;

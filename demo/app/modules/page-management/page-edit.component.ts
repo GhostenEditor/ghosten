@@ -13,6 +13,7 @@ import { PageConfig } from './types';
     [formGroup]="form"
     (confirm)="confirm()"
     (cancel)="modalClose.emit()"
+    (animationDone)="animationDone.emit()"
   >
     <div class="alert alert-primary" role="alert">
       <i class="gt-icon">bell</i>
@@ -100,6 +101,8 @@ export class PageEditComponent implements OnInit {
   @Input() mode: 'add' | 'modify' = 'add';
   @Output() modalConfirm = new EventEmitter();
   @Output() modalClose = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
+
   form = new FormGroup({
     id: new FormControl(null),
     title: new FormControl(null, Validators.required),
