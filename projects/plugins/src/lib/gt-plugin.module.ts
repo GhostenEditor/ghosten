@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 
+import { GtModalModule } from '@ghosten/utils';
+
 import { ConfigFormModule } from './modules/config-form/config-form.module';
 import { CreateTableComponent } from './create-table.component';
-import { ModalModule } from './modules/modal/modal.module';
 import { modals } from './modals';
 import { providers } from './providers';
 
@@ -19,7 +20,7 @@ import { providers } from './providers';
     A11yModule,
     CdkListboxModule,
     ReactiveFormsModule,
-    ModalModule,
+    GtModalModule,
     ConfigFormModule,
   ],
   declarations: [CreateTableComponent, ...modals],

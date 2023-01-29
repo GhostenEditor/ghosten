@@ -6,7 +6,7 @@ import { PageConfig } from './types';
 
 @Component({
   selector: 'app-modal-page-edit',
-  template: ` <app-modal
+  template: ` <gt-modal
     [modalTitle]="modalTitle"
     [modalPending]="modalPending"
     [modalFooter]="true"
@@ -95,7 +95,7 @@ import { PageConfig } from './types';
       ></textarea>
       <div class="invalid-feedback" *ngIf="pageDescription.touched">此项为必填项</div>
     </div>
-  </app-modal>`,
+  </gt-modal>`,
 })
 export class PageEditComponent implements OnInit {
   @Input() mode: 'add' | 'modify' = 'add';

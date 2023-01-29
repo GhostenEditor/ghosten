@@ -11,6 +11,7 @@ import { take } from 'rxjs/operators';
 import { PageEditComponent } from '../page-management/page-edit.component';
 import { PagesComponent } from '../page-management/pages.component';
 import { ToastService } from '../toast/toast.service';
+import { confirm } from '../../../utils/index-tauri';
 
 @Component({
   selector: 'app-navbar',
@@ -185,8 +186,8 @@ export class NavbarComponent {
     private renderer: Renderer2,
   ) {}
 
-  reset() {
-    if (confirm('是否要清空所有数据？')) {
+  async reset() {
+    if (await confirm('是否要清空所有数据？')) {
       this.http.post('deleteDB', null).subscribe(() => {
         this.toast.show({
           type: 'primary',

@@ -6,8 +6,13 @@ import { GtEdit } from '@ghosten/editor';
 import { EMPTY } from 'rxjs';
 
 @Component({
-  selector: 'history-component',
-  template: ` <gt-modal i18n-modalTitle="Modal Title: History" modalTitle="历史" (cancel)="cancel.emit()">
+  selector: 'gt-modal-history',
+  template: ` <gt-modal
+    i18n-modalTitle="Modal Title: History"
+    modalTitle="历史"
+    (cancel)="cancel.emit()"
+    (animationDone)="animationDone.emit()"
+  >
     <table class="table table-striped table-bordered table-hover">
       <thead class="position-sticky bg-body" style="top: -1rem">
         <tr>
@@ -33,6 +38,8 @@ import { EMPTY } from 'rxjs';
 export class HistoryComponent {
   @Output() confirm: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
+
   data = this.http
     ? this.http.get<any[]>('getHistoryByID', {
         params: { id: this.gt.metadata.id || 0 },

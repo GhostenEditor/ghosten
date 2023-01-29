@@ -4,16 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { Overlay } from '@angular/cdk/overlay';
 import { Router } from '@angular/router';
 
+import { GtModalComponent } from '@ghosten/utils';
+
 import { merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { ModalComponent } from '../modal/modal.component';
 import { PageConfig } from './types';
 import { PageEditComponent } from './page-edit.component';
+import { confirm } from '../../../utils';
 
 @Component({
   selector: 'app-modal-pages',
-  template: ` <app-modal
+  template: ` <gt-modal
     i18n-modalTitle="Modal Title: Page List"
     modalTitle="页面列表"
     modalSize="xl"
@@ -64,12 +66,12 @@ import { PageEditComponent } from './page-edit.component';
     <div class="d-grid gap-2">
       <button class="btn btn-light" i18n="Button: Add" (click)="addPage()">添加</button>
     </div>
-  </app-modal>`,
+  </gt-modal>`,
 })
 export class PagesComponent implements OnInit {
   @Output() modalClose = new EventEmitter();
   @Output() animationDone: EventEmitter<any> = new EventEmitter();
-  @ViewChild(ModalComponent, { static: true }) modal: ModalComponent;
+  @ViewChild(GtModalComponent, { static: true }) modal: GtModalComponent;
   mode: 'add' | 'view' | 'edit' = 'view';
   pageList: PageConfig[];
 
@@ -116,8 +118,8 @@ export class PagesComponent implements OnInit {
     );
   }
 
-  deletePage(id: number) {
-    if (confirm('是否要删除该数据？')) {
+  async deletePage(id: number) {
+    if (await confirm('是否要删除该数据？')) {
       this.http.post('deletePage', { id }).subscribe(() => this.loadPageList());
     }
   }

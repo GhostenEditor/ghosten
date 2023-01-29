@@ -22,6 +22,7 @@
     "build": "ng run demo:app-shell:production",
     "extract-i18n": "ng extract-i18n",
     "lint": "lerna run lint",
+    "prepare": "husky install",
     "prepublishOnly": "lerna run build",
     "prettier:demo": "npx prettier --write ./demo",
     "prettier:projects": "npx prettier --write ./projects",
@@ -52,6 +53,7 @@
     "@angular/router": "~14.2.11",
     "@angular/service-worker": "~14.2.11",
     "@nguniversal/express-engine": "~14.2.3",
+    "@tauri-apps/api": "^1.2.0",
     "bootstrap": "~5.3.0-alpha1",
     "express": "^4.15.2",
     "monaco-editor": "~0.34.1",
@@ -95,6 +97,7 @@
     "ng-packagr": "~14.2.2",
     "prettier": "^2.7.1",
     "typescript": "~4.7.2",
-    "webpack-bundle-analyzer": "~4.7.0"
+    "webpack-bundle-analyzer": "~4.7.0",
+    "husky": "^8.0.0"
   }
 }

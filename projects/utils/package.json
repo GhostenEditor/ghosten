@@ -1,0 +1,34 @@
+{
+  "name": "@ghosten/utils",
+  "version": "0.1.0-alpha.11",
+  "author": "GhostenEditor",
+  "license": "MIT",
+  "description": "A Low-Code Web Editor",
+  "keywords": [
+    "low-code",
+    "lowcode",
+    "angular",
+    "web",
+    "framework",
+    "mobile"
+  ],
+  "repository": {
+    "url": "https://github.com/GhostenEditor/ghosten.git",
+    "directory": "projects/utils"
+  },
+  "homepage": "https://github.com/GhostenEditor/ghosten#readme",
+  "bugs": "https://github.com/GhostenEditor/ghosten/issues",
+  "scripts": {
+    "build": "ng build utils",
+    "lint": "ng lint utils --fix",
+    "prepublishOnly": "rm -rf dist && cp -rf ../../dist/utils/ dist",
+    "postpublish": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "@angular/common": "^14.2.0",
+    "@angular/core": "^14.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

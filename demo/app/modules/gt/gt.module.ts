@@ -4,12 +4,12 @@ import { NgModule } from '@angular/core';
 import { GT_EDITOR_BRAND, GT_EDITOR_THEME_COLOR, GtEditCoreModule } from '@ghosten/editor';
 import { GtComponentsEditorModule } from '@ghosten/components/editor';
 import { GtComponentsRendererModule } from '@ghosten/components/renderer';
+import { GtModalModule } from '@ghosten/utils';
 import { GtPluginModule } from '@ghosten/plugins';
 import { GtRenderCoreModule } from '@ghosten/renderer';
 
 import { EditComponent } from './edit.component';
 import { EditResolve } from './edit.resolve';
-import { ModalModule } from '../modal/modal.module';
 import { RenderComponent } from './render.component';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { RenderComponent } from './render.component';
     GtComponentsEditorModule,
     GtComponentsRendererModule,
     GtPluginModule,
-    ModalModule,
+    GtModalModule,
     RouterModule.forChild([
       {
         path: '',

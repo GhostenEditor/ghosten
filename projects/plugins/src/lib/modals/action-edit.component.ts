@@ -35,6 +35,7 @@ declare const monaco: typeof Monaco;
       [modalFooter]="true"
       (confirm)="confirm.emit(script)"
       (cancel)="cancel.emit()"
+      (animationDone)="animationDone.emit()"
     >
       <div #editor class="overflow-hidden border" style="height: 36rem;"></div>
     </gt-modal>
@@ -46,6 +47,7 @@ export class ModalActionComponent implements AfterViewInit {
   @Input() script: string;
   @Output() confirm: EventEmitter<string> = new EventEmitter();
   @Output() cancel: EventEmitter<void> = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
 
   constructor(private gt: GtEdit) {}
 

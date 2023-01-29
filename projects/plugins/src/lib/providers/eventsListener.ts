@@ -4,7 +4,7 @@ import { Provider } from '@angular/core';
 
 import { ChangeActionEndEvent, EditExpressionEndEvent, GT_EVENTS_LISTENER, GtEventTarget } from '@ghosten/editor';
 
-import { take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
 
 import { ModalActionComponent } from '../modals';
@@ -28,7 +28,11 @@ export const eventsListener: Provider = {
         ),
         componentRef.instance.cancel,
       )
-        .pipe(take(1))
+        .pipe(
+          tap(() => overlayRef.detachBackdrop()),
+          switchMap(() => componentRef.instance.animationDone),
+          take(1),
+        )
         .subscribe(() => overlayRef.dispose());
     });
     target.addEventListener('editexpressionstart', event => {
@@ -43,7 +47,11 @@ export const eventsListener: Provider = {
         componentRef.instance.confirm.pipe(tap(script => target.dispatchEvent(new EditExpressionEndEvent(script)))),
         componentRef.instance.cancel,
       )
-        .pipe(take(1))
+        .pipe(
+          tap(() => overlayRef.detachBackdrop()),
+          switchMap(() => componentRef.instance.animationDone),
+          take(1),
+        )
         .subscribe(() => overlayRef.dispose());
     });
   },

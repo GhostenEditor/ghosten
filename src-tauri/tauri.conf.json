@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeDevCommand": "npm start",
-    "beforeBuildCommand": "ng build --base-href='/' --localize=false",
+    "beforeDevCommand": "ng s --configuration=tauri-dev",
+    "beforeBuildCommand": "ng build --configuration=tauri-prod --base-href='/' --localize=false",
     "devPath": "http://localhost:4200",
     "distDir": "../dist/demo/browser",
     "withGlobalTauri": true

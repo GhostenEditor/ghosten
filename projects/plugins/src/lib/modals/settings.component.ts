@@ -8,6 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
     modalTitle="设置"
     (confirm)="confirm.emit()"
     (cancel)="cancel.emit()"
+    (animationDone)="animationDone.emit()"
   >
     <form class="row g-3" [formGroup]="formGroup">
       <div class="col-md-6">
@@ -69,6 +70,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class SettingsComponent implements OnInit {
   @Output() confirm: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() animationDone: EventEmitter<any> = new EventEmitter();
 
   formGroup = new FormGroup<any>({
     fontSize: new FormControl(16),

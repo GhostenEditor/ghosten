@@ -34,7 +34,7 @@ const fadeAnimation = trigger('dialogContainer', [
 ]);
 
 @Component({
-  selector: 'app-modal',
+  selector: 'gt-modal',
   animations: [fadeAnimation],
   template: `
     <div
@@ -98,7 +98,8 @@ const fadeAnimation = trigger('dialogContainer', [
     </div>
   `,
 })
-export class ModalComponent implements OnInit, OnDestroy {
+export class GtModalComponent implements OnInit, OnDestroy {
+  static modals: GtModalComponent[] = [];
   @Input() modalTitle: string;
   @Input() modalSize: 'xl' | 'lg' | 'md' | 'sm' = 'md';
   @Input() modalFooter: boolean;
@@ -110,14 +111,20 @@ export class ModalComponent implements OnInit, OnDestroy {
   private _state: 'void' | 'enter' | 'exit' = 'enter';
 
   ngOnInit() {
-    const scrollbarWidth = window.innerWidth - document.documentElement.scrollWidth;
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = scrollbarWidth + 'px';
+    if (!GtModalComponent.modals.length) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.scrollWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = scrollbarWidth + 'px';
+    }
+    GtModalComponent.modals.push(this);
   }
 
   ngOnDestroy() {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
+    GtModalComponent.modals.splice(GtModalComponent.modals.indexOf(this), 1);
+    if (!GtModalComponent.modals.length) {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
   }
 
   onConfirm() {

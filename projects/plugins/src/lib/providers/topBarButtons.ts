@@ -4,7 +4,7 @@ import { Provider } from '@angular/core';
 import { GtEdit, TOP_BAR_BUTTONS } from '@ghosten/editor';
 import { ComponentPortal } from '@angular/cdk/portal';
 
-import { take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
 
 import { HistoryComponent, SettingsComponent } from '../modals';
@@ -100,7 +100,11 @@ export const topBarButtons: Provider = {
           ),
           component.cancel,
         )
-          .pipe(take(1))
+          .pipe(
+            tap(() => overlayRef.detachBackdrop()),
+            switchMap(() => component.animationDone),
+            take(1),
+          )
           .subscribe(() => overlayRef.dispose());
       },
     },
@@ -114,7 +118,11 @@ export const topBarButtons: Provider = {
         });
         const component = overlayRef.attach(new ComponentPortal(SettingsComponent)).instance;
         merge(component.confirm, component.cancel)
-          .pipe(take(1))
+          .pipe(
+            tap(() => overlayRef.detachBackdrop()),
+            switchMap(() => component.animationDone),
+            take(1),
+          )
           .subscribe(() => overlayRef.dispose());
       },
     },

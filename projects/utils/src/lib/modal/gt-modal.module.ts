@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 
-import { ModalComponent } from './modal.component';
+import { GtModalComponent } from './gt-modal.component';
 
 @NgModule({
   imports: [DragDropModule, CommonModule, A11yModule],
-  exports: [ModalComponent],
-  declarations: [ModalComponent],
+  exports: [GtModalComponent],
+  declarations: [GtModalComponent],
 })
-export class ModalModule {}
+export class GtModalModule {}
