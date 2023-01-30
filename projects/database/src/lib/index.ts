@@ -1,5 +1,4 @@
 import { MessageEvent } from './types';
-import { log } from './log';
 
 import { activatePage } from './activatePage';
 import { addPage } from './addPage';
@@ -7,6 +6,7 @@ import { deleteDB } from './deleteDB';
 import { deletePage } from './deletePage';
 import { editPage } from './editPage';
 import { exportDB } from './exportDB';
+import { exportDBWithoutHistory } from './exportDBWithoutHistory';
 import { getActivatedPageID } from './getActivatedPageID';
 import { getHistoryByID } from './getHistoryByID';
 import { getLatestConfigByID } from './getLatestConfigByID';
@@ -74,10 +74,10 @@ export class GtDatabase {
         });
       });
       dbRequest.addEventListener('success', () => {
-        log('info', 'connect success');
+        this.log('info', 'connect success');
         this.db = dbRequest.result;
         this.db.addEventListener('close', () => {
-          log('warn', 'closed unexpectedly');
+          this.log('warn', 'closed unexpectedly');
           this.db = null;
         });
         if (importDataPromise) {
@@ -86,8 +86,22 @@ export class GtDatabase {
           resolve(this.db);
         }
       });
-      dbRequest.addEventListener('error', error => log('error', 'IndexedDB connect request failed %O', error));
+      dbRequest.addEventListener('error', error => this.log('error', 'IndexedDB connect request failed %O', error));
     });
+  }
+
+  log(type: 'info' | 'warn' | 'error', message: string, ...rest: any[]) {
+    switch (type) {
+      case 'info':
+        console.info('[IndexedDB]:' + message, ...rest);
+        break;
+      case 'warn':
+        console.warn('[IndexedDB]:' + message, ...rest);
+        break;
+      case 'error':
+        console.error('[IndexedDB]:' + message, ...rest);
+        break;
+    }
   }
 
   message(type: string, data?: any): Promise<MessageEvent> {
@@ -115,6 +129,8 @@ export class GtDatabase {
               return importDB(db, data);
             case 'exportDB':
               return exportDB(db);
+            case 'exportDBWithoutHistory':
+              return exportDBWithoutHistory(db);
             case 'deleteDB':
               return deleteDB(db, this.DBName);
             case 'getNavigations':
@@ -132,12 +148,12 @@ export class GtDatabase {
           }
         },
         reason => {
-          log('error', 'error', reason);
+          this.log('error', 'error', reason);
           return reason;
         },
       )
       .catch(error => {
-        log('error', 'error', error);
+        this.log('error', 'error', error);
         throw error;
       });
   }

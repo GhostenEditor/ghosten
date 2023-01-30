@@ -21,10 +21,10 @@ const gtDefaultData: GtData = {
       type: 'main',
       gt: 'root',
       url: '',
-      size: '',
+      size: null,
       description: '',
       name: 'Main',
-      noFooter: false,
+      modalFooter: false,
       events: null,
       nodeList: [
         {

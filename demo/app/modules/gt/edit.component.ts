@@ -12,6 +12,7 @@ import { take } from 'rxjs/operators';
 
 import { RenderComponent } from './render.component';
 import { ToastService } from '../toast/toast.service';
+import { log } from '../../../utils';
 
 @Component({
   selector: 'app-gt-edit',
@@ -107,20 +108,20 @@ export class EditComponent {
             break;
         }
     }
-    console.info('[GHOSTEN EVENT]: ' + event.type + ' %O', event.data);
+    log('info', '[GHOSTEN EVENT]', event.type, event.data);
   }
 
   log({ type, message, data }: LogEvent) {
     switch (type) {
       case 'info':
         data.metadata.id = this.route.snapshot.data.data.id;
-        console.info('[GHOSTEN  INFO]: ' + message + ' %O', data);
+        log('info', '[GHOSTEN  INFO]', message, data);
         break;
       case 'error':
-        console.error('[GHOSTEN ERROR]: ' + message, data);
+        log('error', '[GHOSTEN ERROR]', message, data);
         break;
       case 'warning':
-        console.warn('[GHOSTEN WARNING]: ' + message, data);
+        log('warn', '[GHOSTEN WARNING]', message, data);
         break;
     }
   }

@@ -40,8 +40,8 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
   control: FormControl;
 
-  @HostBinding('class.clearfix') get clearfix() {
-    return this.gtNode.style.clearfix;
+  @HostBinding('attr.class') get ngClass() {
+    return this.gtNode.classList.join(' ');
   }
 
   public property: T = this.gtNode.property;
@@ -199,6 +199,10 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
     this.template.remove(gtNode);
   }
 
+  showModal(modalId: string) {
+    this.gt.showModal.emit(modalId);
+  }
+
   onEvent(eventType: string, event?: Event) {
     if (!this.gtNode.action || !Array.isArray(this.gtNode.action[eventType])) {
       return;
@@ -222,8 +226,16 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
           } else {
             return of(result);
           }
-        } catch (e) {
-          console.warn(e, action.script, this.gtNode);
+        } catch (error) {
+          this.gt.log.next({
+            type: 'error',
+            message: 'Script execute failed',
+            data: {
+              error,
+              script: action.script,
+              gtNode: this.gtNode,
+            },
+          });
           return of(null);
         }
       }),

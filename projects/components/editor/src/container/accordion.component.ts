@@ -4,7 +4,7 @@ import { EditAbstractComponent } from '@ghosten/editor';
 
 @Component({
   selector: 'gt-accordion',
-  template: ` <div class="accordion">
+  template: ` <div class="accordion" [class.accordion-flush]="property.flush">
     <ng-container *ngIf="!property.accordionItems.length">
       <div class="accordion-item">
         <h2 class="accordion-header">

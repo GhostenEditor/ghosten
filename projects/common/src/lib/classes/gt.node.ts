@@ -31,6 +31,7 @@ export class GtNode<T = {}, ComponentRef = any> {
   overwrite: Overwrite;
   core: Core;
   style: Style;
+  classList: string[] = [];
   property: Property & T;
   validator?: IGtNode.Validator[];
   directive: IGtNode.Directive[] = [];
@@ -73,12 +74,24 @@ export class GtNode<T = {}, ComponentRef = any> {
     if (inheritedNode instanceof GtNode) {
       this.template = inheritedNode;
     }
-    const { id, type, validator, directive, style, property, outletID, variableName, variable, ...nodeConfig } =
-      _rawData;
+    const {
+      id,
+      type,
+      validator,
+      directive,
+      style,
+      classList,
+      property,
+      outletID,
+      variableName,
+      variable,
+      ...nodeConfig
+    } = _rawData;
     this.id = id || randomizer();
     this.variableName = variableName || null;
     this.type = type;
     this.outletID = outletID;
+    this.classList = classList || [];
     if (!inheritedNode) {
       console.warn(`type为${this.type}的组件不存在`);
       return;
@@ -176,6 +189,7 @@ export class GtNode<T = {}, ComponentRef = any> {
       [IGtNode.PropertyEnum.childIndex]: this.parent ? this.parent.children.indexOf(this) : undefined,
       [IGtNode.PropertyEnum.style]: this.style.export(),
       [IGtNode.PropertyEnum.property]: this.property.export(),
+      [IGtNode.PropertyEnum.classList]: this.classList.slice(),
       [IGtNode.PropertyEnum.rights]: this.rights,
       [IGtNode.PropertyEnum.validator]: this.validator,
       [IGtNode.PropertyEnum.directive]: this.directive,
@@ -238,9 +252,13 @@ export class GtNode<T = {}, ComponentRef = any> {
           parentNode.componentRef.instance.insert(this, index);
         }
       }
+      if (!this.parent.core.dynamicTemplate) {
+        delete this.outletID;
+      }
     } else {
       this.parent = null;
       this.path = [this];
+      delete this.outletID;
     }
   }
 

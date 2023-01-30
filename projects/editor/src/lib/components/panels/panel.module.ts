@@ -8,6 +8,7 @@ import { ConfigFormModule, DropdownModule } from '../../modules';
 
 import { ActionComponent } from './action.component';
 import { CardComponent } from './card.component';
+import { ClassComponent } from './class.component';
 import { FormComponent } from './form.component';
 import { PanelBoardComponent } from './panel-board.component';
 import { PanelConfigComponent } from './panel-config.component';
@@ -26,6 +27,7 @@ const components = [
   CardComponent,
   ActionComponent,
   FormComponent,
+  ClassComponent,
 ];
 
 @NgModule({

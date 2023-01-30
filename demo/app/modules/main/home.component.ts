@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
         <a target="_blank" href="https://github.com/GhostenEditor/ghosten" class="btn btn-lg btn-primary me-3">
           <small>Develop</small>
         </a>
-        <button type="button" class="btn btn-lg btn-light">
+        <button type="button" class="btn btn-lg btn-light" disabled>
           <small>How to start</small>
         </button>
       </div>
@@ -53,8 +53,8 @@ export class HomeComponent implements OnInit {
   description: string = '';
 
   ngOnInit() {
-    concat(...this.originalDescription.split('').map(letter => timer(Math.random() * 150).pipe(map(() => letter))))
-      // .pipe(tap(console.log))
-      .subscribe(letter => (this.description += letter));
+    concat(
+      ...this.originalDescription.split('').map(letter => timer(Math.random() * 150).pipe(map(() => letter))),
+    ).subscribe(letter => (this.description += letter));
   }
 }

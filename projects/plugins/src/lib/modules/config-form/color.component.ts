@@ -17,6 +17,9 @@ import { SketchComponent } from 'ngx-color/sketch';
     >
       {{ formControl.value }}
     </div>
+    <button *ngIf="formControl.value" class="btn btn-light btn-sm" (click)="formControl.reset()">
+      <i class="gt-icon">close</i>
+    </button>
   </div>`,
 })
 export class ColorComponent {
@@ -43,7 +46,6 @@ export class ColorComponent {
 
   showColorPicker() {
     const overlayRef = this.overlay.create({
-      width: '16rem',
       hasBackdrop: true,
       backdropClass: '',
       disposeOnNavigation: true,

@@ -8,6 +8,7 @@ import {
   GT_EDITOR_BRAND,
   GT_EDITOR_THEME_COLOR,
   GT_EDIT_COMPONENT_MAP,
+  GT_EDIT_COMPONENT_TYPE_MAP,
   GT_ELEMENT_LISTS,
   GT_INTERNAL_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
@@ -49,6 +50,11 @@ export const providers: Provider[] = [
   },
   {
     provide: GT_EDIT_COMPONENT_MAP,
+    useValue: {},
+    multi: true,
+  },
+  {
+    provide: GT_EDIT_COMPONENT_TYPE_MAP,
     useValue: {},
     multi: true,
   },

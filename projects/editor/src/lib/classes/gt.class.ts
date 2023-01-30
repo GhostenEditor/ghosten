@@ -216,13 +216,14 @@ export class GtEdit extends Gt {
   addBoard(): Board {
     const board = new Board({
       name: 'Modal',
+      title: 'Modal',
       type: 'modal',
       url: '',
       id: randomizer(),
-      size: 'xl',
+      size: null,
       events: null,
       description: '',
-      noFooter: true,
+      modalFooter: false,
     });
     this.boards.push(board);
     this.pages.push(board);
@@ -247,7 +248,7 @@ export class GtEdit extends Gt {
       name: '自定义组件',
       events: null,
       description: '',
-      noFooter: true,
+      modalFooter: false,
       size: null,
       url: '',
     });
@@ -273,7 +274,7 @@ export class GtEdit extends Gt {
       name: '自定义组件',
       events: null,
       description: '',
-      noFooter: true,
+      modalFooter: false,
       size: null,
       url: '',
     });

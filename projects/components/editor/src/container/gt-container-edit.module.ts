@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import {
   GT_EDIT_COMPONENT_MAP,
+  GT_EDIT_COMPONENT_TYPE_MAP,
   GT_ELEMENT_LISTS,
   GT_NODE_DEFAULT_CONFIG,
   GT_TEMPLATE_MAP,
@@ -10,13 +11,13 @@ import {
 } from '@ghosten/editor';
 import { gtContainerConfigMap } from '@ghosten/components';
 
+import { NavComponent, NavComponentType } from './nav.component';
 import { AccordionComponent } from './accordion.component';
 import { AlertComponent } from './alert.component';
 import { ButtonGroupComponent } from './button-group.component';
 import { CardComponent } from './card.component';
 import { ListGroupComponent } from './list-group.component';
 import { ListGroupItemComponent } from './list-group-item.component';
-import { NavComponent } from './nav.component';
 
 @NgModule({
   imports: [CommonModule, GtEditCoreModule],
@@ -124,6 +125,13 @@ import { NavComponent } from './nav.component';
         nav: `<ul class="nav" style="width: 20rem;"><li class="nav-item"><a class="nav-link active">Active</a></li><li class="nav-item"><a class="nav-link">Link</a></li><li class="nav-item"><a class="nav-link disabled">Disabled</a></li>
 </ul>`,
         listGroup: `<ul class="list-group"><li class="list-group-item">An item</li><li class="list-group-item">A second item</li><li class="list-group-item">A third item</li></ul>`,
+      },
+      multi: true,
+    },
+    {
+      provide: GT_EDIT_COMPONENT_TYPE_MAP,
+      useValue: {
+        nav: NavComponentType,
       },
       multi: true,
     },

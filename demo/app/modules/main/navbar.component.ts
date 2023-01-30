@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 import { PageEditComponent } from '../page-management/page-edit.component';
 import { PagesComponent } from '../page-management/pages.component';
 import { ToastService } from '../toast/toast.service';
-import { confirm } from '../../../utils/index-tauri';
+import { confirm } from '../../../utils';
 
 @Component({
   selector: 'app-navbar',

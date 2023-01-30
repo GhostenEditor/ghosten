@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RenderAbstractComponent } from '@ghosten/renderer';
 
 @Component({
-  selector: 'config-form[gt-config-form]',
+  selector: 'form[gt-form]',
   template: '<ng-template gtTemplate></ng-template>',
 })
 export class FormComponent extends RenderAbstractComponent {

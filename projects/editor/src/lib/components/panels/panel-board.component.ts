@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Board, IGtNode } from '@ghosten/common';
 
-import { FormItem } from '../../types';
+import { FormEvent, FormItem } from '../../types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,6 +59,12 @@ export class PanelBoardComponent {
         name: 'name',
       },
       {
+        label: 'Title',
+        value: board.title,
+        type: 'text',
+        name: 'title',
+      },
+      {
         label: 'type',
         value: board.type,
         type: 'text',
@@ -96,10 +102,16 @@ export class PanelBoardComponent {
           },
         ],
       },
+      {
+        label: 'Footer',
+        name: 'modalFooter',
+        type: 'switch',
+        value: board.modalFooter,
+      },
     ];
   }
 
-  onchange(formItem: any) {
+  onchange({ formItem }: FormEvent) {
     const { name, value } = formItem;
     // @ts-ignore
     this.board[name] = value;

@@ -1,7 +1,8 @@
 type StyleProperty = 'userSelect' | 'cursor';
-const userSelect = 'user-select'; // getComputedStyle(document.documentElement).hasOwnProperty('user-select')
-// ? 'user-select'
-// : '-webkit-user-select';
+// todo ssr support
+const userSelect = getComputedStyle(document.documentElement).hasOwnProperty('user-select')
+  ? 'user-select'
+  : '-webkit-user-select';
 
 export function setDragRootStyle(root: HTMLElement, property: StyleProperty, value: string) {
   root.style.setProperty(fixedProperty(property), value);

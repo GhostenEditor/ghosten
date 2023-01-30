@@ -1,29 +1,6 @@
 import { EMPTY, Observable, filter, fromEvent, merge, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-interface WorkerMessage {
-  type: string;
-  data?: any;
-}
-
-type RequestType =
-  | 'addPage'
-  | 'editPage'
-  | 'deletePage'
-  | 'activatePage'
-  | 'getActivatedPageID'
-  | 'getPageList'
-  | 'getNavigations'
-  | 'getRoutes'
-  | 'getLatestConfigByID'
-  | 'save'
-  | 'deleteDB'
-  | 'importDB'
-  | 'exportDB'
-  | 'getHistoryByID'
-  | 'saveComponent'
-  | 'removeComponent';
-
 export class WorkerConnector {
   static workerConnector: WorkerConnector | null = null;
   private readonly worker: Worker | null = null;
@@ -47,13 +24,13 @@ export class WorkerConnector {
     }
   }
 
-  postMessage(message: WorkerMessage, options?: Transferable[] | StructuredSerializeOptions) {
+  postMessage(message: { type: string; data?: any }, options?: Transferable[] | StructuredSerializeOptions) {
     if (this.worker) {
       this.worker.postMessage(message, options as any);
     }
   }
 
-  request(type: RequestType, data: any): Observable<any> {
+  request(type: string, data: any): Observable<any> {
     this.postMessage({ type, data });
     return this.message.pipe(
       filter(({ data }) => data.subType === type),

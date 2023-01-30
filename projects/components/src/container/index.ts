@@ -39,6 +39,7 @@ export interface ListGroupItem {
 
 export interface AccordionProperty {
   multi: boolean;
+  flush: boolean;
   accordionItems: {
     id: string;
     title: string;
@@ -163,6 +164,11 @@ export const gtContainerConfigMap = () => {
         type: 'switch',
       },
       {
+        label: 'Flush',
+        name: 'flush',
+        type: 'switch',
+      },
+      {
         label: 'Items',
         name: 'accordionItems',
         type: 'table',
@@ -172,6 +178,7 @@ export const gtContainerConfigMap = () => {
           { name: 'Expanded', prop: 'expanded', type: 'switch', value: false },
         ],
         value: [],
+        canBind: true,
       },
     ],
   });

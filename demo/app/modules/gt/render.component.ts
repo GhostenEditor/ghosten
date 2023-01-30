@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LogEvent } from '@ghosten/common';
+import { log } from '../../../utils';
 
 @Component({
   selector: 'app-gt-render',
@@ -21,13 +22,13 @@ export class RenderComponent {
   log({ type, message, data }: LogEvent) {
     switch (type) {
       case 'info':
-        console.info('[GHOSTEN  INFO]: ' + message + ' %O', data);
+        log('info', '[GHOSTEN  INFO]: ' + message + ' %O', data);
         break;
       case 'error':
-        console.error('[GHOSTEN ERROR]: ' + message, data);
+        log('error', '[GHOSTEN ERROR]: ' + message, data);
         break;
       case 'warning':
-        console.warn('[GHOSTEN WARNING]: ' + message, data);
+        log('warn', '[GHOSTEN WARNING]: ' + message, data);
         break;
     }
   }

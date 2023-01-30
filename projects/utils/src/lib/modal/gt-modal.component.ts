@@ -101,7 +101,7 @@ const fadeAnimation = trigger('dialogContainer', [
 export class GtModalComponent implements OnInit, OnDestroy {
   static modals: GtModalComponent[] = [];
   @Input() modalTitle: string;
-  @Input() modalSize: 'xl' | 'lg' | 'md' | 'sm' = 'md';
+  @Input() modalSize: 'xl' | 'lg' | 'md' | 'sm' | null = 'md';
   @Input() modalFooter: boolean;
   @Input() modalPending: boolean;
   @Input() fullscreen: boolean;
@@ -128,6 +128,7 @@ export class GtModalComponent implements OnInit, OnDestroy {
   }
 
   onConfirm() {
+    this._state = 'exit';
     this.confirm.emit();
   }
 

@@ -46,6 +46,7 @@ export namespace IGtNode {
     variable?: any[];
     validator?: any;
     style?: any;
+    classList?: string[];
     property?: any;
     action?: any;
     rights?: any;
@@ -78,6 +79,7 @@ export namespace IGtNode {
     parent = 'parent',
     childIndex = 'childIndex',
     style = 'style',
+    classList = 'classList',
     property = 'property',
     rights = 'rights',
     validator = 'validator',

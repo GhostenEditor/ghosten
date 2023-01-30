@@ -1,5 +1,13 @@
 import { createDefaultConfig } from '@ghosten/common';
 
+export interface ImageProperty {
+  src: string;
+  alt: string;
+  title: string;
+  responsive: boolean;
+  thumbnails: boolean;
+}
+
 export const gtBaseConfigMap = () => {
   const text = createDefaultConfig({
     property: [
@@ -61,6 +69,16 @@ export const gtBaseConfigMap = () => {
         label: 'Title',
         type: 'text',
         name: 'title',
+      },
+      {
+        label: 'Responsive',
+        type: 'switch',
+        name: 'responsive',
+      },
+      {
+        label: 'Thumbnails',
+        type: 'switch',
+        name: 'thumbnails',
       },
     ],
   });

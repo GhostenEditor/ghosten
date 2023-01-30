@@ -61,6 +61,16 @@ export function gtTextConfigMap() {
       },
     ],
   });
+  const code = createDefaultConfig({
+    property: [
+      {
+        label: $localize`:Property Label\: Text:文字`,
+        name: 'text',
+        type: 'textarea',
+        canBind: true,
+      },
+    ],
+  });
   return {
     h1,
     h2,
@@ -68,5 +78,6 @@ export function gtTextConfigMap() {
     h4,
     h5,
     h6,
+    code,
   };
 }

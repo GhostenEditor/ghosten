@@ -11,7 +11,6 @@ export class AppComponent {
   constructor(toast: ToastService, updates: SwUpdate) {
     if (updates.isEnabled) {
       updates.versionUpdates.subscribe(event => {
-        console.info('versionUpdates', event);
         if (event.type === 'VERSION_READY') {
           toast.show({
             type: 'primary',

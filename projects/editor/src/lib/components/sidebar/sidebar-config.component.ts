@@ -58,6 +58,16 @@ import { GtEdit } from '../../classes';
         <gt-panel-config [type]="'style'" [gtNode]="gtNode"></gt-panel-config>
       </gt-accordion-item>
       <gt-accordion-item
+        *ngIf="gtNode.style"
+        i18n-cardTitle="Config Card Title: Class"
+        cardTitle="Class"
+        [expanded]="gt.settings.configAccordionExpanded.class"
+        (opened)="opened('class')"
+        (closed)="closed('class')"
+      >
+        <gt-panel-class [gtNode]="gtNode"></gt-panel-class>
+      </gt-accordion-item>
+      <gt-accordion-item
         *ngIf="gtNode.rights"
         i18n-cardTitle="Config Card Title: Authorization"
         cardTitle="权限"

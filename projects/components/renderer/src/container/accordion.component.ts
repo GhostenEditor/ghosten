@@ -12,7 +12,12 @@ import { RenderAbstractComponent } from '@ghosten/renderer';
       transition('expanded <=> collapsed, void => collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
   ],
-  template: ` <div class="accordion" cdkAccordion [multi]="gtNode.property.multi">
+  template: ` <div
+    class="accordion"
+    [class.accordion-flush]="property.flush"
+    cdkAccordion
+    [multi]="gtNode.property.multi"
+  >
     <div
       class="accordion-item"
       *ngFor="let item of property.accordionItems"

@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 
-import { GtEdit } from '@ghosten/editor';
+import { GT_EDIT_COMPONENT_TYPE_MAP, GtEdit } from '@ghosten/editor';
 
 import { from, fromEvent, of } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ const monacoLoader = of(null).pipe(
 declare const monaco: typeof Monaco;
 
 @Component({
-  selector: 'gt-action-edit',
+  selector: 'gt-modal-action-editor',
   template: `
     <gt-modal
       i18n-modalTitle="Modal Title: Action Editor"
@@ -37,7 +37,7 @@ declare const monaco: typeof Monaco;
       (cancel)="cancel.emit()"
       (animationDone)="animationDone.emit()"
     >
-      <div #editor class="overflow-hidden border" style="height: 36rem;"></div>
+      <div #editor class="overflow-hidden border" style="height: calc(100vh - 15rem)"></div>
     </gt-modal>
   `,
 })
@@ -48,8 +48,14 @@ export class ModalActionComponent implements AfterViewInit {
   @Output() confirm: EventEmitter<string> = new EventEmitter();
   @Output() cancel: EventEmitter<void> = new EventEmitter();
   @Output() animationDone: EventEmitter<any> = new EventEmitter();
+  private typeMap: Record<string, { typeName: string; typeStr: string }>;
 
-  constructor(private gt: GtEdit) {}
+  constructor(
+    private gt: GtEdit,
+    @Inject(GT_EDIT_COMPONENT_TYPE_MAP) typeMap: Record<string, { typeName: string; typeStr: string }>[],
+  ) {
+    this.typeMap = Object.assign({}, ...typeMap);
+  }
 
   ngAfterViewInit() {
     monacoLoader.subscribe(() => {
@@ -58,8 +64,20 @@ export class ModalActionComponent implements AfterViewInit {
         language: 'typescript',
         lineNumbersMinChars: 2,
         theme: this.gt.darkMode ? 'vs-dark' : 'vs',
+        automaticLayout: true,
       });
       editor.onDidChangeModelContent(() => (this.script = editor.getValue()));
+      Object.entries(this.typeMap).forEach(([type, { typeStr }]) => {
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(typeStr, type);
+      });
+      this.gt.nodeList.forEach(node => {
+        if (node.variableName) {
+          monaco.languages.typescript.typescriptDefaults.addExtraLib(
+            `declare const ${node.variableName}: ${this.typeMap[node.type].typeName}`,
+          );
+        }
+      });
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(`declare const _this: ${this.typeMap.nav.typeName}`);
     });
   }
 }

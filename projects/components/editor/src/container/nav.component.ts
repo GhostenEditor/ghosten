@@ -16,3 +16,20 @@ import { NavProperty } from '@ghosten/components';
   </ul>`,
 })
 export class NavComponent extends EditAbstractComponent<NavProperty> implements OnInit {}
+
+export const NavComponentType = {
+  typeName: 'NavComponent',
+  typeStr: `
+interface NavProperty {
+  style: string;
+  fill: string;
+  align: string;
+  items: { tab: string; active: boolean; disabled: boolean }[];
+}
+
+interface NavComponent {
+  activeTab: NavProperty['items'][0];
+  switchNav(nav: NavProperty['items'][0]): void;
+}
+`,
+};

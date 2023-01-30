@@ -10,6 +10,7 @@ import {
 } from '@ghosten/editor';
 import { gtTextConfigMap } from '@ghosten/components';
 
+import { CodeComponent } from './code.component';
 import { H1Component } from './h1.component';
 import { H2Component } from './h2.component';
 import { H3Component } from './h3.component';
@@ -19,7 +20,7 @@ import { H6Component } from './h6.component';
 
 @NgModule({
   imports: [CommonModule, GtEditCoreModule],
-  declarations: [H1Component, H2Component, H3Component, H4Component, H5Component, H6Component],
+  declarations: [H1Component, H2Component, H3Component, H4Component, H5Component, H6Component, CodeComponent],
   providers: [
     {
       provide: GT_ELEMENT_LISTS,
@@ -56,6 +57,11 @@ import { H6Component } from './h6.component';
             type: 'h6',
             icon: 'h6',
           },
+          {
+            label: 'Code',
+            type: 'code',
+            icon: 'code',
+          },
         ],
       },
       multi: true,
@@ -69,6 +75,7 @@ import { H6Component } from './h6.component';
         h4: H4Component,
         h5: H5Component,
         h6: H6Component,
+        code: CodeComponent,
       },
       multi: true,
     },
@@ -81,6 +88,7 @@ import { H6Component } from './h6.component';
         h4: '<h4>h4.Heading</h4>',
         h5: '<h5>h5.Heading</h5>',
         h6: '<h6>h6.Heading</h6>',
+        code: '<code>Code Placeholder</code>',
       },
       multi: true,
     },

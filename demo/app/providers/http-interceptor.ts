@@ -8,6 +8,7 @@ import { map, tap } from 'rxjs/operators';
 // import { GtDatabase } from '@ghosten/database';
 
 import { WorkerConnector } from '../worker';
+import { log } from '../../utils';
 
 @Injectable()
 export class HttpInterceptorAdapter implements HttpInterceptor {
@@ -22,13 +23,13 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isBrowser) {
-      console.info('[HTTP  REQUEST]:%O', req);
+      log('info', '[HTTP RESPONSE]', req);
       return this.resolveWorkerRequest(req).pipe(
         map(({ data }) => new HttpResponse({ url: req.url, body: data })),
-        tap(data => console.info('[HTTP RESPONSE]:%O', data)),
+        tap(data => log('info', '[HTTP RESPONSE]', data)),
         take(1),
         catchError(error => {
-          console.error(error.message);
+          log('error', error.message);
           throw error;
         }),
       );
@@ -53,6 +54,7 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
       case 'deleteDB':
       case 'importDB':
       case 'exportDB':
+      case 'exportDBWithoutHistory':
       case 'getHistoryByID':
       case 'saveComponent':
       case 'removeComponent':

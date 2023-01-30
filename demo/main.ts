@@ -4,6 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { log } from './utils';
 
 if (environment.production) {
   enableProdMode();
@@ -26,7 +27,7 @@ function bootstrap() {
       const applicationRef = moduleRef.injector.get(ApplicationRef);
       enableDebugTools(applicationRef.components[0]);
     })
-    .catch(err => console.error(err));
+    .catch(err => log('error', err));
 }
 
 // bootstrap();

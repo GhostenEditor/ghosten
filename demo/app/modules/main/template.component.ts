@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
 import { LogEvent } from '@ghosten/common';
+import { log } from '../../../utils';
 
 @Component({
   selector: 'app-template',
@@ -19,13 +20,13 @@ export class TemplateComponent {
     if (this.isBrowser) {
       switch (type) {
         case 'info':
-          console.info('[GHOSTEN  INFO]: ' + message + ' %O', data);
+          log('info', '[GHOSTEN  INFO]', message, data);
           break;
         case 'error':
-          console.error('[GHOSTEN ERROR]: ' + message, data);
+          log('error', '[GHOSTEN ERROR]', message, data);
           break;
         case 'warning':
-          console.warn('[GHOSTEN WARNING]: ' + message, data);
+          log('warn', '[GHOSTEN WARNING]', message, data);
           break;
       }
     }

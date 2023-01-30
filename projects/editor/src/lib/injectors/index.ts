@@ -11,6 +11,9 @@ export const TOP_BAR_BUTTONS = new InjectionToken<TopBarButton[]>('Top Bar Butto
 export const GT_EDIT_COMPONENT_MAP = new InjectionToken<Record<string, ComponentType<any>>>(
   'Ghosten Edit Component Map',
 );
+export const GT_EDIT_COMPONENT_TYPE_MAP = new InjectionToken<Record<string, { typeName: string; typeStr: string }>>(
+  'Ghosten Edit Component Type Map',
+);
 export const GT_TEMPLATE_MAP = new InjectionToken<Record<string, string>>('Ghosten Template Map');
 export const GT_INTERNAL_ELEMENT_LISTS = new InjectionToken<ElementList[]>('Ghosten Internal Element Lists');
 export const GT_NODE_DEFAULT_CONFIG = new InjectionToken<Record<string, Map<string, any>>>('Gt Node Default Config');

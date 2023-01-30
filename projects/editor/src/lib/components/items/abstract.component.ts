@@ -20,6 +20,10 @@ export class EditAbstractComponent<T = any> implements OnInit, AfterViewInit, On
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
 
+  @HostBinding('attr.class') get ngClass() {
+    return this.gtNode.classList.join(' ');
+  }
+
   @HostBinding('class.gt-node') gtClass = true;
 
   @HostBinding('class.gt-slot') get gtSlot() {
@@ -28,10 +32,6 @@ export class EditAbstractComponent<T = any> implements OnInit, AfterViewInit, On
 
   @HostBinding('class.opacity-25') get isHidden() {
     return !this.gtNode.property.show || (this.property as any).disabled;
-  }
-
-  @HostBinding('class.clearfix') get clearfix() {
-    return this.gtNode.style && this.gtNode.style.clearfix;
   }
 
   @HostBinding('attr.data-id') get id() {
@@ -253,7 +253,16 @@ export class EditAbstractComponent<T = any> implements OnInit, AfterViewInit, On
 
   remove(gtNode: GtNode | number) {
     if (typeof gtNode === 'number' || gtNode === undefined) {
-      this.template.remove(gtNode);
+      if (this.gtNode.core.dynamicTemplate) {
+        const template = this.templates.find(te => te.templateID === this.gtNode.children[gtNode].outletID);
+        if (template) {
+          return template.remove(gtNode);
+        } else {
+          console.warn('该组件未在页面显示：%O', gtNode);
+        }
+      } else {
+        return this.template.remove(gtNode);
+      }
     } else {
       if (this.gtNode.core.dynamicTemplate) {
         const template = this.templates.find(te => te.templateID === gtNode.outletID);

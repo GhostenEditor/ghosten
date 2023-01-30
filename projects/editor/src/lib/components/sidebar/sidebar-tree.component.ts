@@ -65,7 +65,7 @@ interface FlattenNode {
               type="button"
               class="btn btn-text btn-sm text-nowrap"
               [class.active]="gt.selected.includes(node.source)"
-              (click)="selectTreeNode(node.source)"
+              (click)="selectTreeNode(node.source, $event)"
               (contextmenu)="onContextmenu(node.source, $event)"
             >
               {{ node.type }}
@@ -97,7 +97,7 @@ interface FlattenNode {
               type="button"
               class="btn btn-text btn-sm text-nowrap"
               [class.active]="gt.selected.includes(node.source)"
-              (click)="selectTreeNode(node.source)"
+              (click)="selectTreeNode(node.source, $event)"
               (contextmenu)="onContextmenu(node.source, $event)"
             >
               {{ node.type }} ( {{ node.source.children.length }} )
@@ -202,10 +202,10 @@ export class SidebarTreeComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectTreeNode(gtNode: GtNode) {
+  selectTreeNode(gtNode: GtNode, event: MouseEvent) {
     const selectedNode = this.gt.getNodeById(gtNode.id);
-    if (selectedNode && !this.gt.selected.includes(selectedNode)) {
-      this.gt.changeSelect(selectedNode);
+    if (selectedNode) {
+      this.gt.changeSelect(selectedNode, event.metaKey || event.ctrlKey);
     }
   }
 
