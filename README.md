@@ -14,7 +14,17 @@
 </div>
 
 
-Ghosten Editor is a low code editor for website(client as well with [Tauri](https://tauri.app)) written by [Angular](https://angular.io). You can use it to build Website faster and easily.
+Ghosten Editor is a low code editor for website(client as well with [Tauri](https://tauri.app)) written by [Angular](https://angular.io). You can use it to build Website faster and easily. Explore it in the [Demo Page](https://ghosteneditor.github.io/ghosten/en-US/)
+
+<div align="center">
+
+### Screenshots
+
+</div>
+
+| Browser                            | Mobile |
+|------------------------------------|:-------:|
+| <img width="1710" alt="截屏2023-01-30 13 48 10" src="https://user-images.githubusercontent.com/121630113/215397317-216547c0-89b0-4301-9543-9f32272140c8.png">       | ![Simulator Screen Shot - iPhone 12 - 2023-01-30 at 13 53 03](https://user-images.githubusercontent.com/121630113/215398036-ad158248-5032-4d09-8e8f-41ae9aef55e1.png)  |
 
 ---
 
