@@ -4,8 +4,8 @@
 
 ![Banner](https://user-images.githubusercontent.com/121630113/210319723-d0a2e574-4197-4379-a8c5-96e4b17c52b9.png)
 
-[中文]() |
-[English]()
+[//]: # (中文 |)
+[//]: # (English)
 
 ![npm](https://img.shields.io/npm/v/@ghosten/common?logo=npm)
 ![GitHub](https://img.shields.io/github/license/GhostenEditor/ghosten)
@@ -14,7 +14,7 @@
 </div>
 
 
-A Frontend Low-Code Editor
+Ghosten Editor is a low code editor for website(client as well with [Tauri](https://tauri.app)) written by [Angular](https://angular.io). You can use it to build Website faster and easily.
 
 ---
 
@@ -32,7 +32,7 @@ Table of contents
 * [Features](#features)
 * [Todos](#Todos)
 * [Packages](#Packages)
-* [Getting started](#getting-started)
+* [Development](#Development)
 
 ## Features
 
@@ -71,5 +71,25 @@ This is a monorepo which contains many packages:
 | **Components** | [@ghosten/components](https://www.npmjs.com/package/@ghosten/components) | ![npm](https://img.shields.io/npm/v/@ghosten/components?logo=npm) | [![README](https://img.shields.io/badge/README-green)](projects/components/README.md) |
 | **Database**   | [@ghosten/database](https://www.npmjs.com/package/@ghosten/database)     |  ![npm](https://img.shields.io/npm/v/@ghosten/database?logo=npm)  | [![README](https://img.shields.io/badge/README-green)](projects/database/README.md)   |
 
-## Getting Started
 
+## Development
+
+Clone the repository and install all the necessary dependencies
+
+```sh
+$ git clone https://github.com/GhostenEditor/ghosten.git
+$ cd ghosten
+$ npm install
+```
+
+Start the dev server
+
+```sh
+$ npm start
+```
+
+Once the development server is started you should be able to reach the demo page (eg. [http://localhost:4200](http://localhost:4200))
+
+## Documentation
+
+Check the getting started guide here: [Wiki](https://github.com/GhostenEditor/ghosten/wiki)
