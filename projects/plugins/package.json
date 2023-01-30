@@ -28,7 +28,8 @@
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0",
     "@ghosten/common": "^0.1.0",
-    "@ghosten/editor": "^0.1.0"
+    "@ghosten/editor": "^0.1.0",
+    "@ghosten/utils": "^0.1.0"
   },
   "dependencies": {
     "tslib": "^2.4.0",

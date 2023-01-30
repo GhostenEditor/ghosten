@@ -23,3 +23,7 @@ npm install --save @ghosten/database
 ```shell
 npm add @ghosten/database
 ```
+
+### API
+
+todo

@@ -23,3 +23,7 @@ npm install --save @ghosten/renderer
 ```shell
 npm add @ghosten/renderer
 ```
+
+### API
+
+todo

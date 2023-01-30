@@ -23,3 +23,7 @@ npm install --save @ghosten/plugins
 ```shell
 npm add @ghosten/plugins
 ```
+
+### API
+
+todo

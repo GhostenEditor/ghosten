@@ -23,3 +23,7 @@ npm install --save @ghosten/common
 ```shell
 npm add @ghosten/common
 ```
+
+### API
+
+todo

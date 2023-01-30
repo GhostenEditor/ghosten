@@ -23,3 +23,7 @@ npm install --save @ghosten/editor
 ```shell
 npm add @ghosten/editor
 ```
+
+### API
+
+todo

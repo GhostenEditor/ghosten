@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
       </div>
       <small class="text-body-tertiary"><i>*Note: It is alpha version.</i></small>
       <img
-        src="assets/screenshot.webp"
+        src="https://user-images.githubusercontent.com/121630113/215403653-729e84b0-af01-4682-9a71-61ccf7fbaeae.jpg"
         class="img-fluid border rounded mt-5"
         alt="screenshot"
         width="3420"
