@@ -228,7 +228,7 @@ export class NavbarComponent {
   }
 
   export() {
-    this.http.get<File>('exportDBWithoutHistory').subscribe(data => {
+    this.http.get<File>('exportDB').subscribe(data => {
       const a = this.renderer.createElement('a');
       a.download = data.name;
       a.href = URL.createObjectURL(data);
