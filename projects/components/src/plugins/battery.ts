@@ -28,7 +28,7 @@ export function battery(
   if (direction === 'horizontal') {
     context.rotate(Math.PI / 2);
   }
-  context.scale(1, -1);
+  context.scale(0.9, -0.9);
   if (direction === 'vertical') {
     context.translate(-itemWidth / 2, -canvas.height / 2);
   } else {
@@ -40,7 +40,7 @@ export function battery(
     drawRoundRect(context, itemWidth, itemHeight, itemRadius, index * itemTotalHeight);
   }
   context.fillStyle = foreground;
-  context.shadowBlur = itemGutter * 4;
+  context.shadowBlur = itemGutter * 2;
   context.shadowColor = foreground;
   for (let index = 0; index < Math.round(percent * totalCount); index++) {
     drawRoundRect(context, itemWidth, itemHeight, itemRadius, index * itemTotalHeight);

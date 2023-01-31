@@ -65,7 +65,10 @@ export const providers: Provider[] = [
   },
   {
     provide: GT_TEMPLATE_MAP,
-    useValue: {},
+    useValue: {
+      division: '<div class="gt-node" style="border: .15rem dashed"></div>',
+      slot: '<div class="gt-node" style="border: .15rem dashed"></div>',
+    },
     multi: true,
   },
   {

@@ -183,7 +183,7 @@ export class GtEditComponent implements OnDestroy {
     });
     Mousetrap.bind(['ctrl+v', 'meta+v'], event => {
       event.preventDefault();
-      gt.pasteNode(gt.selected[0]);
+      gt.pasteNode();
     });
     Mousetrap.bind(['ctrl+shift+c', 'meta+shift+c'], event => {
       event.preventDefault();

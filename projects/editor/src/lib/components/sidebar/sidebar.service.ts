@@ -48,10 +48,10 @@ export class SidebarService {
 
   initSettings() {
     if (this.gt.settings.sidebarPosition) {
-      // this.tabs.forEach(tab => {
-      //   tab.position = this.gt.settings.sidebarPosition[tab.type].position;
-      //   tab.active = this.gt.settings.sidebarPosition[tab.type].active;
-      // });
+      this.tabs.forEach(tab => {
+        // tab.position = this.gt.settings.sidebarPosition[tab.type].position;
+        tab.active = this.gt.settings.sidebarPosition[tab.type].active;
+      });
     }
   }
 

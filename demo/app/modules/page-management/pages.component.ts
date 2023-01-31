@@ -33,10 +33,11 @@ import { confirm } from '../../../utils';
             <th class="text-truncate" i18n="Table Column Header: Url">路径</th>
             <th class="text-truncate" i18n="Table Column Header: Parent Menu">上级菜单</th>
             <th class="text-truncate" i18n="Table Column Header: Operation">操作</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let page of pageList">
+        <tbody cdkDropList>
+          <tr *ngFor="let page of pageList" cdkDrag>
             <td>
               <i class="gt-icon">{{ page.icon }}</i>
             </td>
@@ -59,6 +60,7 @@ import { confirm } from '../../../utils';
                 编辑
               </button>
             </td>
+            <td cdkDragHandle><i class="gt-icon">list</i></td>
           </tr>
         </tbody>
       </table>

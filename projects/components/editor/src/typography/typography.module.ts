@@ -17,10 +17,22 @@ import { H3Component } from './h3.component';
 import { H4Component } from './h4.component';
 import { H5Component } from './h5.component';
 import { H6Component } from './h6.component';
+import { StrongComponent } from './strong.component';
+import { TextComponent } from './text.component';
 
 @NgModule({
   imports: [CommonModule, GtEditCoreModule],
-  declarations: [H1Component, H2Component, H3Component, H4Component, H5Component, H6Component, CodeComponent],
+  declarations: [
+    H1Component,
+    H2Component,
+    H3Component,
+    H4Component,
+    H5Component,
+    H6Component,
+    CodeComponent,
+    StrongComponent,
+    TextComponent,
+  ],
   providers: [
     {
       provide: GT_ELEMENT_LISTS,
@@ -62,6 +74,16 @@ import { H6Component } from './h6.component';
             type: 'code',
             icon: 'code',
           },
+          {
+            label: $localize`:Element Label\: Text:文字`,
+            type: 'text',
+            icon: 'text',
+          },
+          {
+            label: 'Strong',
+            type: 'strong',
+            icon: 'B',
+          },
         ],
       },
       multi: true,
@@ -76,6 +98,8 @@ import { H6Component } from './h6.component';
         h5: H5Component,
         h6: H6Component,
         code: CodeComponent,
+        strong: StrongComponent,
+        text: TextComponent,
       },
       multi: true,
     },
@@ -89,6 +113,8 @@ import { H6Component } from './h6.component';
         h5: '<h5>h5.Heading</h5>',
         h6: '<h6>h6.Heading</h6>',
         code: '<code>Code Placeholder</code>',
+        strong: '<strong>Strong Text Placeholder</strong>',
+        text: '<span>Some Text Placeholder</span>',
       },
       multi: true,
     },

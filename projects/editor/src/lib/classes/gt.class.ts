@@ -466,7 +466,17 @@ export class GtEdit extends Gt {
    * @Description: 如果选中的GtNode都可以添加childNode，给选中的GtNode逐个插入复制的GtNode
    * @Return: void
    */
-  pasteNode(targetNode: GtNode) {
+  pasteNode(targetNode?: GtNode) {
+    if (!targetNode) {
+      if (this.selected.length !== 1) {
+        this.log.next({
+          type: 'error',
+          message: '无法粘贴节点，因为当前没有选中或选中多个参照节点',
+        });
+        return;
+      }
+      targetNode = this.selected[0];
+    }
     const getGtNodeConfig = (gtNode: GtNode): IGtNode.Config => {
       const config = gtNode.export();
       if (!gtNode.isTemplateRoot) {

@@ -11,10 +11,22 @@ import { H3Component } from './h3.component';
 import { H4Component } from './h4.component';
 import { H5Component } from './h5.component';
 import { H6Component } from './h6.component';
+import { StrongComponent } from './strong.component';
+import { TextComponent } from './text.component';
 
 @NgModule({
   imports: [CommonModule, GtRenderCoreModule],
-  declarations: [H1Component, H2Component, H3Component, H4Component, H5Component, H6Component, CodeComponent],
+  declarations: [
+    H1Component,
+    H2Component,
+    H3Component,
+    H4Component,
+    H5Component,
+    H6Component,
+    CodeComponent,
+    StrongComponent,
+    TextComponent,
+  ],
   providers: [
     {
       provide: GT_RENDER_COMPONENT_MAP,
@@ -26,6 +38,8 @@ import { H6Component } from './h6.component';
         h5: H5Component,
         h6: H6Component,
         code: CodeComponent,
+        strong: StrongComponent,
+        text: TextComponent,
       },
       multi: true,
     },

@@ -27,7 +27,7 @@ function bootstrap() {
       const applicationRef = moduleRef.injector.get(ApplicationRef);
       enableDebugTools(applicationRef.components[0]);
     })
-    .catch(err => log('error', err));
+    .catch(err => log('error', 'Bootstrap Error', err));
 }
 
 // bootstrap();
@@ -37,14 +37,38 @@ if (document.readyState === 'complete') {
 } else {
   document.addEventListener('DOMContentLoaded', bootstrap);
 }
-
-const darkMode = matchMedia('(prefers-color-scheme: dark)');
-const setColorScheme = (dark: boolean) => (document.documentElement.dataset.bsTheme = dark ? 'dark' : 'light');
+initSettings();
 // const convertStyle = () => {
 //   // document.body.style.height = `${window.innerHeight}px`;
 //   document.documentElement.style.fontSize =
 //     Math.max(0, Math.round((window.innerWidth - 1000) / 200)) + 12 + 'px';
 // };
-darkMode.addEventListener('change', event => setColorScheme(event.matches));
 // window.addEventListener('resize', convertStyle);
 // window.addEventListener('DOMContentLoaded', convertStyle);
+
+function initSettings() {
+  const fontSize = localStorage.getItem('fontSize');
+  const theme = localStorage.getItem('theme');
+  const direction = localStorage.getItem('direction');
+  if (fontSize) {
+    document.documentElement.style.setProperty('font-size', fontSize + 'px');
+  }
+  if (!theme || theme === 'auto') {
+    const darkMode = matchMedia('(prefers-color-scheme: dark)');
+    const setColorScheme = (dark: boolean) => {
+      const theme = localStorage.getItem('theme');
+      if (!theme || theme === 'auto') {
+        document.documentElement.dataset.bsTheme = dark ? 'dark' : 'light';
+      }
+    };
+    darkMode.addEventListener('change', event => setColorScheme(event.matches));
+    document.documentElement.dataset.bsTheme = darkMode.matches ? 'dark' : 'light';
+  } else {
+    document.documentElement.dataset.bsTheme = theme;
+  }
+  if (direction === 'rtl') {
+    document.documentElement.dir = 'rtl';
+    const linkElement = document.head.querySelector<HTMLLinkElement>('link#bootstrap')!;
+    linkElement.href = linkElement.href.replace('bootstrap.min.css', 'bootstrap.rtl.min.css');
+  }
+}

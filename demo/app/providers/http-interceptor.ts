@@ -23,13 +23,13 @@ export class HttpInterceptorAdapter implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isBrowser) {
-      log('info', '[HTTP RESPONSE]', req);
+      log('info', '[HTTP]', 'REQUEST', req);
       return this.resolveWorkerRequest(req).pipe(
         map(({ data }) => new HttpResponse({ url: req.url, body: data })),
-        tap(data => log('info', '[HTTP RESPONSE]', data)),
+        tap(data => log('info', '[HTTP]', 'RESPONSE', data)),
         take(1),
         catchError(error => {
-          log('error', error.message);
+          log('error', '[HTTP]', error.message);
           throw error;
         }),
       );

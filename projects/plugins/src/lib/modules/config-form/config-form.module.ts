@@ -1,5 +1,6 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
@@ -16,7 +17,15 @@ import { TableComponent } from './table.component';
 import { UnitInputComponent } from './unit-input.component';
 
 @NgModule({
-  imports: [ReactiveFormsModule, ColorSketchModule, CommonModule, FormsModule, OverlayModule, PortalModule],
+  imports: [
+    ReactiveFormsModule,
+    ColorSketchModule,
+    CommonModule,
+    FormsModule,
+    OverlayModule,
+    PortalModule,
+    DragDropModule,
+  ],
   exports: [],
   declarations: [
     ColorComponent,

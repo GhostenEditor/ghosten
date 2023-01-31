@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
 
 import { PageEditComponent } from '../page-management/page-edit.component';
 import { PagesComponent } from '../page-management/pages.component';
+import { SettingsComponent } from './settings.component';
 import { ToastService } from '../toast/toast.service';
 import { confirm } from '../../../utils';
 
@@ -141,10 +142,6 @@ import { confirm } from '../../../utils';
               <small class="d-lg-none ms-2" i18n="Button: Export">导出</small>
             </button>
           </li>
-          <li class="nav-item py-2 col-12 col-lg-auto">
-            <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
-            <hr class="d-lg-none text-white-50" />
-          </li>
           <li class="nav-item col-6 col-lg-auto">
             <button
               type="button"
@@ -155,6 +152,22 @@ import { confirm } from '../../../utils';
             >
               <i class="gt-icon">refresh_ccw</i>
               <small class="d-lg-none ms-2" i18n="Button: Reset">重置</small>
+            </button>
+          </li>
+          <li class="nav-item py-2 col-12 col-lg-auto">
+            <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+            <hr class="d-lg-none text-white-50" />
+          </li>
+          <li class="nav-item col-6 col-lg-auto">
+            <button
+              type="button"
+              class="btn btn-link nav-link"
+              i18n-title="Button: Settings"
+              title="设置"
+              (click)="settings()"
+            >
+              <i class="gt-icon">tools</i>
+              <small class="d-lg-none ms-2" i18n="Button: Reset">设置</small>
             </button>
           </li>
         </ul>
@@ -215,7 +228,7 @@ export class NavbarComponent {
   }
 
   export() {
-    this.http.get<File>('exportDB').subscribe(data => {
+    this.http.get<File>('exportDBWithoutHistory').subscribe(data => {
       const a = this.renderer.createElement('a');
       a.download = data.name;
       a.href = URL.createObjectURL(data);
@@ -264,5 +277,20 @@ export class NavbarComponent {
 
   reload() {
     location.reload();
+  }
+
+  settings() {
+    const overlayRef = this.overlay.create({
+      hasBackdrop: true,
+      disposeOnNavigation: true,
+    });
+    const componentRef = overlayRef.attach(new ComponentPortal(SettingsComponent));
+    merge(componentRef.instance.modalConfirm, componentRef.instance.modalCancel)
+      .pipe(
+        tap(() => overlayRef.detachBackdrop()),
+        switchMap(() => componentRef.instance.animationDone),
+        take(1),
+      )
+      .subscribe(() => overlayRef.dispose());
   }
 }

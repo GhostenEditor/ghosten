@@ -5,16 +5,14 @@ import { GT_NODE_DEFAULT_CONFIG, GT_RENDER_COMPONENT_MAP, GtRenderCoreModule } f
 import { gtBaseConfigMap } from '@ghosten/components';
 
 import { ImageComponent } from './image.component';
-import { TextComponent } from './text.component';
 
 @NgModule({
   imports: [CommonModule, GtRenderCoreModule],
-  declarations: [TextComponent, ImageComponent],
+  declarations: [ImageComponent],
   providers: [
     {
       provide: GT_RENDER_COMPONENT_MAP,
       useValue: {
-        text: TextComponent,
         image: ImageComponent,
       },
       multi: true,

@@ -4,7 +4,6 @@ import {
   Component,
   ComponentRef,
   ElementRef,
-  HostBinding,
   Injector,
   NgZone,
   OnDestroy,
@@ -40,9 +39,9 @@ export class RenderAbstractComponent<T = any> implements OnInit, AfterViewInit, 
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
   control: FormControl;
 
-  @HostBinding('attr.class') get ngClass() {
-    return this.gtNode.classList.join(' ');
-  }
+  // @HostBinding('attr.class') get ngClass() {
+  //   return this.gtNode.classList.join(' ');
+  // }
 
   public property: T = this.gtNode.property;
   public style = this.gtNode.style;

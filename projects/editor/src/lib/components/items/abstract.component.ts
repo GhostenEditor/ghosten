@@ -20,9 +20,9 @@ export class EditAbstractComponent<T = any> implements OnInit, AfterViewInit, On
   @ViewChild(TemplateDirective, { static: true }) template: TemplateDirective;
   @ViewChildren(TemplateDirective) templates: QueryList<TemplateDirective>;
 
-  @HostBinding('attr.class') get ngClass() {
-    return this.gtNode.classList.join(' ');
-  }
+  // @HostBinding('attr.class') get ngClass() {
+  //   return this.gtNode.classList.join(' ');
+  // }
 
   @HostBinding('class.gt-node') gtClass = true;
 

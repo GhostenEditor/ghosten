@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Inject, Injector, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -29,13 +30,15 @@ import { take } from 'rxjs/operators';
       <table class="table table-bordered table-condensed table-sm" style="margin: 0;">
         <thead>
           <tr>
+            <th></th>
             <th *ngFor="let column of formItem.columns">{{ column.name }}</th>
             <th style="width: 1.25rem;"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody cdkDropList (cdkDropListDropped)="drop($event)">
           <ng-container *ngIf="formControl.value.length">
-            <tr *ngFor="let row of formControl.value; let i = index">
+            <tr *ngFor="let row of formControl.value; let i = index" cdkDrag cdkDragLockAxis="y">
+              <td cdkDragHandle><i class="gt-icon">list</i></td>
               <td
                 *ngFor="let column of formItem.columns"
                 [title]="row[column.prop]"
@@ -48,22 +51,7 @@ import { take } from 'rxjs/operators';
                   (cellBlur)="editMap[column.prop + i] = false"
                 ></properties-table-cell>
               </td>
-              <!--<td *ngIf="editMap[column.prop + i]" [title]="row[column.prop]">
-<properties-table-cell
-[type]="column.type"
-[(value)]="row[column.prop]"
-(cellBlur)="editMap[column.prop + i] = false"
-></properties-table-cell>
-&lt;!&ndash;                 <input
-title=""
-class="form-control"
-type="text"
-[(ngModel)]="row[column.prop]"
-autofocus
-(blur)="editMap[column.prop + i] = false"
-/>&ndash;&gt;
-</td>-->
-              <td style="padding: 4px;">
+              <td>
                 <button type="button" class="btn btn-link">
                   <i class="gt-icon" (click)="delete(row)">minus</i>
                 </button>
@@ -71,6 +59,7 @@ autofocus
             </tr>
           </ng-container>
           <tr *ngIf="formItem.tableAddType !== 'button'">
+            <td></td>
             <td *ngFor="let column of formItem.columns; let i = index">
               <properties-table-cell
                 [mode]="'edit'"
@@ -79,7 +68,7 @@ autofocus
                 (valueChange)="_onchange($event, i)"
               ></properties-table-cell>
             </td>
-            <td style="padding: 4px;">
+            <td>
               <button type="button" class="btn btn-link">
                 <i class="gt-icon" (click)="add()">plus</i>
               </button>
@@ -160,5 +149,10 @@ export class TableComponent {
       .backdropClick()
       .pipe(take(1))
       .subscribe(() => overlayRef.dispose());
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.formControl.value, event.previousIndex, event.currentIndex);
+    this.formControl.setValue([...this.formControl.value]);
   }
 }
