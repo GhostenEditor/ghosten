@@ -10,6 +10,7 @@ import { LogEvent } from '@ghosten/common';
 import { switchMap, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import { AUTO_SAVE, MANUAL_SAVE, REMOVE_COMPONENT, ROLLBACK, SAVE_COMPONENT } from '../../message';
 import { RenderComponent } from './render.component';
 import { ToastService } from '../toast/toast.service';
 import { log } from '../../../utils';
@@ -37,8 +38,7 @@ export class EditComponent {
       .subscribe(() =>
         this.toast.show({
           type: 'primary',
-          message: type === 'auto' ? '自动保存' : type === 'manual' ? '保存成功' : 'Rollback 成功',
-          duration: 10000,
+          message: type === 'auto' ? AUTO_SAVE : type === 'manual' ? MANUAL_SAVE : ROLLBACK,
           position: 'top_center',
         }),
       );
@@ -79,7 +79,7 @@ export class EditComponent {
         this.http.post<any>('saveComponent', event.data).subscribe(() =>
           this.toast.show({
             type: 'primary',
-            message: '组件保存成功',
+            message: SAVE_COMPONENT,
             position: 'top_center',
           }),
         );
@@ -88,7 +88,7 @@ export class EditComponent {
         this.http.post<any>('removeComponent', event.data).subscribe(() =>
           this.toast.show({
             type: 'primary',
-            message: '组件删除成功',
+            message: REMOVE_COMPONENT,
             position: 'top_center',
           }),
         );

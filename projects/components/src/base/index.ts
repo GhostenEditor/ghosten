@@ -8,14 +8,20 @@ export interface ImageProperty {
   thumbnails: boolean;
 }
 
+export interface AProperty {
+  link: string;
+}
+
 export const gtBaseConfigMap = () => {
-  const icon = createDefaultConfig({
+  const a = createDefaultConfig({
+    core: {
+      canHasChild: true,
+    },
     property: [
       {
-        label: $localize`:Property Label\: Icon Type:图标类型`,
-        name: 'iconType',
-        type: 'select',
-        options: [],
+        label: $localize`:Property Label\: Link:Link`,
+        type: 'text',
+        name: 'link',
       },
     ],
   });
@@ -49,7 +55,7 @@ export const gtBaseConfigMap = () => {
     ],
   });
   return {
-    icon,
+    a,
     image,
   };
 };

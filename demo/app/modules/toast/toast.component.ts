@@ -67,9 +67,8 @@ import { IToast, ToastPositions } from './types';
         </div>
         <div class="progress" *ngIf="toast.duration !== false" style="height: 2px;--bs-progress-bg: transparent">
           <div
-            class="progress-bar w-100"
+            class="progress-bar bg-warning w-100"
             role="progressbar"
-            aria-label="Example 1px high"
             style="transform-origin: left;transition: transform 200ms linear;"
             [style.transform]="'scaleX(' + toast.progress + ')'"
             aria-valuenow="25"
@@ -140,7 +139,9 @@ export class ToastComponent implements OnInit, OnDestroy {
           if (toast.duration !== false && !toast.paused) {
             toast.remain -= elapsed;
             toast.remain = Math.max(0, toast.remain);
-            this.ngZone.run(() => (toast.progress = +((toast.remain - 200) / 5000).toFixed(2)));
+            this.ngZone.run(
+              () => (toast.progress = +((toast.remain - 200) / ((toast.duration as number) || 5000)).toFixed(2)),
+            );
             if (toast.remain === 0) {
               setTimeout(() => this.remove(toast));
             }

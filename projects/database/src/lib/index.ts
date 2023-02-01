@@ -27,51 +27,42 @@ export class GtDatabase {
   init(): Promise<IDBDatabase> {
     return new Promise(resolve => {
       const dbRequest = indexedDB.open(this.DBName, 3);
-      let importDataPromise: Promise<any> | null = null;
+      let shouldImportData = false;
       dbRequest.addEventListener('upgradeneeded', function () {
         const db = this.result;
         Array.from(db.objectStoreNames).forEach(name => db.deleteObjectStore(name));
-        const configStore = db.createObjectStore('CONFIG', {
+        const configObjectStore = db.createObjectStore('CONFIG', {
           keyPath: 'id',
           autoIncrement: true,
         });
-        const configHistoryStore = db.createObjectStore('CONFIG_HISTORY', {
+        const configHistoryObjectStore = db.createObjectStore('CONFIG_HISTORY', {
           keyPath: ['id', 'timestamp'],
         });
-        const componentStore = db.createObjectStore('COMPONENT', {
+        const componentObjectStore = db.createObjectStore('COMPONENT', {
           keyPath: 'id',
         });
-        const componentHistory = db.createObjectStore('COMPONENT_HISTORY', {
+        const componentHistoryObjectStore = db.createObjectStore('COMPONENT_HISTORY', {
           keyPath: ['id', 'timestamp'],
         });
         const editConfigStore = db.createObjectStore('EDIT_CONFIG', {
           keyPath: 'type',
         });
-        configStore.createIndex('id', 'id', { unique: true });
-        configStore.createIndex('url', 'url');
-        configStore.createIndex('type', 'type');
-        configStore.createIndex('parentId', 'parentId');
-        configStore.createIndex('url_parentId', ['url', 'parentId']);
-        configHistoryStore.createIndex('id', 'id');
-        configHistoryStore.createIndex('type', 'type');
-        configHistoryStore.createIndex('timestamp', 'timestamp');
-        configHistoryStore.createIndex('id_timestamp', ['id', 'timestamp']);
-        componentStore.createIndex('id', 'id');
-        componentHistory.createIndex('id', 'id');
-        componentHistory.createIndex('timestamp', 'timestamp');
-        componentHistory.createIndex('id_timestamp', ['id', 'timestamp']);
+        configObjectStore.createIndex('id', 'id', { unique: true });
+        configObjectStore.createIndex('url', 'url');
+        configObjectStore.createIndex('type', 'type');
+        configObjectStore.createIndex('parentId', 'parentId');
+        configObjectStore.createIndex('url_parentId', ['url', 'parentId']);
+        configHistoryObjectStore.createIndex('id', 'id');
+        configHistoryObjectStore.createIndex('type', 'type');
+        configHistoryObjectStore.createIndex('timestamp', 'timestamp');
+        configHistoryObjectStore.createIndex('id_timestamp', ['id', 'timestamp']);
+        componentObjectStore.createIndex('id', 'id');
+        componentHistoryObjectStore.createIndex('id', 'id');
+        componentHistoryObjectStore.createIndex('timestamp', 'timestamp');
+        componentHistoryObjectStore.createIndex('id_timestamp', ['id', 'timestamp']);
         editConfigStore.createIndex('type', 'type');
         editConfigStore.createIndex('value', 'value');
-        importDataPromise = new Promise(resolve => {
-          const xhr = new XMLHttpRequest();
-
-          xhr.addEventListener('load', function () {
-            importDB(db, this.response).then(() => resolve(null));
-          });
-          xhr.responseType = 'blob';
-          xhr.open('GET', 'assets/export.gt');
-          xhr.send();
-        });
+        shouldImportData = true;
       });
       dbRequest.addEventListener('success', () => {
         this.log('info', 'connect success');
@@ -80,8 +71,15 @@ export class GtDatabase {
           this.log('warn', 'closed unexpectedly');
           this.db = null;
         });
-        if (importDataPromise) {
-          importDataPromise.then(() => resolve(this.db!));
+        if (shouldImportData) {
+          const xhr = new XMLHttpRequest();
+          const db = this.db;
+          xhr.addEventListener('load', function () {
+            setTimeout(() => importDB(db, this.response).then(() => resolve(db)), 1000);
+          });
+          xhr.responseType = 'blob';
+          xhr.open('GET', 'assets/export.gt');
+          xhr.send();
         } else {
           resolve(this.db);
         }

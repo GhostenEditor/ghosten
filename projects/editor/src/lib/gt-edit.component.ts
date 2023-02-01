@@ -141,7 +141,7 @@ export class GtEditComponent implements OnDestroy {
 
   constructor(
     public gt: GtEdit,
-    events: EventsService,
+    private events: EventsService,
     private contextmenu: ContextMenu,
     public sidebar: SidebarService,
     @Optional() @Inject(GT_CONTEXTMENU) private gtContextMenu: GtContextMenu,
@@ -251,6 +251,7 @@ export class GtEditComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.eventSubscription.unsubscribe();
     this.gt.destroy();
+    this.events.target.removeAllListeners();
   }
 
   resetPosition() {

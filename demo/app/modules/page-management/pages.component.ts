@@ -11,6 +11,7 @@ import { tap } from 'rxjs/operators';
 
 import { PageConfig } from './types';
 import { PageEditComponent } from './page-edit.component';
+import { REMOVE_CONFIG_CONFIRM_MESSAGE } from '../../message';
 import { confirm } from '../../../utils';
 
 @Component({
@@ -121,7 +122,7 @@ export class PagesComponent implements OnInit {
   }
 
   async deletePage(id: number) {
-    if (await confirm('是否要删除该数据？')) {
+    if (await confirm(REMOVE_CONFIG_CONFIRM_MESSAGE)) {
       this.http.post('deletePage', { id }).subscribe(() => this.loadPageList());
     }
   }

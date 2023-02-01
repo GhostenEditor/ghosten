@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         <div class="col-lg-6 col-md-auto mb-3 d-flex">
           <a href="/" class="navbar-brand d-flex flex-column align-items-center">
             <img
-              src="assets/icons/128.png"
+              src="assets/icons/192.png"
               alt="Ghosten Logo"
               class="rounded"
               width="80"
@@ -46,13 +46,5 @@ import { Component } from '@angular/core';
       </div>
     </div>
   </footer>`,
-  styles: [
-    `
-      a {
-        color: var(--bs-body-color);
-        text-decoration: none;
-      }
-    `,
-  ],
 })
 export class FooterComponent {}

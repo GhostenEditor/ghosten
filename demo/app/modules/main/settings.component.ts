@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'settings',
+  selector: 'app-modal-settings',
   template: ` <gt-modal
     i18n-modalTitle="Modal Title: Settings"
     modalTitle="设置"

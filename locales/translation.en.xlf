@@ -1,32 +1,121 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="zh">
   <file id="ngi18n" original="ng.template">
+    <unit id="763004956987989683">
+      <notes>
+        <note category="location">demo/app/message/index.ts:1</note>
+        <note category="description">Save Successfully</note>
+      </notes>
+      <segment>
+        <source>Save Successfully</source>
+      </segment>
+    </unit>
+    <unit id="1729510316686258441">
+      <notes>
+        <note category="location">demo/app/message/index.ts:2</note>
+        <note category="description">Auto Save Successfully</note>
+      </notes>
+      <segment>
+        <source>Auto Save Successfully</source>
+      </segment>
+    </unit>
+    <unit id="8090644060154827456">
+      <notes>
+        <note category="location">demo/app/message/index.ts:3</note>
+        <note category="description">Rollback Successfully</note>
+      </notes>
+      <segment>
+        <source>Rollback Successfully</source>
+      </segment>
+    </unit>
+    <unit id="6287525043645318306">
+      <notes>
+        <note category="location">demo/app/message/index.ts:4</note>
+        <note category="description">Component Save Successfully</note>
+      </notes>
+      <segment>
+        <source>Component Save Successfully</source>
+      </segment>
+    </unit>
+    <unit id="5864132348296484775">
+      <notes>
+        <note category="location">demo/app/message/index.ts:5</note>
+        <note category="description">Component Remove Successfully</note>
+      </notes>
+      <segment>
+        <source>Component Remove Successfully</source>
+      </segment>
+    </unit>
+    <unit id="26621981575323707">
+      <notes>
+        <note category="location">demo/app/message/index.ts:6</note>
+        <note category="description">Are you sure to reset all data? </note>
+      </notes>
+      <segment>
+        <source>Are you sure to reset all data?</source>
+      </segment>
+    </unit>
     <unit id="2714523871337169162">
       <notes>
-        <note category="location">demo/app/app.component.ts:17</note>
-        <note category="description">Toast Type: Info</note>
+        <note category="location">demo/app/message/index.ts:7</note>
+        <note category="description">Toast Title: Info</note>
       </notes>
       <segment>
         <source>Info</source>
       </segment>
     </unit>
-    <unit id="8142830061914184375">
+    <unit id="1504707925538440520">
       <notes>
-        <note category="location">demo/app/app.component.ts:18</note>
-        <note category="description">Toast Message: There is new edition, update now?</note>
+        <note category="location">demo/app/message/index.ts:8</note>
+        <note category="description">Everything is reset now! </note>
       </notes>
       <segment>
-        <source>There is new edition, update now?</source>
+        <source>Everything is reset now!</source>
+      </segment>
+    </unit>
+    <unit id="9123846945106609359">
+      <notes>
+        <note category="location">demo/app/message/index.ts:9</note>
+        <note category="description">Import data Successfully! </note>
+      </notes>
+      <segment>
+        <source>Import data Successfully!</source>
+      </segment>
+    </unit>
+    <unit id="3829442666880030641">
+      <notes>
+        <note category="location">demo/app/message/index.ts:10</note>
+        <note category="description">Browser will refresh in 5 seconds. </note>
+      </notes>
+      <segment>
+        <source>Browser will refresh in 5 seconds.</source>
+      </segment>
+    </unit>
+    <unit id="8669970756180346425">
+      <notes>
+        <note category="location">demo/app/message/index.ts:11</note>
+        <note category="description">Are you sure to remove this data?</note>
+      </notes>
+      <segment>
+        <source>Are you sure to remove this data?</source>
       </segment>
     </unit>
     <unit id="3739942229069208761">
       <notes>
-        <note category="location">demo/app/app.component.ts:19</note>
-        <note category="location">demo/app/app.component.ts:22</note>
+        <note category="location">demo/app/message/index.ts:12</note>
         <note category="description">Button: Yes</note>
       </notes>
       <segment>
         <source>Yes</source>
+      </segment>
+    </unit>
+    <unit id="8142830061914184375">
+      <notes>
+        <note category="location">demo/app/message/index.ts:13</note>
+        <note category="description">Toast Message: There is new edition, update now? </note>
+      </notes>
+      <segment>
+        <source>There is new edition, update now?</source>
       </segment>
     </unit>
     <unit id="9082781386050595065">
@@ -42,8 +131,8 @@
     </unit>
     <unit id="2164989085317409305">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:55</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:58,59</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:62</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:65,66</note>
         <note category="description">Button: Backward</note>
       </notes>
       <segment>
@@ -52,8 +141,8 @@
     </unit>
     <unit id="6549159312315189184">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:67</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:70,71</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:74</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:77,78</note>
         <note category="description">Button: Forward</note>
       </notes>
       <segment>
@@ -62,8 +151,8 @@
     </unit>
     <unit id="3592687622992817834">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:79</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:82,83</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:86</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:89,90</note>
         <note category="description">Button: Refresh</note>
       </notes>
       <segment>
@@ -72,8 +161,8 @@
     </unit>
     <unit id="630939255927241921">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:95</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:98,99</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:102</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:105,106</note>
         <note category="description">Button: Add Page</note>
       </notes>
       <segment>
@@ -82,9 +171,9 @@
     </unit>
     <unit id="3116323487842020810">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:107</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:110,112</note>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:21,22</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:114</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:117,119</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:22,23</note>
         <note category="description">Button: Page List</note>
       </notes>
       <segment>
@@ -93,8 +182,8 @@
     </unit>
     <unit id="415845270675092715">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:119,120</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:130,131</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:126,127</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:137,138</note>
         <note category="description">Button: Import</note>
       </notes>
       <segment>
@@ -103,18 +192,18 @@
     </unit>
     <unit id="4657700623318690546">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:139</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:142,143</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:146</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:149,150</note>
         <note category="description">Button: Export</note>
       </notes>
       <segment>
-        <source> Export </source>
+        <source>Export</source>
       </segment>
     </unit>
     <unit id="8666329139889049125">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:151</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:154,155</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:158</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:161,162</note>
         <note category="location">projects/editor/src/lib/gt-edit.component.ts:69</note>
         <note category="description">Button: Reset</note>
       </notes>
@@ -124,15 +213,15 @@
     </unit>
     <unit id="1133636729557061267">
       <notes>
-        <note category="location">demo/app/modules/main/navbar.component.ts:167</note>
-        <note category="location">demo/app/modules/main/navbar.component.ts:170,171</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:174</note>
+        <note category="location">demo/app/modules/main/navbar.component.ts:177,178</note>
         <note category="location">demo/app/modules/main/settings.component.ts:8</note>
         <note category="location">projects/plugins/src/lib/modals/settings.component.ts:8</note>
         <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:112</note>
         <note category="description">Button: Settings</note>
       </notes>
       <segment>
-        <source>设置</source>
+        <source>Settings</source>
       </segment>
     </unit>
     <unit id="8202833956646343033">
@@ -159,7 +248,7 @@
         <note category="description">Settings: Theme</note>
       </notes>
       <segment>
-        <source>Cancel</source>
+        <source>Theme</source>
       </segment>
     </unit>
     <unit id="1801618151718755933">
@@ -174,7 +263,7 @@
     <unit id="5995597281398020903">
       <notes>
         <note category="location">demo/app/modules/page-management/page-edit.component.ts:25,27</note>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:31</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:32</note>
         <note category="location">projects/components/src/container/index.ts:88</note>
         <note category="location">projects/components/src/gauge/index.ts:39</note>
         <note category="location">projects/components/src/gauge/index.ts:54</note>
@@ -197,7 +286,7 @@
     <unit id="961509352367480616">
       <notes>
         <note category="location">demo/app/modules/page-management/page-edit.component.ts:51,53</note>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:34</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:35</note>
         <note category="description">Table Column Header: Url</note>
       </notes>
       <segment>
@@ -234,7 +323,7 @@
     <unit id="3492189759166217861">
       <notes>
         <note category="location">demo/app/modules/page-management/page-edit.component.ts:72,74</note>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:34,35</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:35,36</note>
         <note category="description">Table Column Header: Parent Menu</note>
       </notes>
       <segment>
@@ -244,12 +333,12 @@
     <unit id="4883685090861303329">
       <notes>
         <note category="location">demo/app/modules/page-management/page-edit.component.ts:89,92</note>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:32</note>
-        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:18</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:33</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:19</note>
         <note category="description">Table Column Header: Description</note>
       </notes>
       <segment>
-        <source> Description </source>
+        <source>Description</source>
       </segment>
     </unit>
     <unit id="6311820123112800725">
@@ -272,7 +361,7 @@
     </unit>
     <unit id="4493709320500287818">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:30</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:31</note>
         <note category="description">Table Column Header: Icon</note>
       </notes>
       <segment>
@@ -281,9 +370,9 @@
     </unit>
     <unit id="8503537271966715252">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:33</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:34</note>
         <note category="location">projects/components/src/form/index.ts:274</note>
-        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:17</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:18</note>
         <note category="description">Table Column Header: Type</note>
       </notes>
       <segment>
@@ -292,8 +381,8 @@
     </unit>
     <unit id="2261171107170127222">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:36,38</note>
-        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:19</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:37,39</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:20</note>
         <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:15</note>
         <note category="description">Table Column Header: Operation</note>
       </notes>
@@ -303,7 +392,7 @@
     </unit>
     <unit id="6715149511305058301">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:50,51</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:51,52</note>
         <note category="location">projects/editor/src/lib/components/sidebar/sidebar-element.component.ts:314</note>
         <note category="description">Button: Modify</note>
       </notes>
@@ -313,7 +402,7 @@
     </unit>
     <unit id="3832184864547336645">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:52,53</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:53,54</note>
         <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:38,40</note>
         <note category="description">Button: Remove</note>
       </notes>
@@ -323,7 +412,7 @@
     </unit>
     <unit id="6372816057395572023">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:60,61</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:61,62</note>
         <note category="description">Button: Edit</note>
       </notes>
       <segment>
@@ -332,8 +421,8 @@
     </unit>
     <unit id="662727637384257976">
       <notes>
-        <note category="location">demo/app/modules/page-management/pages.component.ts:69,71</note>
-        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:35</note>
+        <note category="location">demo/app/modules/page-management/pages.component.ts:70,72</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:37</note>
         <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:33</note>
         <note category="location">projects/editor/src/lib/components/sidebar/sidebar-element.component.ts:90</note>
         <note category="location">projects/editor/src/lib/components/sidebar/sidebar-page.component.ts:30</note>
@@ -363,11 +452,20 @@
     </unit>
     <unit id="6566219922947680041">
       <notes>
-        <note category="location">projects/components/editor/src/base/gt-base-edit.module.ts:25</note>
+        <note category="location">projects/components/editor/src/base/gt-base-edit.module.ts:26</note>
         <note category="description">Element Label: Image</note>
       </notes>
       <segment>
         <source>Image</source>
+      </segment>
+    </unit>
+    <unit id="3968341164873813981">
+      <notes>
+        <note category="location">projects/components/editor/src/base/gt-base-edit.module.ts:31</note>
+        <note category="description">Element Label: Link</note>
+      </notes>
+      <segment>
+        <source>Link</source>
       </segment>
     </unit>
     <unit id="2882771142437847829">
@@ -403,7 +501,7 @@
         <note category="description">Element Label: List Group Item</note>
       </notes>
       <segment>
-        <source> List Group Item</source>
+        <source>List Group Item</source>
       </segment>
     </unit>
     <unit id="5288900698450567602">
@@ -636,10 +734,10 @@
         <source>h6</source>
       </segment>
     </unit>
-    <unit id="6155186687263401661">
+    <unit id="2981219928115418649">
       <notes>
-        <note category="location">projects/components/src/base/index.ts:15</note>
-        <note category="description">Property Label: Icon Type</note>
+        <note category="location">projects/components/src/base/index.ts:22</note>
+        <note category="description">Property Label: Link</note>
       </notes>
       <segment>
         <source>Icon Type</source>
@@ -647,7 +745,7 @@
     </unit>
     <unit id="3880607073888348504">
       <notes>
-        <note category="location">projects/components/src/base/index.ts:25</note>
+        <note category="location">projects/components/src/base/index.ts:31</note>
         <note category="description">Property Label: Image Path</note>
       </notes>
       <segment>
@@ -867,7 +965,7 @@
     </unit>
     <unit id="4927071607721485023">
       <notes>
-        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:16</note>
+        <note category="location">projects/editor/src/lib/components/panels/panel-board.component.ts:17</note>
         <note category="location">projects/editor/src/lib/components/panels/panel-table.component.ts:11</note>
         <note category="description">Table Column Header: Index</note>
       </notes>
@@ -994,7 +1092,7 @@
     </unit>
     <unit id="8838794703512788104">
       <notes>
-        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:83</note>
+        <note category="location">projects/editor/src/lib/components/sidebar/sidebar-config.component.ts:93</note>
         <note category="description">Config Card Title: Validator</note>
       </notes>
       <segment>
@@ -1017,7 +1115,7 @@
         <note category="description">Element Group Title: Custom Component</note>
       </notes>
       <segment>
-        <source>Custom Component(Remote)</source>
+        <source>Custom Component</source>
       </segment>
     </unit>
     <unit id="9130247258270855173">
@@ -1027,7 +1125,7 @@
         <note category="description">Element Group Title: Custom Component(Remote)</note>
       </notes>
       <segment>
-        <source>Custom Component</source>
+        <source>Custom Component(Remote)</source>
       </segment>
     </unit>
     <unit id="1329392431125715413">
@@ -1054,7 +1152,7 @@
         <note category="location">projects/editor/src/lib/components/sidebar/sidebar-tree.component.ts:39,41</note>
       </notes>
       <segment>
-        <source> There are <ph id="0" equiv="INTERPOLATION" disp="{{ gt.currentBoard!.nodeList.size }}"/> Nodes Totally.</source>
+        <source>There are <ph id="0" equiv="INTERPOLATION" disp="{{ gt.currentBoard!.nodeList.size }}"/> Nodes Totally.</source>
       </segment>
     </unit>
     <unit id="9083230383277301486">
@@ -1249,15 +1347,6 @@
       </notes>
       <segment>
         <source>Generate Grid</source>
-      </segment>
-    </unit>
-    <unit id="900799045106566434">
-      <notes>
-        <note category="location">projects/plugins/src/lib/providers/topBarButtons.ts:46</note>
-        <note category="description">Top Bar Button: Add Data Source</note>
-      </notes>
-      <segment>
-        <source>Add Data Source</source>
       </segment>
     </unit>
     <unit id="4084906370576746110">

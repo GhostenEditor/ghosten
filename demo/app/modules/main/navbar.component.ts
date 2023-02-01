@@ -8,6 +8,13 @@ import { Router } from '@angular/router';
 import { merge, switchMap, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import {
+  DELETE_DB_MESSAGE,
+  IMPORT_DB_MESSAGE,
+  REFRESH_AFTER_5_SECONDS,
+  RESET_CONFIRM_MESSAGE,
+  TOAST_INFO_TITLE,
+} from '../../message';
 import { PageEditComponent } from '../page-management/page-edit.component';
 import { PagesComponent } from '../page-management/pages.component';
 import { SettingsComponent } from './settings.component';
@@ -18,9 +25,9 @@ import { confirm } from '../../../utils';
   selector: 'app-navbar',
   providers: [Location, { provide: LocationStrategy, useClass: PathLocationStrategy }],
   template: ` <nav
-    class="navbar navbar-expand-lg bg-primary sticky-top"
+    class="navbar navbar-expand-lg bg-primary"
     data-bs-theme="dark"
-    style="--bs-emphasis-color-rgb: 248,249,250;"
+    style="position: sticky;top: 0;z-index: 1000; --bs-emphasis-color-rgb: 248,249,250;"
   >
     <div class="container">
       <button
@@ -35,7 +42,7 @@ import { confirm } from '../../../utils';
       </button>
       <a routerLink="/" class="navbar-brand me-0 d-flex align-items-center">
         <img
-          src="assets/icons/128.png"
+          src="assets/icons/192.png"
           alt="Ghosten Logo"
           width="32"
           height="32"
@@ -167,7 +174,7 @@ import { confirm } from '../../../utils';
               (click)="settings()"
             >
               <i class="gt-icon">tools</i>
-              <small class="d-lg-none ms-2" i18n="Button: Reset">设置</small>
+              <small class="d-lg-none ms-2" i18n="Button: Settings">设置</small>
             </button>
           </li>
         </ul>
@@ -200,13 +207,13 @@ export class NavbarComponent {
   ) {}
 
   async reset() {
-    if (await confirm('是否要清空所有数据？')) {
+    if (await confirm(RESET_CONFIRM_MESSAGE)) {
       this.http.post('deleteDB', null).subscribe(() => {
         this.toast.show({
           type: 'primary',
-          title: '信息',
-          message: '所有数据已清空',
-          detail: '5秒后页面将自动刷新',
+          title: TOAST_INFO_TITLE,
+          message: DELETE_DB_MESSAGE,
+          detail: REFRESH_AFTER_5_SECONDS,
         });
         setTimeout(() => this.reload(), 5000);
       });
@@ -218,9 +225,9 @@ export class NavbarComponent {
       this.http.post('importDB', target.files[0]).subscribe(() => {
         this.toast.show({
           type: 'primary',
-          title: '信息',
-          message: '数据导入成功',
-          detail: '5秒后页面将自动刷新',
+          title: TOAST_INFO_TITLE,
+          message: IMPORT_DB_MESSAGE,
+          detail: REFRESH_AFTER_5_SECONDS,
         });
         setTimeout(() => this.reload(), 5000);
       });

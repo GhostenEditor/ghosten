@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 
+import { BUTTON_YES, SW_UPDATE_MESSAGE, TOAST_INFO_TITLE } from './message';
 import { ToastService } from './modules/toast/toast.service';
 
 @Component({
@@ -14,12 +15,12 @@ export class AppComponent {
         if (event.type === 'VERSION_READY') {
           toast.show({
             type: 'primary',
-            title: $localize`:Toast Type\: Info:提示`,
-            message: $localize`:Toast Message\: There is new edition, update now?:有新版本，是否更新？`,
-            buttons: [$localize`:Button\: Yes:是`],
+            title: TOAST_INFO_TITLE,
+            message: SW_UPDATE_MESSAGE,
+            buttons: [BUTTON_YES],
             duration: false,
             buttonClick: (button: string) => {
-              if (button === $localize`:Button\: Yes:是`) {
+              if (button === BUTTON_YES) {
                 location.reload();
               }
             },

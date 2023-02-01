@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   template: `
-    <div class="text-center position-relative p-1">
+    <div class="text-center p-1">
       <h1 class="mt-5 mb-4 display-3 fw-medium">GHOSTEN EDITOR</h1>
       <h6 class="fw-normal mb-5 text-secondary font-monospace m-auto" style="max-width: 24rem;height: 2.5em">
         {{ description }} <span class="cursor">|</span>
@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
           <small>Develop</small>
         </a>
         <button type="button" class="btn btn-lg btn-light" disabled>
-          <small>How to start</small>
+          <small>How to start (Todo)</small>
         </button>
       </div>
       <small class="text-body-tertiary"><i>*Note: It is alpha version.</i></small>

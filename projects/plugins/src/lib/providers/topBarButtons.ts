@@ -42,11 +42,11 @@ export const topBarButtons: Provider = {
         gt.showReferenceLine = !gt.showReferenceLine;
       },
     },
-    {
-      title: $localize`:Top Bar Button\: Add Data Source:添加数据源`,
-      icon: 'bind',
-      onclick: () => {},
-    },
+    // {
+    //   title: $localize`:Top Bar Button\: Add Data Source:添加数据源`,
+    //   icon: 'bind',
+    //   onclick: () => {},
+    // },
     {
       title: $localize`:Top Bar Button\: Preview:预览`,
       icon: 'preview',

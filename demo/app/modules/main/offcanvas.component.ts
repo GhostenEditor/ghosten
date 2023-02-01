@@ -17,7 +17,7 @@ import { filter } from 'rxjs/operators';
       [class.bg-primary]="theme === 'primary'"
     >
       <div class="offcanvas-header pb-0">
-        <img src="assets/icons/128.png" alt="Ghosten Logo" class="rounded" style="width: 2rem;" />
+        <img src="assets/icons/192.png" alt="Ghosten Logo" class="rounded" style="width: 2rem;" />
         <h5 class="offcanvas-title">
           {{ offCanvasTitle }}
         </h5>
