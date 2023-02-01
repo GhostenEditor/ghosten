@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1675272729880,
+  "timestamp": 1675273713736,
   "index": "/ghosten/zh/index.html",
   "assetGroups": [
     {
@@ -11,7 +11,7 @@
         "ignoreVary": true
       },
       "urls": [
-        "/ghosten/zh/761.f740f6c0a8d80dad.js",
+        "/ghosten/zh/761.4ec74de849ffc419.js",
         "/ghosten/zh/867.05563b9939d53217.js",
         "/ghosten/zh/916.b5ab2cd1c7399e57.js",
         "/ghosten/zh/929.b278dc24c298af67.js",
@@ -20,7 +20,7 @@
         "/ghosten/zh/main.88b84eb84735c0a8.js",
         "/ghosten/zh/manifest.webmanifest",
         "/ghosten/zh/polyfills.b06dc6e66537fa81.js",
-        "/ghosten/zh/runtime.2ec3ac78e6f0279d.js",
+        "/ghosten/zh/runtime.29d0d928ab92b32f.js",
         "/ghosten/zh/styles.4e59142b8e9e698e.css",
         "/ghosten/zh/vendor.e724d75c57864bf8.js"
       ],
@@ -47,7 +47,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/ghosten/zh/761.f740f6c0a8d80dad.js": "3baa4ecc62c762ebf17cbecd4f3c51d02d059e3a",
+    "/ghosten/zh/761.4ec74de849ffc419.js": "a2e8d38a55c4f36ffa381ae8fd691d62d0940022",
     "/ghosten/zh/867.05563b9939d53217.js": "f91e806843998d87ea683c6b1d8193196f0fd3a2",
     "/ghosten/zh/916.b5ab2cd1c7399e57.js": "ad28fdfe696ebdc0a524ae4d7af3e07d09e1b2ec",
     "/ghosten/zh/929.b278dc24c298af67.js": "1800d83a675035989f1a6b83d124c1383408df52",
@@ -59,11 +59,11 @@
     "/ghosten/zh/assets/icons/favicon.ico": "a9f0d991756268d3e9f3f6db248281e871cf8a22",
     "/ghosten/zh/assets/splashscreen.html": "8ac712a89e7c36ba3b42b041a22fe73546661821",
     "/ghosten/zh/common.eeb8ca33f9bdf93e.js": "d7f920f6b16f9047c175f9fe78f69187b2681afa",
-    "/ghosten/zh/index.html": "ecf42b20472a3d0f6392d0aa93f05e2c77497cb1",
+    "/ghosten/zh/index.html": "98565e9a51b876bb7349b170fab0b7a8c6755e04",
     "/ghosten/zh/main.88b84eb84735c0a8.js": "3b24ed7ea45e100b2159e002b0ebb4dbdf57094e",
     "/ghosten/zh/manifest.webmanifest": "6fcfe5fbdc534e695ce74c2bd025b91a82392428",
     "/ghosten/zh/polyfills.b06dc6e66537fa81.js": "1ee8cbd50b69e7728262397b3e991f4dbbf76751",
-    "/ghosten/zh/runtime.2ec3ac78e6f0279d.js": "1a3af6216f73c50c500c0ecba508788cd215babc",
+    "/ghosten/zh/runtime.29d0d928ab92b32f.js": "527b32777ce23178146310d4ee5f0d85c1b93b56",
     "/ghosten/zh/styles.4e59142b8e9e698e.css": "1bc7c8a099995734a645acacb1b9ff7f5cb55f8b",
     "/ghosten/zh/vendor.e724d75c57864bf8.js": "846d343a7c393b8743334f405aefc5392a970679"
   },
