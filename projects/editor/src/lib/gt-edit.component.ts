@@ -251,7 +251,8 @@ export class GtEditComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.eventSubscription.unsubscribe();
     this.gt.destroy();
-    this.events.target.removeAllListeners();
+    // @ts-ignore
+    this.events.target.removeAllListeners!();
   }
 
   resetPosition() {

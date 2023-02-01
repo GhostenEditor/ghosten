@@ -41,7 +41,7 @@ import { RenderComponent } from './render.component';
       useFactory: (router: Router) => ({
         title: 'GHOSTEN',
         href: '/',
-        src: 'assets/icons/128.png',
+        src: 'assets/icons/192.png',
         alt: 'Ghosten Logo',
         click() {
           router.navigateByUrl('/').then();

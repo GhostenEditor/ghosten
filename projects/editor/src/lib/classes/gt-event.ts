@@ -18,12 +18,6 @@ export class GtEventTarget extends EventTarget {
   ) {
     super.addEventListener(type, callback, options);
   }
-
-  // @ts-ignore
-  override removeAllListeners() {
-    // @ts-ignore
-    super.removeAllListeners!();
-  }
 }
 
 export class ChangeActionStartEvent extends Event {
