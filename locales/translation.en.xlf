@@ -985,6 +985,7 @@
     <unit id="8999975746137443706">
       <notes>
         <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:24</note>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:89</note>
         <note category="description">Variable Name</note>
       </notes>
       <segment>
@@ -994,6 +995,7 @@
     <unit id="5684255883621313894">
       <notes>
         <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:28</note>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:95</note>
         <note category="description">Data Type</note>
       </notes>
       <segment>
@@ -1003,6 +1005,7 @@
     <unit id="1842093436924780636">
       <notes>
         <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:32</note>
+        <note category="location">projects/editor/src/lib/components/panels/variable.component.ts:107</note>
         <note category="description">Value</note>
       </notes>
       <segment>

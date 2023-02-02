@@ -87,7 +87,7 @@ export const topBarButtons: Provider = {
               gt.events.CUSTOM.emit({
                 type: 'rollback',
                 callback(data: any) {
-                  gt.init(data.config);
+                  gt.init(data.config, data.components);
                   gt.initSettings({
                     name: data.title,
                     description: data.description,

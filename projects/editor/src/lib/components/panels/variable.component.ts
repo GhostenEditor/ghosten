@@ -86,13 +86,13 @@ export class VariableComponent implements OnDestroy {
 
   public formList: PanelFormItem[] = [
     {
-      label: '变量名',
+      label: $localize`:Variable Name:变量名`,
       name: 'name',
       type: 'text',
       validators: Validators.required,
     },
     {
-      label: '数据类型',
+      label: $localize`:Data Type:数据类型`,
       name: 'type',
       type: 'select',
       validators: Validators.required,
@@ -104,7 +104,7 @@ export class VariableComponent implements OnDestroy {
       ],
     },
     {
-      label: '变量值',
+      label: $localize`:Value:变量值`,
       name: 'value',
       type: 'text',
       validators: Validators.required,

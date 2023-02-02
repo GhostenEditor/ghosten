@@ -30,7 +30,7 @@ import { TemplateDirective } from './template.directive';
         [disabled]="formItem.inherit"
         (click)="inheritClick.emit({formItem,formControl})"
       >
-        <i class="gt-icon prepend-icon">{{ 'bind' }}</i>
+        <i class="gt-icon">{{ 'bind' }}</i>
       </button>
       <button
         type="button"

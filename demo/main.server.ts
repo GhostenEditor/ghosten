@@ -1,4 +1,5 @@
 import '@angular/platform-server/init';
+import '@angular/localize/init';
 import './polyfills.server';
 import { enableProdMode } from '@angular/core';
 

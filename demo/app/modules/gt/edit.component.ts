@@ -100,7 +100,7 @@ export class EditComponent {
               .get<any>('getLatestConfigByID', {
                 params: {
                   id: this.route.snapshot.params.id,
-                  timestamp: event.data.timestamp,
+                  timestamp: event.data.data.timestamp,
                 },
               })
               .pipe(tap(data => this.save(data, 'rollback ' + data.timestamp)))

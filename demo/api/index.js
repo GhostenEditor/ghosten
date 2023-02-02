@@ -5,7 +5,7 @@ const pako = require('pako');
 module.exports.initRoutes = function (server) {
   let configs = [];
   let histories = [];
-  readFile(path.resolve(process.cwd(), 'demo/api/export.gt'), undefined, (err, data) => {
+  readFile(path.resolve(process.cwd(), 'demo/assets/export.gt'), undefined, (err, data) => {
     if (err) {
       console.error(err);
     } else {

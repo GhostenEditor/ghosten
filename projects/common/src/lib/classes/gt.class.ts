@@ -91,6 +91,7 @@ export abstract class Gt {
   }
 
   public init(data?: string | null | GtData, remoteComponents?: any[]) {
+    this.destroy();
     const { global, metadata = {}, boards = [], template = [] } = this._parseGtData(data);
     this.global = Object.assign(this.global, global);
     this.metadata.setProperties(metadata);

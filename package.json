@@ -33,7 +33,7 @@
     "ssr:dev": "ng run demo:serve-ssr",
     "ssr:prerender": "ng run demo:prerender",
     "ssr:serve": "node dist/demo/server/main.js",
-    "start": "ng s",
+    "start": "ng serve --configuration=en-US",
     "stats": "ng build --statsJson=true && webpack-bundle-analyzer page/browser/zh/stats.json",
     "tauri": "tauri dev",
     "tauri:build": "tauri build",

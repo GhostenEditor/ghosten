@@ -26,6 +26,10 @@ export function getLatestConfigByID(db: IDBDatabase, { id, timestamp }: any): Pr
           data: null,
         };
       }
+      if (res2.settings) {
+        res2.settings.name = res1.title;
+        res2.settings.description = res1.description;
+      }
       const data = {
         ...res1,
         ...res2,

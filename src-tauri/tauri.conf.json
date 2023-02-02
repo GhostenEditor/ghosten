@@ -2,10 +2,10 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeDevCommand": "ng s --configuration=tauri-dev",
-    "beforeBuildCommand": "ng build --configuration=tauri-prod --base-href='/' --localize=false",
+    "beforeBuildCommand": "ng build --configuration=tauri-prod",
     "devPath": "http://localhost:4200",
     "distDir": "../dist/demo/browser",
-    "withGlobalTauri": true
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "GHOSTEN EDITOR",
@@ -50,7 +50,8 @@
         "timestampUrl": "",
         "wix": {
           "bannerPath": "icons/banner.png",
-          "dialogImagePath": "icons/dialogImage.png"
+          "dialogImagePath": "icons/dialogImage.png",
+          "language": "zh-CN"
         }
       }
     },

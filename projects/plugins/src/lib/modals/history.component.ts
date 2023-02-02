@@ -12,6 +12,7 @@ import { EMPTY } from 'rxjs';
     modalTitle="历史"
     (cancel)="cancel.emit()"
     (animationDone)="animationDone.emit()"
+    #modal
   >
     <table class="table table-striped table-bordered table-hover">
       <thead class="position-sticky bg-body" style="top: -1rem">
@@ -26,7 +27,7 @@ import { EMPTY } from 'rxjs';
           <td>{{ item.type }}</td>
           <td>{{ item.timestamp | date : 'medium' }}</td>
           <td>
-            <button type="button" class="btn btn-light" (click)="confirm.emit(item)">
+            <button type="button" class="btn btn-light" (click)="modal.onConfirm(); confirm.emit(item)">
               <i class="gt-icon">rotate_ccw</i>
             </button>
           </td>

@@ -145,23 +145,30 @@
               "mousetrap",
               "stats.js"
             ],
-            "outputPath": "dist/demo/browser",
-            "index": "demo/index.html",
-            "main": "demo/main.ts",
-            "polyfills": "demo/polyfills.ts",
-            "tsConfig": "demo/tsconfig.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "demo/assets",
               "demo/manifest.webmanifest"
             ],
+            "baseHref": "/",
+            "buildOptimizer": false,
+            "extractLicenses": false,
+            "index": "demo/index.html",
+            "inlineStyleLanguage": "scss",
+            "main": "demo/main.ts",
+            "namedChunks": true,
+            "ngswConfigPath": "ngsw-config.json",
+            "optimization": false,
+            "outputPath": "dist/demo/browser",
+            "polyfills": "demo/polyfills.ts",
+            "scripts": [],
+            "serviceWorker": true,
+            "sourceMap": true,
             "styles": [
               "demo/styles/index.sass"
             ],
-            "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json",
-            "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "tsConfig": "demo/tsconfig.json",
+            "vendorChunk": true,
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -179,6 +186,7 @@
               "buildOptimizer": true,
               "vendorChunk": true,
               "commonChunk": true,
+              "sourceMap": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -196,10 +204,10 @@
               "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
-              "baseHref": "/",
               "buildOptimizer": true,
               "vendorChunk": true,
               "commonChunk": true,
+              "sourceMap": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -214,22 +222,13 @@
               ]
             },
             "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "baseHref": "/"
+            },
+            "en-US": {
+              "localize": [
+                "en-US"
+              ]
             },
             "tauri-dev": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "baseHref": "/",
               "fileReplacements": [
                 {
                   "replace": "demo/utils/index.ts",
@@ -247,6 +246,26 @@
                   "replace": "demo/utils/index.ts",
                   "with": "demo/utils/index-tauri.ts"
                 }
+              ],
+              "localize": false,
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "buildOptimizer": true,
+              "vendorChunk": true,
+              "commonChunk": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "600kb",
+                  "maximumError": "1mb"
+                }
               ]
             }
           },
@@ -258,6 +277,9 @@
             "browserTarget": "demo:build:configurations"
           },
           "configurations": {
+            "en-US": {
+              "browserTarget": "demo:build:development,en-US"
+            },
             "production": {
               "browserTarget": "demo:build:production"
             },
