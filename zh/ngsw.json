@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1675273713736,
+  "timestamp": 1675348238386,
   "index": "/ghosten/zh/index.html",
   "assetGroups": [
     {
@@ -13,14 +13,14 @@
       "urls": [
         "/ghosten/zh/761.4ec74de849ffc419.js",
         "/ghosten/zh/867.05563b9939d53217.js",
-        "/ghosten/zh/916.b5ab2cd1c7399e57.js",
+        "/ghosten/zh/916.248f434ad0e11ac7.js",
         "/ghosten/zh/929.b278dc24c298af67.js",
         "/ghosten/zh/common.eeb8ca33f9bdf93e.js",
         "/ghosten/zh/index.html",
         "/ghosten/zh/main.88b84eb84735c0a8.js",
         "/ghosten/zh/manifest.webmanifest",
         "/ghosten/zh/polyfills.b06dc6e66537fa81.js",
-        "/ghosten/zh/runtime.29d0d928ab92b32f.js",
+        "/ghosten/zh/runtime.9374742418b10526.js",
         "/ghosten/zh/styles.4e59142b8e9e698e.css",
         "/ghosten/zh/vendor.e724d75c57864bf8.js"
       ],
@@ -39,6 +39,7 @@
         "/ghosten/zh/assets/icons/192.png",
         "/ghosten/zh/assets/icons/512.png",
         "/ghosten/zh/assets/icons/apple-touch-icon.png",
+        "/ghosten/zh/assets/icons/banner.png",
         "/ghosten/zh/assets/icons/favicon.ico",
         "/ghosten/zh/assets/splashscreen.html"
       ],
@@ -49,21 +50,22 @@
   "hashTable": {
     "/ghosten/zh/761.4ec74de849ffc419.js": "a2e8d38a55c4f36ffa381ae8fd691d62d0940022",
     "/ghosten/zh/867.05563b9939d53217.js": "f91e806843998d87ea683c6b1d8193196f0fd3a2",
-    "/ghosten/zh/916.b5ab2cd1c7399e57.js": "ad28fdfe696ebdc0a524ae4d7af3e07d09e1b2ec",
+    "/ghosten/zh/916.248f434ad0e11ac7.js": "a914adf7e33ccf9d04e3cbafd02e2eff6213a57e",
     "/ghosten/zh/929.b278dc24c298af67.js": "1800d83a675035989f1a6b83d124c1383408df52",
     "/ghosten/zh/Ghosten Icons-Regular.6658dd796a7913a7.woff2": "a6fd2b14baf4678d93abb5bc586a98603818ad04",
     "/ghosten/zh/assets/export.gt": "e83ceab3a22cff10316c59a5b7f0cf59939288c2",
     "/ghosten/zh/assets/icons/192.png": "9ff6728ed1baf64580a7f4473e40219c62aaa72c",
     "/ghosten/zh/assets/icons/512.png": "0f9bfb6d1ba83520e5b237c0df129dfc460325fe",
     "/ghosten/zh/assets/icons/apple-touch-icon.png": "253e06d45db4bd87d23cf7ee5afddbf4e7feec95",
+    "/ghosten/zh/assets/icons/banner.png": "2b2197812fb4e3e9c44af9f00959ecf397c60695",
     "/ghosten/zh/assets/icons/favicon.ico": "a9f0d991756268d3e9f3f6db248281e871cf8a22",
-    "/ghosten/zh/assets/splashscreen.html": "8ac712a89e7c36ba3b42b041a22fe73546661821",
+    "/ghosten/zh/assets/splashscreen.html": "39079470b95d45e5eda0810631185c8b566a879d",
     "/ghosten/zh/common.eeb8ca33f9bdf93e.js": "d7f920f6b16f9047c175f9fe78f69187b2681afa",
-    "/ghosten/zh/index.html": "98565e9a51b876bb7349b170fab0b7a8c6755e04",
+    "/ghosten/zh/index.html": "aa08093013afedb438a1d5e4d927b4e1e8064ce4",
     "/ghosten/zh/main.88b84eb84735c0a8.js": "3b24ed7ea45e100b2159e002b0ebb4dbdf57094e",
     "/ghosten/zh/manifest.webmanifest": "6fcfe5fbdc534e695ce74c2bd025b91a82392428",
     "/ghosten/zh/polyfills.b06dc6e66537fa81.js": "1ee8cbd50b69e7728262397b3e991f4dbbf76751",
-    "/ghosten/zh/runtime.29d0d928ab92b32f.js": "527b32777ce23178146310d4ee5f0d85c1b93b56",
+    "/ghosten/zh/runtime.9374742418b10526.js": "080690ddf4c409863460ff5c421a28d438b0e7b2",
     "/ghosten/zh/styles.4e59142b8e9e698e.css": "1bc7c8a099995734a645acacb1b9ff7f5cb55f8b",
     "/ghosten/zh/vendor.e724d75c57864bf8.js": "846d343a7c393b8743334f405aefc5392a970679"
   },
