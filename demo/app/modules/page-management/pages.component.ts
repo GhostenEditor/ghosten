@@ -38,7 +38,7 @@ import { confirm } from '../../../utils';
           </tr>
         </thead>
         <tbody cdkDropList>
-          <tr *ngFor="let page of pageList" cdkDrag>
+          <tr *ngFor="let page of pageList" cdkDrag cdkDragLockAxis="y">
             <td>
               <i class="gt-icon">{{ page.icon }}</i>
             </td>

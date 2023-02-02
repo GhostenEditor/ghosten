@@ -25,9 +25,9 @@ import { MenuItem } from '@ghosten/database';
             (click)="accordionItem.toggle()"
           >
             <a [routerLink]="item.url" class="d-none"></a>
-            <i class="gt-icon me-2">{{ item.icon }}</i>
+            <i class="gt-icon me-2 flex-shrink-0">{{ item.icon }}</i>
             <span class="flex-grow-1 text-start text-truncate">{{ item.label }}</span>
-            <i class="gt-icon ms-2">{{ accordionItem.expanded ? 'chevron_down' : 'chevron_right' }}</i>
+            <i class="gt-icon ms-2 flex-shrink-0">{{ accordionItem.expanded ? 'chevron_down' : 'chevron_right' }}</i>
           </div>
           <app-navigation-item
             class="d-block"
@@ -42,8 +42,8 @@ import { MenuItem } from '@ghosten/database';
             [style.padding-left]="level * 0.75 + 'rem'"
             routerLinkActive="active"
             class="btn btn-text d-flex align-items-baseline btn-sm"
-            ><i class="gt-icon me-2">{{ item.icon }}</i
-            >{{ item.label }}</a
+            ><i class="gt-icon me-2 flex-shrink-0">{{ item.icon }}</i
+            ><span class="text-truncate">{{ item.label }}</span></a
           >
         </ng-container>
       </li>

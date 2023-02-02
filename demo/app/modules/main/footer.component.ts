@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
               class="rounded"
               width="80"
               height="80"
-              style="width: 5rem;"
+              style="width: 5rem;height: 5rem;"
             />
             <span class="fw-bold my-2">GHOSTEN</span>
           </a>
@@ -25,10 +25,10 @@ import { Component } from '@angular/core';
           <h5>LANGUAGES</h5>
           <ul class="list-unstyled">
             <li class="mb-2">
-              <a target="_blank" href="/ghosten/zh/">简体中文版</a>
+              <a href="/ghosten/zh/">简体中文版</a>
             </li>
             <li class="mb-2">
-              <a target="_blank" href="/ghosten/en-US/">English Version</a>
+              <a href="/ghosten/en-US/">English Version</a>
             </li>
             <li class="mb-2">
               <span>日本語版 (todo)</span>
